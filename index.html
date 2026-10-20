@@ -1,0 +1,890 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loka Labs</title>
+<meta name="description" content="Loka Labs builds Loka Capital, AIUSD, Atara and Loka World.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<!-- Loka Labs: company page and entry point to each product. -->
+<style>
+:root{
+  --bg:#f4f4f2;--paper:#fbfbfa;--mist:#ecedea;
+  --ink:#0e0f0f;--ink-2:#4a4f4d;--ink-3:#7d827f;
+  --line:rgba(14,15,15,.10);--line-2:rgba(14,15,15,.18);
+  --night:#0b0f0e;--on-night:#eef0ee;--on-night-2:rgba(238,240,238,.64);--on-night-3:rgba(238,240,238,.40);
+  --accent:#3d6f5b;--accent-deep:#20392f;--glow:#7fd4a8;
+  --sans:"Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --maxw:1280px;--gutter:clamp(20px,4vw,48px);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img,svg{display:block;max-width:100%}
+.w{max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.num{font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;top:0;z-index:20;background:color-mix(in oklab,var(--bg) 88%,transparent);backdrop-filter:saturate(1.2) blur(10px);-webkit-backdrop-filter:saturate(1.2) blur(10px);border-bottom:1px solid transparent;transition:border-color .3s var(--ease)}
+.nav.scrolled{border-bottom-color:var(--line)}
+.nav.on-dark{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;color:var(--on-night)}
+.nav.on-dark ul a{color:var(--on-night-2)}
+.nav.on-dark ul a:hover{color:var(--on-night)}
+.nav.on-dark .btn-line{border-color:rgba(238,240,238,.3)}
+.nav.on-dark .btn-line:hover{border-color:var(--on-night)}
+.nav{transition:background-color .35s var(--ease),color .35s var(--ease),border-color .3s var(--ease)}
+.nav .w{display:flex;align-items:center;gap:32px;height:68px}
+.brand{display:flex;align-items:center;gap:10px;white-space:nowrap;text-decoration:none;font-weight:600;font-size:17px;letter-spacing:-.01em}
+.brand i{display:grid;place-items:center;width:26px;height:26px;border:1.5px solid currentColor;border-radius:7px}
+.brand i::before{content:"";width:10px;height:10px;background:currentColor;border-radius:2px}
+.nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font-size:14.5px}
+.nav ul a{text-decoration:none;color:var(--ink-2);transition:color .2s}
+.nav ul a:hover{color:var(--ink)}
+.nav .sp{flex:1}
+.btn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 19px;border-radius:999px;font-size:14px;font-weight:500;text-decoration:none;white-space:nowrap;transition:background-color .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease)}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn-ink:hover{background:var(--accent-deep)}
+.btn-line{border:1px solid var(--line-2)}
+.btn-line:hover{border-color:var(--ink)}
+.btn .s{display:none}
+.btn i{font-size:15px;transition:transform .3s var(--ease)}
+.btn:hover i{transform:translateX(2px)}
+
+/* ---------- hero: dark, full height; a field of points rises and falls under the text ---------- */
+.hero{position:relative;min-height:min(100svh,960px);margin-top:-69px;padding-top:69px;display:flex;flex-direction:column;background:#070b0a;color:var(--on-night);overflow:hidden;isolation:isolate}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-2}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(55% 55% at 20% 34%,rgba(7,11,10,.78) 0%,rgba(7,11,10,.35) 60%,rgba(7,11,10,0) 100%),
+    linear-gradient(to bottom,rgba(7,11,10,.7) 0%,rgba(7,11,10,0) 18%,rgba(7,11,10,0) 84%,rgba(7,11,10,.7) 100%)}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hero-main{flex:1;display:flex;align-items:center;padding:clamp(28px,4vw,56px) 0 clamp(24px,3vw,40px)}
+.hero-grid{width:100%}
+.hero .eyebrow{color:var(--on-night-3)}
+.hero h1{margin:0;font-weight:500;font-size:clamp(48px,7.6vw,120px);line-height:.96;letter-spacing:-.045em;max-width:14ch}
+.hero h1 .wd{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.hero h1 .wd>span{display:inline-block;transform:translateY(105%);transition:transform 1.1s var(--ease)}
+.hero.ready h1 .wd>span{transform:none}
+.hero h1 em{font-style:normal;color:#9fd6b9}
+.hero p.lede{margin:26px 0 0;font-size:clamp(17px,1.35vw,19px);color:var(--on-night-2);max-width:46ch}
+.hero .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.hero .btn-light{background:var(--on-night);color:var(--ink)}
+.hero .btn-light:hover{background:#fff}
+.hero .btn-ghost{border:1px solid rgba(238,240,238,.28);color:var(--on-night)}
+.hero .btn-ghost:hover{border-color:var(--on-night)}
+.fade{opacity:0;transform:translateY(12px);transition:opacity 1s var(--ease),transform 1.1s var(--ease)}
+.hero.ready .fade{opacity:1;transform:none}
+/* logos along the bottom of the hero */
+.trust{border-top:1px solid rgba(238,240,238,.12);padding:20px 0 22px}
+.trust .w{display:flex;align-items:center;gap:36px}
+.trust .eyebrow{flex:none;margin:0;white-space:nowrap;line-height:1.5;color:var(--on-night-3)}
+.logo-window{flex:1;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.logo-track{display:flex;align-items:center;gap:64px;width:max-content;animation:logos 46s linear infinite}
+.logo-track img{height:26px;width:auto;filter:grayscale(1) brightness(1.2) contrast(1.05);opacity:.9}
+.logo-track img.sq{height:38px}
+.logo-track img.wide{height:21px}
+.trust:hover .logo-track{animation-play-state:paused}
+@keyframes logos{to{transform:translateX(-50%)}}
+/* ---------- thesis: the belief first, then the three layers it needs ---------- */
+.overview{padding:clamp(88px,12vw,170px) 0 clamp(72px,9vw,128px);scroll-margin-top:68px}
+.statement{margin:0;font-weight:500;font-size:clamp(40px,5.4vw,84px);line-height:1.02;letter-spacing:-.042em;max-width:15ch}
+.statement em{font-style:normal}
+.scrub .wd{color:rgba(14,15,15,.13);transition:color .35s var(--ease)}
+.scrub .wd.on{color:var(--ink)}
+.scrub em .wd.on{color:var(--accent)}
+.ov-grid{margin-top:clamp(48px,6vw,88px);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;scroll-margin-top:84px}
+.ov{position:relative;display:flex;flex-direction:column;gap:10px;min-height:clamp(230px,20vw,280px);padding:clamp(20px,1.8vw,28px);border-radius:20px;background:var(--paper);border:1px solid var(--line);text-decoration:none;overflow:hidden;transition:background-color .4s var(--ease),color .4s var(--ease),border-color .4s var(--ease),transform .45s var(--ease)}
+.ov b{font-weight:500;font-size:clamp(26px,2.3vw,34px);letter-spacing:-.035em;line-height:1}
+.ov p{margin:0;color:var(--ink-2);font-size:15px;line-height:1.45;max-width:26ch;transition:color .4s var(--ease)}
+.ov .key{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:14px;border-top:1px solid var(--line);transition:border-color .4s var(--ease)}
+.ov .key small{font-size:15px;font-weight:500;color:inherit}
+.ov .key i{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1px solid var(--line-2);font-size:15px;transition:transform .4s var(--ease),background-color .4s var(--ease),border-color .4s var(--ease),color .4s var(--ease)}
+.ov::after{content:"";position:absolute;right:-30%;bottom:-50%;width:90%;aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,rgba(127,212,168,.24),rgba(127,212,168,0));opacity:0;transition:opacity .5s var(--ease);pointer-events:none}
+.ov:hover{background:#0e1412;color:var(--on-night);border-color:#0e1412;transform:translateY(-3px)}
+.ov:hover p{color:var(--on-night-2)}
+.ov:hover .key{border-color:rgba(238,240,238,.16)}
+.ov:hover .key i{background:var(--on-night);color:var(--ink);border-color:var(--on-night);transform:rotate(-45deg)}
+.ov:hover::after{opacity:1}
+
+/* ---------- product cards: each sticks under the nav and the next one slides over it ---------- */
+.cards{padding:0 0 clamp(32px,4vw,64px)}
+.cards>.w{max-width:1560px;padding:0 clamp(12px,2vw,32px)}
+.pcard:last-of-type{margin-bottom:0}
+.cards-h{margin:0 0 28px;font-weight:500;font-size:clamp(30px,3.4vw,48px);letter-spacing:-.03em;line-height:1.04}
+.pcard{position:sticky;top:calc(80px + var(--i,0) * 12px);margin-bottom:clamp(32px,24vh,240px);scroll-margin-top:84px;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.6fr);gap:14px;padding:14px;border-radius:34px;background:#e4e6e2;box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 -24px 48px -36px rgba(13,17,16,.28)}
+.pcard-text{display:flex;flex-direction:column;padding:clamp(26px,3vw,48px);border-radius:24px;background:var(--paper)}
+.pcard h3{margin:0;font-weight:500;font-size:clamp(34px,3.2vw,52px);letter-spacing:-.035em;line-height:1}
+.pcard .need{margin:16px 0 0;font-size:clamp(17px,1.3vw,20px);line-height:1.45;max-width:28ch}
+.prod-block{margin-top:auto;padding-top:22px;border-top:1px solid var(--line)}
+.prod-block b{display:block;font-weight:500;font-size:19px;letter-spacing:-.01em}
+.pcard .desc{margin:8px 0 0;color:var(--ink-2);font-size:15.5px;max-width:42ch}
+.pcard .need+.prod-block{margin-top:auto}
+.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.pending{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 4px;font-size:14px;color:var(--ink-3)}
+.pending::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ink-3)}
+.bento{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:14px;height:clamp(540px,calc(100vh - 140px),800px)}
+.tile{position:relative;border-radius:24px;background:var(--paper);padding:clamp(20px,2vw,30px) clamp(22px,2.2vw,32px);overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.tile.w2{grid-column:span 2}
+.tile.h2{grid-row:span 2}
+.tile .tl{font-size:14px;color:var(--ink-3)}
+.tile .tv{margin-top:8px;font-weight:500;font-size:clamp(28px,2.5vw,42px);letter-spacing:-.03em;line-height:1.05}
+.tile .ts{margin-top:auto;font-size:14.5px;color:var(--ink-2);line-height:1.45}
+.tile .th{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.tile .asof{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink-3)}
+.tile ol{margin:auto 0 0;padding:0;list-style:none;display:grid;gap:10px;font-size:15px;color:var(--ink-2)}
+.tile ol li{display:grid;grid-template-columns:22px 1fr;gap:8px;align-items:baseline}
+.tile ol li span{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.media{position:relative;border-radius:24px;overflow:hidden;isolation:isolate;padding:0}
+.media .tag{position:absolute;left:20px;top:18px;z-index:2;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+
+/* principal chart */
+.chart{position:relative;flex:1;min-height:120px;margin-top:14px}
+.chart svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.chart .grid line{stroke:rgba(14,15,15,.08);stroke-width:1}
+.chart .ax text{fill:var(--ink-3);font:400 11px var(--sans)}
+.chart .bar{fill:#2f8a62;transition:opacity .2s}
+.chart .bar.dim{opacity:.35}
+.chart .hit{fill:transparent;cursor:default;outline:none}
+.tip{position:absolute;z-index:3;pointer-events:none;transform:translate(-50%,-100%);margin-top:-8px;padding:6px 9px;border-radius:8px;background:var(--ink);color:var(--paper);font-size:12px;white-space:nowrap;opacity:0;transition:opacity .15s}
+.tip.on{opacity:1}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* Capital: photo with a caption */
+.m-capital{background:var(--night)}
+.m-capital img{width:100%;height:100%;object-fit:cover;object-position:center 40%;filter:saturate(.8) contrast(1.05);transform:scale(1.06);transition:transform 1.6s var(--ease)}
+.pcard.in .m-capital img{transform:scale(1)}
+.m-capital .cap{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:20px 22px;color:var(--on-night);background:linear-gradient(to top,rgba(11,15,14,.78),rgba(11,15,14,0))}
+.m-capital .cap b{display:block;font-weight:500;font-size:clamp(20px,1.8vw,28px);letter-spacing:-.025em;line-height:1.05}
+.m-capital .cap span{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--on-night-2)}
+
+/* AIUSD: a coin turning slowly */
+.m-coin{display:grid!important;place-items:center;background:radial-gradient(90% 80% at 50% 38%,#2c5446 0%,var(--accent-deep) 55%,#13241e 100%);color:var(--on-night);display:grid;place-items:center}
+.m-coin .tag{color:var(--on-night-3)}
+.stage{position:relative;z-index:1;perspective:1100px;width:min(46%,260px);aspect-ratio:1;margin-bottom:44px}
+.coin{position:relative;width:100%;height:100%;transform-style:preserve-3d;transform:rotateX(14deg) rotateY(-24deg);animation:turn 16s cubic-bezier(.45,0,.55,1) infinite}
+.coin .layer{position:absolute;inset:0;border-radius:50%}
+.coin .face{position:absolute;inset:0;border-radius:50%}
+.coin .face svg{width:100%;height:100%}
+.coin .back{transform:rotateY(180deg) translateZ(var(--half))}
+.coin .front{transform:translateZ(var(--half))}
+@keyframes turn{0%{transform:rotateX(14deg) rotateY(-24deg)}50%{transform:rotateX(10deg) rotateY(156deg)}100%{transform:rotateX(14deg) rotateY(336deg)}}
+.m-coin .eq{position:absolute;z-index:3;background:linear-gradient(to top,rgba(19,36,30,.9),rgba(19,36,30,0));left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:18px 24px;border-top:1px solid rgba(238,240,238,.12)}
+.m-coin .eq b{font-weight:500;font-size:clamp(20px,2vw,26px);letter-spacing:-.02em}
+.m-coin .eq span{font-size:13px;color:var(--on-night-2)}
+
+/* Atara: framed capture of the live site */
+.m-atara{background:linear-gradient(160deg,#e6e8fb,#d6daf6);padding:clamp(18px,2.4vw,32px) clamp(18px,2.4vw,32px) 0;display:flex;align-items:flex-end}
+.win{width:100%;border-radius:12px 12px 0 0;overflow:hidden;background:#fff;box-shadow:0 30px 60px -30px rgba(20,24,90,.45),0 0 0 1px rgba(20,24,90,.08);transform:translateY(18px);transition:transform 1.2s var(--ease)}
+.pcard.in .win{transform:none}
+.win-bar{display:flex;align-items:center;gap:7px;height:32px;padding:0 12px;background:#f3f3f6;border-bottom:1px solid #e4e4ea}
+.win-bar i{width:9px;height:9px;border-radius:50%;background:#d7d7de}
+.win-bar span{margin-left:12px;flex:1;max-width:280px;height:20px;border-radius:6px;background:#fff;font-family:var(--mono);font-size:10.5px;color:#888;display:flex;align-items:center;padding:0 9px}
+.win img{width:100%;height:auto}
+
+/* Loka World: illustration */
+.m-world{background:var(--night)}
+.m-world .tag{color:var(--on-night-3)}
+.m-world svg{position:absolute;inset:0;width:100%;height:100%}
+.edge{stroke:rgba(238,240,238,.22);stroke-width:1;fill:none;stroke-dasharray:3 5;animation:flow 6s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-80}}
+.q rect{fill:#18201d;stroke:rgba(238,240,238,.22)}
+.q text{fill:var(--on-night);font:500 13px var(--sans)}
+.q .k{fill:var(--on-night-3);font:400 10px var(--mono);letter-spacing:.06em}
+.org circle.o{fill:#0f1513;stroke:rgba(238,240,238,.38)}
+.org text{fill:var(--on-night-2);font:400 12px var(--sans)}
+.org .sc{font:500 11px var(--mono)}
+.org .sc.up{fill:var(--glow)}
+.org .sc.dn{fill:#e9a38f}
+.pulse{fill:none;stroke:var(--glow);opacity:0;transform-box:fill-box;transform-origin:center;animation:pulse 3.6s ease-out infinite}
+@keyframes pulse{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(2.8)}}
+
+/* ---------- AIUSD: the dollar across the products, set apart from them ---------- */
+.dollar{background:radial-gradient(70% 90% at 72% 50%,#f6f7f6 0%,#e9ecea 55%,#dfe3e1 100%);color:var(--ink);padding:clamp(72px,9vw,130px) 0;overflow:hidden;scroll-margin-top:68px}
+.dollar-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(40px,6vw,96px);align-items:center}
+.dollar h2{margin:0;font-weight:500;font-size:clamp(44px,5.6vw,84px);letter-spacing:-.04em;line-height:1}
+.dollar .what{margin:16px 0 0;font-size:clamp(19px,1.6vw,23px);line-height:1.35}
+.dollar .desc{margin:14px 0 0;color:var(--ink-2);max-width:46ch}
+.dfacts{margin:32px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line-2)}
+.dfacts div{padding:14px 16px 0 0}
+.dfacts div+div{padding-left:16px;border-left:1px solid var(--line)}
+.dfacts dt{font-size:13px;color:var(--ink-3)}
+.dfacts dd{margin:6px 0 0;font-weight:500;font-size:17px}
+.dollar .pending{margin-top:24px}
+.coin-wrap{position:relative;display:grid;place-items:center;aspect-ratio:1;width:100%;max-width:560px;justify-self:center}
+.coin-wrap .stage{width:min(70%,340px);margin:0}
+.coin-wrap canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.2s var(--ease)}
+.coin-wrap.gl canvas{opacity:1}
+.coin-wrap.gl .stage{display:none}
+
+/* ---------- audiences ---------- */
+.aud{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--ink)}
+.aud-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:28px;border-top:1px solid var(--line)}
+.aud a{display:flex;flex-direction:column;gap:10px;padding:26px 28px 30px 0;text-decoration:none;min-height:190px}
+.aud a+a{padding-left:28px;border-left:1px solid var(--line)}
+.aud a b{font-weight:500;font-size:clamp(22px,2vw,28px);letter-spacing:-.02em;transition:color .2s}
+.aud a p{margin:0;color:var(--ink-2);max-width:34ch}
+.aud a em{margin-top:auto;font-style:normal;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px}
+.aud a em i{transition:transform .3s var(--ease)}
+.aud a:hover em i{transform:translateX(3px)}
+.aud a:hover b{color:var(--accent)}
+
+/* ---------- company ---------- */
+.company{padding:clamp(56px,8vw,112px) 0;border-top:1px solid var(--line)}
+.company-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:clamp(36px,6vw,96px)}
+.company h2{margin:0;font-weight:500;font-size:clamp(30px,3.4vw,46px);line-height:1.08;letter-spacing:-.03em}
+.company p{margin:0 0 18px;color:var(--ink-2);font-size:17px;max-width:54ch}
+.logos{margin-top:clamp(40px,5vw,64px);padding-top:28px;border-top:1px solid var(--line)}
+.logo-row{display:flex;flex-wrap:wrap;align-items:center;gap:18px 40px;margin-top:20px}
+.logo-row img{height:30px;width:auto;filter:grayscale(1) contrast(.9);opacity:.62;transition:opacity .25s}
+.logo-row img.sq{height:38px}
+.logo-row img.wide{height:22px}
+.logo-row img:hover{opacity:.9}
+
+/* ---------- footer ---------- */
+footer{background:var(--night);color:var(--on-night-2);padding:56px 0 40px;font-size:14px}
+.foot{display:grid;grid-template-columns:1.4fr repeat(3,minmax(0,1fr));gap:40px}
+footer .brand{color:var(--on-night)}
+footer h4{margin:0 0 14px;font-family:var(--mono);font-weight:400;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--on-night-3)}
+footer ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+footer a{text-decoration:none;color:var(--on-night-2);transition:color .2s}
+footer a:hover{color:var(--on-night)}
+.fine{margin-top:48px;padding-top:20px;border-top:1px solid rgba(238,240,238,.12);display:grid;gap:8px;font-size:12.5px;color:var(--on-night-3)}
+
+/* ---------- entrance ---------- */
+.rise{opacity:0;transform:translateY(14px);transition:opacity .9s var(--ease),transform 1s var(--ease)}
+.rise.in{opacity:1;transform:none}
+.hero .rise:nth-child(2){transition-delay:.08s}
+.hero .rise:nth-child(3){transition-delay:.16s}
+@media (prefers-reduced-motion:reduce){
+  .rise,.fade,.hero h1 .wd>span{opacity:1;transform:none;transition:none}
+  .edge,.pulse,.coin,.logo-track{animation:none}
+  .m-capital img,.win{transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+
+/* ---------- responsive ---------- */
+@media (max-width:960px){
+  .ov-grid{grid-template-columns:1fr 1fr}
+  .ov{min-height:220px}
+  .pcard{position:relative;top:auto;grid-template-columns:1fr}
+  .bento{height:auto;grid-template-rows:none;grid-auto-rows:minmax(220px,auto)}
+  .company-grid{grid-template-columns:1fr}
+  .dollar-grid{grid-template-columns:1fr}
+  .coin-wrap .stage{width:min(60%,280px)}
+  .aud-grid{grid-template-columns:1fr}
+  .aud a,.aud a+a{padding:22px 0;border-left:0;min-height:0}
+  .aud a+a{border-top:1px solid var(--line)}
+  .foot{grid-template-columns:1fr 1fr}
+  .foot>div:first-child{grid-column:1/-1}
+}
+@media (max-width:640px){
+  .nav ul{display:none}
+  .trust .w{flex-direction:column;align-items:flex-start;gap:14px}
+  .logo-window{width:100%}
+  .nav .w{gap:16px}
+  .nav .btn{height:36px;padding:0 14px;font-size:13.5px}
+  .btn .l{display:none}.btn .s{display:inline}
+  .ov-grid{grid-template-columns:1fr}
+  .ov{min-height:0}
+  .bento{grid-template-columns:1fr}
+  .dfacts{grid-template-columns:1fr}
+  .dfacts div+div{padding-left:0;border-left:0;border-top:1px solid var(--line)}
+  .tile.w2,.tile.h2{grid-column:auto;grid-row:auto}
+  .tile.h2{min-height:320px}
+  .stage{width:52%}
+}
+/* Products menu: every product's entry point */
+.pd{position:relative}
+.pd>button{display:inline-flex;align-items:center;gap:6px;padding:0;border:0;background:none;font:inherit;font-size:14.5px;color:var(--ink-2);cursor:pointer;transition:color .2s}
+.pd>button:hover,.pd.open>button{color:var(--ink)}
+.pd>button i{font-size:11px;transition:transform .25s var(--ease)}
+.pd.open>button i{transform:rotate(180deg)}
+.pmenu{position:fixed;top:68px;left:0;right:0;z-index:31;background:var(--paper);color:var(--ink);border-top:1px solid var(--line);box-shadow:0 30px 60px -30px rgba(14,15,15,.28);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .2s var(--ease),transform .25s var(--ease)}
+.pd.open .pmenu{opacity:1;transform:none;pointer-events:auto}
+.pmenu::before{content:"";position:absolute;left:0;right:0;top:-30px;height:30px}
+.pm-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(360px,38%);min-height:330px}
+.pm-col{padding:40px 0 44px clamp(20px,4vw,56px);display:flex;flex-direction:column;gap:6px}
+.pm-col a{display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:center;max-width:380px;padding:10px 12px;margin-left:-12px;border-radius:14px;text-decoration:none;color:var(--ink);transition:background-color .2s}
+.pm-col a:hover,.pm-col a:focus-visible{background:var(--bg)}
+.pm-col .ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;border:1px solid var(--line-2);font-size:18px;color:var(--ink-2)}
+.pm-col b{display:flex;align-items:center;gap:6px;font-weight:500;font-size:16.5px}
+.pm-col b i{font-size:13px;color:var(--ink-3)}
+.pm-col small{display:block;margin-top:2px;font-size:13.5px;color:var(--ink-3)}
+.pm-feature{display:flex;flex-direction:column;align-items:flex-start;padding:40px clamp(24px,4vw,56px);text-decoration:none;color:var(--ink);background:radial-gradient(70% 120% at 0% 0%,#cfe8f3 0%,rgba(207,232,243,0) 60%),radial-gradient(60% 120% at 100% 100%,#eaf7cf 0%,rgba(234,247,207,0) 65%),linear-gradient(110deg,#d7eef0 0%,#dcf1e4 50%,#e8f5d6 100%)}
+.pm-feature span.k{font-size:14px;color:var(--ink-2)}
+.pm-feature b{margin-top:12px;font-weight:500;font-size:clamp(26px,2.4vw,34px);line-height:1.1;letter-spacing:-.025em;max-width:13em}
+.pm-feature p{margin:12px 0 0;font-size:15.5px;line-height:1.55;color:var(--ink-2);max-width:30em}
+.pm-feature em{margin-top:auto;padding-top:26px;display:inline-flex;align-items:center;gap:10px;font-style:normal;font-size:15.5px;font-weight:500}
+.pm-feature em i{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;transition:transform .25s var(--ease)}
+.pm-feature:hover em i{transform:translateX(3px)}
+.nav.mega,.nav.mega.on-dark{background:var(--paper);color:var(--ink);border-bottom-color:var(--line);backdrop-filter:none}
+.nav.mega ul a{color:var(--ink-2)}
+.nav.mega .btn-line{border-color:var(--line-2)}
+.nav.on-dark .pd>button{color:var(--on-night-2)}
+.nav.on-dark .pd>button:hover{color:var(--on-night)}
+.nav.mega .pd>button,.nav.mega .pd>button:hover,.nav.mega ul a:hover{color:var(--ink)}
+.nav .pmenu a,.nav .pmenu a:hover{color:var(--ink)}
+@media (max-width:960px){.pmenu{display:none}}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="w">
+    <a class="brand" href="#top"><i aria-hidden="true"></i>Loka Labs</a>
+    <ul>
+      <li class="pd" id="pd"><button type="button" aria-expanded="false" aria-controls="pmenu">Products<i class="ph ph-caret-down" aria-hidden="true"></i></button>
+        <div class="pmenu" id="pmenu">
+          <div class="pm-in">
+            <div class="pm-col">
+              <a href="/" data-capital target="_blank" rel="noopener"><span class="ic"><i class="ph ph-buildings" aria-hidden="true"></i></span><span><b>Loka Capital<i class="ph ph-arrow-up-right" aria-hidden="true"></i></b><small>Secured loans to compute centers</small></span></a>
+              <a href="/aiusd/"><span class="ic"><i class="ph ph-coin" aria-hidden="true"></i></span><span><b>AIUSD</b><small>The dollar used across Loka</small></span></a>
+            </div>
+            <div class="pm-col">
+              <a href="https://www.loka.cash/" target="_blank" rel="noopener"><span class="ic"><i class="ph ph-handshake" aria-hidden="true"></i></span><span><b>Atara<i class="ph ph-arrow-up-right" aria-hidden="true"></i></b><small>Conditional payments</small></span></a>
+              <a href="https://lokaworld.vercel.app/prototypes/lokaworld-v5-lite/map.html" target="_blank" rel="noopener"><span class="ic"><i class="ph ph-globe-hemisphere-west" aria-hidden="true"></i></span><span><b>Loka World<i class="ph ph-arrow-up-right" aria-hidden="true"></i></b><small>Economic simulation</small></span></a>
+            </div>
+            <a class="pm-feature" href="/" data-capital target="_blank" rel="noopener">
+              <span class="k">Loka Capital</span>
+              <b>Senior secured loans to compute centers</b>
+              <p>For verified institutions. Rent from AI companies repays lenders first.</p>
+              <em>Visit Loka Capital<i class="ph ph-arrow-up-right" aria-hidden="true"></i></em>
+            </a>
+          </div>
+        </div></li>
+      <li><a href="#audiences">Get started</a></li>
+      <li><a href="#company">Company</a></li>
+    </ul>
+    <span class="sp"></span>
+    <a class="btn btn-line" href="/app/" data-capital><span class="l">Open Loka Capital</span><span class="s">Loka Capital</span><i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" id="hero">
+    <canvas id="field" aria-hidden="true"></canvas>
+    <div class="hero-main">
+      <div class="w hero-grid">
+        <div>
+          <h1 id="h1">The financial layer of the <em>AI economy</em>.</h1>
+          <p class="lede fade" style="transition-delay:.55s">Compute is built on credit. Agents pay for work. Decisions about AI are made under uncertainty. Each needs financial rules made for how AI works, and Loka Labs builds them.</p>
+          <div class="cta fade" style="transition-delay:.7s">
+            <a class="btn btn-light" href="#thesis">Our view<i class="ph ph-arrow-down" aria-hidden="true"></i></a>
+            <a class="btn btn-ghost" href="/app/" data-capital>Open Loka Capital</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="trust fade" style="transition-delay:1s">
+      <div class="w">
+        <div class="logo-window" aria-label="Researchers and collaborators from">
+          <div class="logo-track" id="logo-track">
+            <img src="/assets/logos/adv-mit.png" alt="MIT">
+            <img src="/assets/logos/adv-harvard.png" alt="Harvard">
+            <img src="/assets/logos/adv-princeton.png" alt="Princeton">
+            <img src="/assets/logos/adv-columbia.png" class="sq" alt="Columbia">
+            <img src="/assets/logos/adv-berkeley.png" alt="UC Berkeley">
+            <img src="/assets/logos/adv-yale.png" class="sq" alt="Yale">
+            <img src="/assets/logos/adv-nus.png" class="sq" alt="NUS">
+            <img src="/assets/logos/adv-ethz.png" class="wide" alt="ETH Zurich">
+            <img src="/assets/logos/adv-stanford.png" class="sq" alt="Stanford">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="overview" id="thesis">
+    <div class="w">
+      <h2 class="statement scrub" id="scrub">AI needs a <em>financial system</em> of its own.</h2>
+      <div class="ov-grid rise" id="products">
+        <a class="ov" href="#aiusd">
+          <b>Settlement</b>
+          <p>Loans, escrow and payments need one dollar that settles on-chain.</p>
+          <span class="key"><small>AIUSD</small><i class="ph ph-arrow-down" aria-hidden="true"></i></span>
+        </a>
+        <a class="ov" href="#capital">
+          <b>Capital</b>
+          <p>Compute is built before it earns. Lenders need security they can see.</p>
+          <span class="key"><small>Loka Capital</small><i class="ph ph-arrow-down" aria-hidden="true"></i></span>
+        </a>
+        <a class="ov" href="#atara">
+          <b>Payments</b>
+          <p>Agents pay for work they cannot inspect first. Money should move when the work is done.</p>
+          <span class="key"><small>Atara</small><i class="ph ph-arrow-down" aria-hidden="true"></i></span>
+        </a>
+        <a class="ov" href="#world">
+          <b>Judgment</b>
+          <p>Calls on the AI economy should be scored against what actually happens.</p>
+          <span class="key"><small>Loka World</small><i class="ph ph-arrow-down" aria-hidden="true"></i></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="dollar" id="aiusd">
+    <div class="w dollar-grid">
+      <div class="rise">
+        <h2>AIUSD</h2>
+        <p class="what">The dollar everything on Loka settles in.</p>
+        <p class="desc">Loans, escrow and repayments need a unit that holds its value and settles on-chain. AIUSD is redeemable 1:1 for USDC and is the dollar lenders use on Loka Capital. It does not pay interest; returns come from lending.</p>
+        <dl class="dfacts">
+          <div><dt>Value</dt><dd>1 AIUSD = 1 USD</dd></div>
+          <div><dt>Get it with</dt><dd>USD wire or USDC</dd></div>
+          <div><dt>Interest</dt><dd>None</dd></div>
+        </dl>
+        <div class="links"><a class="btn btn-ink" href="/aiusd/">Learn about AIUSD<i class="ph ph-arrow-right" aria-hidden="true"></i></a><a class="btn btn-line" href="/app/index.html#/v7/fund-account" data-capital>Get AIUSD</a></div>
+      </div>
+      <div class="coin-wrap rise" id="coin-wrap" data-coin aria-hidden="true">
+        <canvas id="coin3d"></canvas>
+        <div class="stage"><div class="coin" id="coin"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cards">
+    <div class="w">
+      <article class="pcard" id="capital" style="--i:0">
+        <div class="pcard-text">
+          <h3>Capital</h3>
+          <p class="need">Compute is built before it earns. Lenders need security they can see, and a claim on the rent.</p>
+          <div class="prod-block">
+            <b>Loka Capital</b>
+            <p class="desc">Senior secured loans to GPU compute centers. Each loan has its own escrow, and rent from AI companies repays lenders first.</p>
+          <div class="links">
+            <a class="btn btn-ink" href="/" data-capital>Visit Loka Capital<i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+            <a class="btn btn-line" href="/app/index.html#/v7/facilities" data-capital>View loans</a>
+          </div>
+          </div>
+        </div>
+        <div class="bento">
+          <div class="tile w2">
+            <div class="th"><span class="tl">Principal outstanding</span><span class="asof">As of Oct 16, 2026 · sample</span></div>
+            <span class="tv num">$21.26M</span>
+            <div class="chart" id="cap-chart"><div class="tip" id="cap-tip"></div></div>
+          </div>
+          <div class="tile media m-capital h2">
+            <img src="/assets/img/sky-glass.jpg" alt="" width="2400" height="1057" loading="lazy">
+            <div class="cap"><div><span>Security</span><b>First lien on GPUs</b></div></div>
+          </div>
+          <div class="tile">
+            <span class="tl">Weighted interest rate</span>
+            <span class="tv num">11.4%</span>
+            <span class="ts">Fixed, paid monthly · sample</span>
+          </div>
+          <div class="tile">
+            <span class="tl">Debt service coverage</span>
+            <span class="tv num">1.28×</span>
+            <span class="ts">26 of 26 monthly payments on time · sample</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="pcard" id="atara" style="--i:1">
+        <div class="pcard-text">
+          <h3>Payments</h3>
+          <p class="need">Agents pay for data and work they cannot inspect first. Money should move only when the work is done.</p>
+          <div class="prod-block">
+            <b>Atara</b>
+            <p class="desc">Payments that release when the agreed condition is met. If it is not, the funds return to the payer.</p>
+          <div class="links">
+            <a class="btn btn-ink" href="https://www.loka.cash/" target="_blank" rel="noopener">Visit Atara<i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>
+          </div>
+          </div>
+        </div>
+        <div class="bento">
+          <div class="tile media m-atara w2 h2">
+            <div class="win">
+              <div class="win-bar"><i></i><i></i><i></i><span>loka.cash</span></div>
+              <img src="/assets/img/labs-atara.jpg" alt="Atara website" width="2880" height="1800" loading="lazy">
+            </div>
+          </div>
+          <div class="tile">
+            <span class="tl">How a payment moves</span>
+            <ol>
+              <li><span>01</span>Funds wait in a contract</li>
+              <li><span>02</span>The condition is confirmed</li>
+              <li><span>03</span>Released to the payee, or returned</li>
+            </ol>
+          </div>
+          <div class="tile">
+            <span class="tl">Built for</span>
+            <span class="tv">Apps and agents</span>
+            <span class="ts">Conditional settlement through an API</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="pcard" id="world" style="--i:2">
+        <div class="pcard-text">
+          <h3>Judgment</h3>
+          <p class="need">Large bets are being made on where AI goes next. Calls should be scored against what actually happens.</p>
+          <div class="prod-block">
+            <b>Loka World</b>
+            <p class="desc">An economic simulation where organizations make calls on real questions and are scored on the outcome.</p>
+          <div class="links">
+            <a class="btn btn-ink" href="https://lokaworld.vercel.app/prototypes/lokaworld-v5-lite/map.html" target="_blank" rel="noopener">Visit Loka World<i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>
+          </div>
+          </div>
+        </div>
+        <div class="bento">
+          <div class="tile media m-world w2 h2" aria-hidden="true">
+            <span class="tag">Illustration</span>
+            <svg id="world-svg" viewBox="0 0 640 440" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+          <div class="tile">
+            <span class="tl">Questions</span>
+            <ol>
+              <li><span>01</span>AI agent activity</li>
+              <li><span>02</span>Bloom Energy share price</li>
+              <li><span>03</span>USDC in circulation</li>
+            </ol>
+          </div>
+          <div class="tile">
+            <span class="tl">Scoring</span>
+            <span class="tv">Real outcomes</span>
+            <span class="ts">Each call is scored when the question resolves</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="aud" id="audiences">
+    <div class="w">
+      <p class="eyebrow">Get started</p>
+      <div class="aud-grid">
+        <a href="/app/" data-capital>
+          <b>For lenders</b>
+          <p>Verified institutions lend to compute centers through Loka Capital.</p>
+          <em>Open Loka Capital<i class="ph ph-arrow-right" aria-hidden="true"></i></em>
+        </a>
+        <a href="/app/index.html#/v7/borrow" data-capital>
+          <b>For compute centers</b>
+          <p>Financing for operating and under-construction sites, against GPUs and contracted rent.</p>
+          <em>Borrow<i class="ph ph-arrow-right" aria-hidden="true"></i></em>
+        </a>
+        <a href="https://www.loka.cash/" target="_blank" rel="noopener">
+          <b>For builders</b>
+          <p>Add conditional payments to an app or an agent with Atara.</p>
+          <em>Visit Atara<i class="ph ph-arrow-up-right" aria-hidden="true"></i></em>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="company" id="company">
+    <div class="w">
+      <div class="company-grid">
+        <div class="rise">
+          <h2>About Loka Labs</h2>
+        </div>
+        <div class="rise">
+          <p>Loka Labs designs, builds and operates each product. Every product has its own site, terms and users.</p>
+          <p>Loka Capital is open to verified institutions. Atara and Loka World have their own sites; the AIUSD page is in preparation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="w">
+    <div class="foot">
+      <div><a class="brand" href="#top"><i aria-hidden="true"></i>Loka Labs</a></div>
+      <div>
+        <h4>Products</h4>
+        <ul><li><a href="/" data-capital>Loka Capital</a></li><li><a href="https://www.loka.cash/" target="_blank" rel="noopener">Atara</a></li><li><a href="https://lokaworld.vercel.app/prototypes/lokaworld-v5-lite/map.html" target="_blank" rel="noopener">Loka World</a></li></ul>
+      </div>
+      <div>
+        <h4>Dollar</h4>
+        <ul><li><a href="#aiusd">AIUSD</a></li></ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul><li><a href="#company">About</a></li><li><a href="#audiences">Get started</a></li></ul>
+      </div>
+    </div>
+    <div class="fine">
+      <span>© 2026 Loka Labs. Design prototype; figures are sample data.</span>
+      <span>Legal entities and regulatory status for each product will be listed here before launch. Loka Capital loans are offered to verified institutions only.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const el = (tag, attrs, parent) => {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  };
+  // Deterministic noise so the drawing is the same on every load.
+  const rnd = (n) => { const s = Math.sin(n * 12.9898) * 43758.5453; return s - Math.floor(s); };
+
+  /* ---- Hero field: a perspective grid of points, rising and falling; peaks catch a soft green light ---- */
+  const hero = document.getElementById('hero');
+  const cv = document.getElementById('field');
+  const ctx = cv.getContext('2d');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W = 0, H = 0, DPR = 1, mx = 0.62, my = 0.5, tmx = 0.62, tmy = 0.5, t0 = performance.now(), live = true;
+  const COLS = 120, ROWS = 64;
+  const size = () => {
+    DPR = Math.min(devicePixelRatio || 1, 2);
+    W = hero.clientWidth; H = hero.clientHeight;
+    cv.width = W * DPR; cv.height = H * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  };
+  const height = (u, v, t) =>
+    Math.sin(u * 3.1 + t * 0.35) * 0.55 + Math.sin(v * 4.3 - t * 0.27 + u * 1.7) * 0.45 +
+    Math.sin((u + v) * 7.2 + t * 0.5) * 0.18;
+  const frame = (now) => {
+    const t = still ? 8 : (now - t0) / 1000;
+    mx += (tmx - mx) * 0.04; my += (tmy - my) * 0.04;
+    ctx.clearRect(0, 0, W, H);
+    const horizon = H * 0.30, depth = 3.2, spread = W * 2.2, cam = (mx - 0.5) * W * 0.12;
+    for (let r = ROWS - 1; r >= 0; r--) {
+      const v = r / (ROWS - 1);                    // 0 near, 1 far
+      const z = 1 + v * depth;
+      for (let c = 0; c < COLS; c++) {
+        const u = c / (COLS - 1) - 0.5;
+        const h = height(u * 2.2, v * 2.6, t);
+        // ripple around the pointer, projected to the ground
+        const dx = u - (mx - 0.5), dv = v - (1 - my) * 0.9;
+        const d = Math.sqrt(dx * dx * 2.4 + dv * dv);
+        const rip = Math.sin(d * 26 - t * 3) * Math.exp(-d * 5.5) * 0.6;
+        const y3 = (h + rip) * 58;
+        const x = W * 0.5 + (u * spread + cam) / z;
+        const y = horizon + (H * 0.78) / z - y3 / z;
+        if (x < -4 || x > W + 4 || y < -4 || y > H + 4) continue;
+        const near = 1 - v;
+        const lift = Math.max(0, h + rip - 0.35);
+        const a = (0.22 + near * 0.62) * (0.62 + lift * 0.9);
+        const g = Math.min(1, lift * 1.4);
+        ctx.fillStyle = `rgba(${Math.round(150 + 9 * g)},${Math.round(160 + 52 * g)},${Math.round(156 + 29 * g)},${Math.min(a, 0.95).toFixed(3)})`;
+        const s = (0.9 + near * 1.8) * (1 + g * 0.5);
+        ctx.fillRect(x - s / 2, y - s / 2, s, s);
+      }
+    }
+    if (!still && live) requestAnimationFrame(frame);
+  };
+  size();
+  addEventListener('resize', size);
+  hero.addEventListener('pointermove', (e) => {
+    const b = hero.getBoundingClientRect();
+    tmx = (e.clientX - b.left) / b.width; tmy = (e.clientY - b.top) / b.height;
+  });
+  // Pause drawing while the hero is off screen.
+  new IntersectionObserver(([e]) => {
+    const was = live; live = e.isIntersecting;
+    if (live && !was && !still) requestAnimationFrame(frame);
+  }).observe(hero);
+  requestAnimationFrame(frame);
+  // Headline words rise in one after another.
+  const h1 = document.getElementById('h1');
+  const words = [];
+  h1.childNodes.forEach((n) => {
+    if (n.nodeType === 3) n.textContent.split(/(\s+)/).forEach((w) => words.push(w.trim() ? { w } : { s: w }));
+    else words.push({ el: n });
+  });
+  h1.textContent = '';
+  let k = 0;
+  words.forEach((x) => {
+    if (x.s !== undefined) { h1.append(x.s); return; }
+    const outer = document.createElement('span'); outer.className = 'wd';
+    const inner = document.createElement('span');
+    if (x.el) inner.append(x.el); else inner.textContent = x.w;
+    inner.style.transitionDelay = `${0.08 + k++ * 0.07}s`;
+    outer.append(inner); h1.append(outer);
+  });
+  // Logos: duplicate the row so the loop is seamless.
+  const track = document.getElementById('logo-track');
+  track.innerHTML += track.innerHTML;
+  track.querySelectorAll('img').forEach((im, i) => { if (i >= 9) im.alt = ''; });
+  requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.add('ready')));
+  /* ---- AIUSD coin: stacked layers for the edge, an SVG face on each side ---- */
+  const coin = document.getElementById('coin');
+  const THICK = 18, half = THICK / 2;
+  coin.style.setProperty('--half', `${half}px`);
+  for (let i = 0; i < THICK; i++) {
+    const d = document.createElement('i');
+    d.className = 'layer';
+    d.style.transform = `translateZ(${i - half}px)`;
+    d.style.background = i % 3 ? '#2a5547' : '#24493d';
+    coin.appendChild(d);
+  }
+  const face = (cls) => {
+    const f = document.createElement('div');
+    f.className = `face ${cls}`;
+    f.innerHTML = `<svg viewBox="0 0 200 200"><defs>
+      <radialGradient id="cg-${cls}" cx="38%" cy="32%" r="80%"><stop offset="0" stop-color="#d4ecdf"/><stop offset=".45" stop-color="#93c8ad"/><stop offset="1" stop-color="#3f7a62"/></radialGradient>
+      <path id="ring-${cls}" d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0"/></defs>
+      <circle cx="100" cy="100" r="99" fill="url(#cg-${cls})"/>
+      <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(20,40,32,.35)" stroke-width="1.2"/>
+      <circle cx="100" cy="100" r="60" fill="none" stroke="rgba(20,40,32,.28)" stroke-width="1"/>
+      <text font-family="Geist Mono, monospace" font-size="10.5" letter-spacing="3.2" fill="rgba(20,40,32,.62)"><textPath href="#ring-${cls}">AIUSD · REDEEMABLE 1:1 · AIUSD · REDEEMABLE 1:1 ·</textPath></text>
+      <text x="100" y="121" text-anchor="middle" font-family="Inter Tight, sans-serif" font-weight="600" font-size="62" fill="#16302a">A</text>
+    </svg>`;
+    coin.appendChild(f);
+  };
+  face('front'); face('back');
+
+  /* ---- Loka World: organizations around three questions, with score changes ---- */
+  const w = document.getElementById('world-svg');
+  const Q = [
+    { x: 320, y: 120, k: 'QUESTION 1', t: 'AI agent activity, next week' },
+    { x: 190, y: 268, k: 'QUESTION 2', t: 'Bloom Energy share price' },
+    { x: 452, y: 288, k: 'QUESTION 3', t: 'USDC in circulation' },
+  ];
+  const O = [
+    { x: 92, y: 96, n: 'Macro fund', s: '+12', q: [0, 1] },
+    { x: 548, y: 92, n: 'AI lab', s: '+8', q: [0, 2] },
+    { x: 66, y: 352, n: 'Venture fund', s: '−4', q: [1] },
+    { x: 300, y: 392, n: 'Research desk', s: '+5', q: [1, 2] },
+    { x: 584, y: 388, n: 'Market maker', s: '−2', q: [2] },
+    { x: 196, y: 180, n: 'Index fund', s: '+3', q: [0, 1] },
+    { x: 478, y: 196, n: 'Data center', s: '+6', q: [0, 2] },
+  ];
+  const edges = el('g', {}, w);
+  O.forEach((o, i) => o.q.forEach((qi) => {
+    const q = Q[qi];
+    el('path', { d: `M${o.x},${o.y} Q${(o.x + q.x) / 2},${(o.y + q.y) / 2 - 30} ${q.x},${q.y}`, class: 'edge', style: `animation-delay:${(-i * 0.7).toFixed(1)}s` }, edges);
+  }));
+  Q.forEach((q) => {
+    const g2 = el('g', { class: 'q' }, w);
+    const wd = Math.max(150, q.t.length * 7 + 28);
+    el('rect', { x: q.x - wd / 2, y: q.y - 24, width: wd, height: 48, rx: 10 }, g2);
+    el('text', { x: q.x - wd / 2 + 14, y: q.y - 6, class: 'k' }, g2).textContent = q.k;
+    el('text', { x: q.x - wd / 2 + 14, y: q.y + 12 }, g2).textContent = q.t;
+  });
+  O.forEach((o, i) => {
+    const g3 = el('g', { class: 'org' }, w);
+    el('circle', { cx: o.x, cy: o.y, r: 9, class: 'pulse', style: `animation-delay:${(i * 0.5).toFixed(1)}s` }, g3);
+    el('circle', { cx: o.x, cy: o.y, r: 7, class: 'o' }, g3);
+    const right = o.x < 320;
+    el('text', { x: o.x + (right ? 14 : -14), y: o.y - 2, 'text-anchor': right ? 'start' : 'end' }, g3).textContent = o.n;
+    el('text', { x: o.x + (right ? 14 : -14), y: o.y + 13, 'text-anchor': right ? 'start' : 'end', class: `sc ${o.s.startsWith('+') ? 'up' : 'dn'}` }, g3).textContent = `${o.s} pts`;
+  });
+
+  /* ---- Loka Capital: principal outstanding by month (sample data, the prototype's figure at the end) ---- */
+  const DATA = [
+    ['Nov 2025', 3.2], ['Dec 2025', 4.1], ['Jan 2026', 5.0], ['Feb 2026', 6.4], ['Mar 2026', 8.0], ['Apr 2026', 9.1],
+    ['May 2026', 11.6], ['Jun 2026', 13.0], ['Jul 2026', 14.8], ['Aug 2026', 17.2], ['Sep 2026', 19.5], ['Oct 2026', 21.26],
+  ];
+  const box = document.getElementById('cap-chart');
+  const tip = document.getElementById('cap-tip');
+  const sr = document.createElement('table');
+  sr.className = 'sr';
+  sr.innerHTML = '<caption>Principal outstanding by month, sample data</caption><tr><th>Month</th><th>USD millions</th></tr>' +
+    DATA.map(([m, v]) => `<tr><td>${m}</td><td>${v}</td></tr>`).join('');
+  box.after(sr);
+  const draw = () => {
+    box.querySelector('svg')?.remove();
+    const w = box.clientWidth, h = box.clientHeight;
+    if (!w || !h) return;
+    const L = 34, B = 20, T = 6, max = 25;
+    const svg = el('svg', { viewBox: `0 0 ${w} ${h}`, 'aria-hidden': 'true' });
+    box.prepend(svg);
+    const y = (v) => T + (h - B - T) * (1 - v / max);
+    const grid = el('g', { class: 'grid' }, svg), ax = el('g', { class: 'ax' }, svg);
+    [0, 10, 20].forEach((v) => {
+      el('line', { x1: L, x2: w, y1: y(v), y2: y(v) }, grid);
+      el('text', { x: 0, y: y(v) + 4 }, ax).textContent = v ? `$${v}M` : '0';
+    });
+    const step = (w - L) / DATA.length, bw = Math.min(24, step - 2);
+    DATA.forEach(([m, v], i) => {
+      const x = L + i * step + (step - bw) / 2, top = y(v), base = y(0), r = Math.min(4, bw / 2);
+      el('path', { class: 'bar', d: `M${x},${base} V${top + r} Q${x},${top} ${x + r},${top} H${x + bw - r} Q${x + bw},${top} ${x + bw},${top + r} V${base} Z` }, svg);
+      if (i === 0 || i === DATA.length - 1 || i === 6) {
+        el('text', { x: x + bw / 2, y: h - 4, 'text-anchor': 'middle' }, ax).textContent = m.replace(' 20', ' ’');
+      }
+      const hit = el('rect', { class: 'hit', x: L + i * step, y: 0, width: step, height: h - B, tabindex: 0, role: 'img', 'aria-label': `${m}: $${v.toFixed(2)}M` }, svg);
+      const show = () => {
+        svg.querySelectorAll('.bar').forEach((b, k) => b.classList.toggle('dim', k !== i));
+        tip.textContent = `${m} · $${v.toFixed(2)}M`;
+        tip.style.left = `${Math.min(Math.max(x + bw / 2, 56), w - 56)}px`; tip.style.top = `${top}px`;
+        tip.classList.add('on');
+      };
+      const hide = () => { svg.querySelectorAll('.bar').forEach((b) => b.classList.remove('dim')); tip.classList.remove('on'); };
+      hit.addEventListener('pointerenter', show); hit.addEventListener('focus', show);
+      hit.addEventListener('pointerleave', hide); hit.addEventListener('blur', hide);
+    });
+  };
+  draw();
+  new ResizeObserver(draw).observe(box);
+
+  /* ---- Thesis: words light up as the sentence scrolls through the viewport ---- */
+  const scrub = document.getElementById('scrub');
+  const sw = [];
+  const wrapWords = (node) => {
+    [...node.childNodes].forEach((n) => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach((t) => {
+          if (!t) return;
+          if (!t.trim()) { frag.append(t); return; }
+          const w = document.createElement('span'); w.className = 'wd'; w.textContent = t; sw.push(w); frag.append(w);
+        });
+        n.replaceWith(frag);
+      } else wrapWords(n);
+    });
+  };
+  wrapWords(scrub);
+  const lightUp = () => {
+    const r = scrub.getBoundingClientRect(), vh = innerHeight;
+    const p = still ? 1 : Math.min(1, Math.max(0, (vh * 0.88 - r.top) / (vh * 0.5)));
+    const k = Math.round(p * sw.length);
+    sw.forEach((w, i) => w.classList.toggle('on', i < k));
+  };
+  addEventListener('scroll', lightUp, { passive: true });
+  addEventListener('resize', lightUp);
+  lightUp();
+
+  /* ---- nav hairline and entrances ---- */
+  const nav = document.getElementById('nav');
+  const onScroll = () => {
+    nav.classList.toggle('scrolled', scrollY > 8);
+    nav.classList.toggle('on-dark', scrollY < hero.offsetHeight - 68);
+  };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in');
+    io.unobserve(e.target);
+  }), { rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.rise, .pcard').forEach((n) => io.observe(n));
+})();
+  // Products menu: opens on click, or on hover with a pointer; Esc or a click outside closes it
+  (() => {
+    const pd = document.getElementById('pd'); if (!pd) return;
+    const b = pd.querySelector('button'), bar = document.getElementById('nav'); let t;
+    const set = (o) => { pd.classList.toggle('open', o); bar.classList.toggle('mega', o); b.setAttribute('aria-expanded', o); };
+    b.addEventListener('click', (e) => { e.stopPropagation(); set(!pd.classList.contains('open')); });
+    const hov = matchMedia('(hover: hover)');
+    pd.addEventListener('mouseenter', () => { if (hov.matches) { clearTimeout(t); set(true); } });
+    pd.addEventListener('mouseleave', () => { if (hov.matches) t = setTimeout(() => set(false), 200); });
+    document.addEventListener('click', (e) => { if (!pd.contains(e.target)) set(false); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && pd.classList.contains('open')) { set(false); b.focus(); } });
+  })();
+</script>
+<script type="module" src="/shared/coin3d.js"></script>
+<script src="/config.js"></script>
+<script>
+  // Links marked data-capital go to the Loka Capital site, whose address is set in /config.js
+  (() => {
+    const base = (window.LOKA_CAPITAL_URL || '').replace(/\/$/, '');
+    if (base) document.querySelectorAll('a[data-capital]').forEach((a) => { a.href = base + a.getAttribute('href'); });
+  })();
+</script>
+</body>
+</html>
