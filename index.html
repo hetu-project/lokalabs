@@ -7,7 +7,7 @@
 <meta name="description" content="Loka Labs builds Loka Capital, AIUSD, Atara and Loka World.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Kaushan+Script&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 <!-- Loka Labs: company page and entry point to each product. -->
 <style>
@@ -49,6 +49,11 @@ img,svg{display:block;max-width:100%}
 .nav ul a{text-decoration:none;color:var(--ink-2);transition:color .2s}
 .nav ul a:hover{color:var(--ink)}
 .nav .sp{flex:1}
+/* Links sit in the centre of the bar: brand left, links centre, button right */
+.nav .w{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+.nav .w>.brand{justify-self:start}
+.nav .sp{display:none}
+.nav .w>:last-child{grid-column:3;justify-self:end}
 .btn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 19px;border-radius:999px;font-size:14px;font-weight:500;text-decoration:none;white-space:nowrap;transition:background-color .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease)}
 .btn-ink{background:var(--ink);color:var(--paper)}
 .btn-ink:hover{background:var(--accent-deep)}
@@ -225,10 +230,10 @@ img,svg{display:block;max-width:100%}
 .coin-wrap.gl .stage{display:none}
 
 /* ---------- audiences ---------- */
-.aud{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--ink)}
-.aud-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:28px;border-top:1px solid var(--line)}
-.aud a{display:flex;flex-direction:column;gap:10px;padding:26px 28px 30px 0;text-decoration:none;min-height:190px}
-.aud a+a{padding-left:28px;border-left:1px solid var(--line)}
+.aud{padding:clamp(56px,8vw,104px) 0}
+.aud-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:24px}
+.aud a{display:flex;flex-direction:column;gap:10px;padding:clamp(24px,2.2vw,32px);border-radius:20px;background:var(--paper);box-shadow:0 1px 2px rgba(14,15,15,.04);text-decoration:none;min-height:210px;transition:background-color .3s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease)}
+.aud a:hover{background:#fff;transform:translateY(-2px);box-shadow:0 18px 40px -24px rgba(14,15,15,.22)}
 .aud a b{font-weight:500;font-size:clamp(22px,2vw,28px);letter-spacing:-.02em;transition:color .2s}
 .aud a p{margin:0;color:var(--ink-2);max-width:34ch}
 .aud a em{margin-top:auto;font-style:normal;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px}
@@ -236,11 +241,44 @@ img,svg{display:block;max-width:100%}
 .aud a:hover em i{transform:translateX(3px)}
 .aud a:hover b{color:var(--accent)}
 
-/* ---------- company ---------- */
-.company{padding:clamp(56px,8vw,112px) 0;border-top:1px solid var(--line)}
-.company-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:clamp(36px,6vw,96px)}
-.company h2{margin:0;font-weight:500;font-size:clamp(30px,3.4vw,46px);line-height:1.08;letter-spacing:-.03em}
-.company p{margin:0 0 18px;color:var(--ink-2);font-size:17px;max-width:54ch}
+/* ---------- about: the company in one paragraph, then the researchers behind Loka World (copied from lokaworld.vercel.app) ---------- */
+.rs{padding:clamp(56px,8vw,112px) 0 clamp(72px,10vw,140px)}
+.rs-wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter)}
+.rs-head{text-align:center}
+.rs-head h2{margin:0;font-weight:500;font-size:clamp(34px,4.4vw,64px);line-height:1.02;letter-spacing:-.04em;color:var(--ink)}
+.rs-head p{margin:0 auto;max-width:66ch;font-size:17px;line-height:1.6;color:var(--ink-2);text-wrap:balance}
+.rs-head .rs-text{margin-top:clamp(18px,2vw,26px)}
+.rs-logos{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:18px 38px;max-width:860px;margin:clamp(30px,3.5vw,44px) auto clamp(40px,5vw,64px)}
+.rs-logos img{height:27px;width:auto;max-width:100%;display:block;object-fit:contain}
+.rs-logos .lg-mit{height:23px}
+.rs-logos .lg-stanford{height:38px}
+.rs-board{padding:clamp(16px,1.8vw,24px);border-radius:14px;background:linear-gradient(158deg,#e9edf4 0%,#f3f2ee 60%,#edf0f6 100%)}
+.rs-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,minmax(clamp(260px,32vh,340px),1fr));gap:clamp(14px,1.4vw,21px);grid-template-areas:"stat award feat feat" "jialin jialin frey yao"}
+.rs-tile{display:flex;flex-direction:column;padding:clamp(21px,2vw,30px);border-radius:10px;background:rgba(255,255,255,.82);border:1px solid rgba(255,255,255,.9);box-shadow:0 1px 3px rgba(16,17,22,.04);overflow:hidden}
+.rs-stat{justify-content:space-between;background:rgba(255,255,255,.42);border-color:rgba(255,255,255,.6)}
+.rs-num{display:block;font-weight:300;font-size:clamp(54px,5.5vw,80px);line-height:.9;letter-spacing:-.02em;color:#101116}
+.rs-numlab{display:block;margin-top:10px;font-size:15px;color:#6b6f7a}
+.rs-areas{font-size:13px;line-height:1.5;color:#8a8e98}
+.rs-award{align-items:center;justify-content:center;gap:16px}
+.rs-award img{height:clamp(64px,8vw,104px);width:auto;display:block;object-fit:contain}
+.rs-award span{font-family:"Kaushan Script",cursive;font-size:clamp(27px,2.6vw,40px);line-height:1.1;color:#2547f4;text-align:center}
+.rs-quote{flex-direction:row;align-items:center;gap:clamp(16px,1.8vw,26px)}
+.rs-ava{width:74px;height:74px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#101116;color:#fff;font-family:var(--mono);font-size:18px;object-fit:cover}
+.rs-quote p{margin:0 0 14px;font-size:15px;line-height:1.5;color:#2b2e36}
+.rs-quote b{display:block;font-weight:500;font-size:19px;line-height:1.1;color:#101116}
+.rs-quote small{display:block;margin-top:6px;font-size:13px;line-height:1.4;color:#6b6f7a}
+.rs-feat{background:linear-gradient(135deg,#3a5cff 0%,#2547f4 58%,#1e3fd8 100%);border-color:transparent}
+.rs-feat p{color:rgba(255,255,255,.92)}
+.rs-feat b{color:#fff}
+.rs-feat small{color:rgba(255,255,255,.7)}
+.rs-feat .rs-ava{background:rgba(255,255,255,.16)}
+.rs-person{justify-content:center;gap:18px}
+.rs-person .rs-ava{width:52px;height:52px;background:#ebedf2;color:#101116;font-size:13px}
+.rs-person h3{margin:0 0 6px;font-weight:500;font-size:20px;line-height:1.1;color:#101116}
+.rs-person small{display:block;margin-bottom:11px;font-size:13px;color:#6b6f7a}
+.rs-person p{margin:0;font-size:14.5px;line-height:1.5;color:#4a4e57}
+@media (max-width:900px){.rs-grid{grid-template-columns:1fr 1fr;grid-template-rows:none;grid-auto-rows:minmax(220px,auto);grid-template-areas:"feat feat" "stat award" "jialin jialin" "frey yao"}}
+@media (max-width:560px){.rs-grid{grid-template-columns:1fr;grid-template-areas:"feat" "stat" "award" "jialin" "frey" "yao"}.rs-quote{flex-direction:column;align-items:flex-start}.rs-logos{gap:16px 26px}.rs-logos img{height:22px}.rs-logos .lg-mit{height:19px}.rs-logos .lg-stanford{height:32px}}
 .logos{margin-top:clamp(40px,5vw,64px);padding-top:28px;border-top:1px solid var(--line)}
 .logo-row{display:flex;flex-wrap:wrap;align-items:center;gap:18px 40px;margin-top:20px}
 .logo-row img{height:30px;width:auto;filter:grayscale(1) contrast(.9);opacity:.62;transition:opacity .25s}
@@ -276,12 +314,10 @@ footer a:hover{color:var(--on-night)}
   .ov{min-height:220px}
   .pcard{position:relative;top:auto;grid-template-columns:1fr}
   .bento{height:auto;grid-template-rows:none;grid-auto-rows:minmax(220px,auto)}
-  .company-grid{grid-template-columns:1fr}
   .dollar-grid{grid-template-columns:1fr}
   .coin-wrap .stage{width:min(60%,280px)}
   .aud-grid{grid-template-columns:1fr}
-  .aud a,.aud a+a{padding:22px 0;border-left:0;min-height:0}
-  .aud a+a{border-top:1px solid var(--line)}
+  .aud a{min-height:0}
   .foot{grid-template-columns:1fr 1fr}
   .foot>div:first-child{grid-column:1/-1}
 }
@@ -333,6 +369,41 @@ footer a:hover{color:var(--on-night)}
 .nav.mega .pd>button,.nav.mega .pd>button:hover,.nav.mega ul a:hover{color:var(--ink)}
 .nav .pmenu a,.nav .pmenu a:hover{color:var(--ink)}
 @media (max-width:960px){.pmenu{display:none}}
+/* Loka World is not open yet: its entries show "Coming soon" and do not link anywhere */
+a.is-soon{cursor:default}
+.pm-col a.is-soon:hover{background:none}
+.soon{display:inline-block;margin-left:8px;padding:2px 8px;border:1px solid var(--line-2);border-radius:999px;font-size:11.5px;font-weight:400;line-height:1.4;color:var(--ink-3);vertical-align:1px;white-space:nowrap}
+.btn.is-soon,.btn.is-soon:hover{opacity:.55;transform:none;box-shadow:none}
+/* ---------- contact: "Contact us" opens this dialog; Send composes an email to the address in /config.js ---------- */
+html:has(dialog.ct[open]){overflow:hidden}
+dialog.ct{width:min(560px,calc(100vw - 32px));max-height:calc(100dvh - 32px);padding:0;border:0;border-radius:24px;background:var(--paper);color:var(--ink);box-shadow:0 40px 100px -30px rgba(7,11,10,.5);overflow:auto}
+dialog.ct[open]{animation:ct-in .35s var(--ease)}
+dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+@keyframes ct-in{from{opacity:0;transform:translateY(14px) scale(.985)}}
+.ct-in{padding:clamp(24px,3vw,36px)}
+.ct-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.ct h2{margin:0;font-weight:500;font-size:clamp(26px,2.4vw,32px);letter-spacing:-.03em;line-height:1.1}
+.ct-lede{margin:10px 0 0;color:var(--ink-2);font-size:15.5px;max-width:42ch}
+.ct-x{flex:none;display:grid;place-items:center;width:38px;height:38px;margin:-4px -6px 0 0;border:0;border-radius:50%;background:none;color:var(--ink-2);font-size:20px;cursor:pointer;transition:background-color .2s,color .2s}
+.ct-x:hover{background:var(--mist);color:var(--ink)}
+.ct-x:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.ct form{display:grid;grid-template-columns:1fr 1fr;gap:16px 14px;margin-top:26px}
+.ct .f{display:flex;flex-direction:column;gap:7px;min-width:0}
+.ct .f.full{grid-column:1/-1}
+.ct label{font-size:13.5px;color:var(--ink-2)}
+.ct input,.ct select,.ct textarea{width:100%;box-sizing:border-box;padding:12px 14px;border:1px solid var(--line-2);border-radius:12px;background:#fff;color:var(--ink);font:inherit;font-size:15px;transition:border-color .2s,box-shadow .2s}
+.ct select{appearance:none;padding-right:38px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' fill='none' stroke='%234a4f4d' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center}
+.ct textarea{min-height:112px;resize:vertical;line-height:1.5}
+.ct input:focus,.ct select:focus,.ct textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(61,111,91,.16)}
+.ct input:user-invalid{border-color:#b4533a}
+.ct-foot{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:6px}
+.ct-foot small{font-size:13px;color:var(--ink-3)}
+.ct-foot .btn{border:0;cursor:pointer;font-family:inherit}
+.ct-done{margin-top:26px}
+.ct-done p{margin:0 0 22px;color:var(--ink-2);font-size:15.5px;max-width:44ch}
+.ct-done b{display:block;margin-bottom:8px;font-weight:500;font-size:19px;color:var(--ink)}
+@media (max-width:560px){.ct form{grid-template-columns:1fr}.ct-foot{flex-direction:column-reverse;align-items:stretch}.ct-foot .btn{justify-content:center}}
+@media (prefers-reduced-motion:reduce){dialog.ct[open]{animation:none}}
 </style>
 </head>
 <body>
@@ -346,11 +417,11 @@ footer a:hover{color:var(--on-night)}
           <div class="pm-in">
             <div class="pm-col">
               <a href="/" data-capital target="_blank" rel="noopener"><span class="ic"><i class="ph ph-buildings" aria-hidden="true"></i></span><span><b>Loka Capital<i class="ph ph-arrow-up-right" aria-hidden="true"></i></b><small>Secured loans to compute centers</small></span></a>
-              <a href="/aiusd/"><span class="ic"><i class="ph ph-coin" aria-hidden="true"></i></span><span><b>AIUSD</b><small>The dollar used across Loka</small></span></a>
+              <a href="/aiusd/"><span class="ic"><i class="ph ph-coin" aria-hidden="true"></i></span><span><b>AIUSD</b><small>The dollar Loka Capital settles in</small></span></a>
             </div>
             <div class="pm-col">
               <a href="https://www.loka.cash/" target="_blank" rel="noopener"><span class="ic"><i class="ph ph-handshake" aria-hidden="true"></i></span><span><b>Atara<i class="ph ph-arrow-up-right" aria-hidden="true"></i></b><small>Conditional payments</small></span></a>
-              <a href="https://lokaworld.vercel.app/prototypes/lokaworld-v5-lite/map.html" target="_blank" rel="noopener"><span class="ic"><i class="ph ph-globe-hemisphere-west" aria-hidden="true"></i></span><span><b>Loka World<i class="ph ph-arrow-up-right" aria-hidden="true"></i></b><small>Economic simulation</small></span></a>
+              <a class="is-soon" aria-disabled="true"><span class="ic"><i class="ph ph-globe-hemisphere-west" aria-hidden="true"></i></span><span><b>Loka World<span class="soon">Coming soon</span></b><small>Economic simulation</small></span></a>
             </div>
             <a class="pm-feature" href="/" data-capital target="_blank" rel="noopener">
               <span class="k">Loka Capital</span>
@@ -364,7 +435,7 @@ footer a:hover{color:var(--on-night)}
       <li><a href="#company">Company</a></li>
     </ul>
     <span class="sp"></span>
-    <a class="btn btn-line" href="/app/" data-capital><span class="l">Open Loka Capital</span><span class="s">Loka Capital</span><i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+    <a class="btn btn-line" href="#company" data-contact>Contact us<i class="ph ph-arrow-right" aria-hidden="true"></i></a>
   </div>
 </header>
 
@@ -377,8 +448,8 @@ footer a:hover{color:var(--on-night)}
           <h1 id="h1">The financial layer of the <em>AI economy</em>.</h1>
           <p class="lede fade" style="transition-delay:.55s">Compute is built on credit. Agents pay for work. Decisions about AI are made under uncertainty. Each needs financial rules made for how AI works, and Loka Labs builds them.</p>
           <div class="cta fade" style="transition-delay:.7s">
-            <a class="btn btn-light" href="#thesis">Our view<i class="ph ph-arrow-down" aria-hidden="true"></i></a>
-            <a class="btn btn-ghost" href="/app/" data-capital>Open Loka Capital</a>
+            <a class="btn btn-light" href="#thesis">Explore<i class="ph ph-arrow-down" aria-hidden="true"></i></a>
+            <a class="btn btn-ghost" href="#company" data-contact>Contact us</a>
           </div>
         </div>
       </div>
@@ -403,11 +474,11 @@ footer a:hover{color:var(--on-night)}
   </section>
   <section class="overview" id="thesis">
     <div class="w">
-      <h2 class="statement scrub" id="scrub">AI needs a <em>financial system</em> of its own.</h2>
+      <h2 class="statement scrub" id="scrub">Money that works the way <em>AI does</em>.</h2>
       <div class="ov-grid rise" id="products">
         <a class="ov" href="#aiusd">
           <b>Settlement</b>
-          <p>Loans, escrow and payments need one dollar that settles on-chain.</p>
+          <p>Loans, escrow and repayments need one dollar that settles on-chain.</p>
           <span class="key"><small>AIUSD</small><i class="ph ph-arrow-down" aria-hidden="true"></i></span>
         </a>
         <a class="ov" href="#capital">
@@ -421,7 +492,7 @@ footer a:hover{color:var(--on-night)}
           <span class="key"><small>Atara</small><i class="ph ph-arrow-down" aria-hidden="true"></i></span>
         </a>
         <a class="ov" href="#world">
-          <b>Judgment</b>
+          <b>Simulation</b>
           <p>Calls on the AI economy should be scored against what actually happens.</p>
           <span class="key"><small>Loka World</small><i class="ph ph-arrow-down" aria-hidden="true"></i></span>
         </a>
@@ -433,10 +504,10 @@ footer a:hover{color:var(--on-night)}
     <div class="w dollar-grid">
       <div class="rise">
         <h2>AIUSD</h2>
-        <p class="what">The dollar everything on Loka settles in.</p>
+        <p class="what">The dollar Loka Capital settles in.</p>
         <p class="desc">Loans, escrow and repayments need a unit that holds its value and settles on-chain. AIUSD is redeemable 1:1 for USDC and is the dollar lenders use on Loka Capital. It does not pay interest; returns come from lending.</p>
         <dl class="dfacts">
-          <div><dt>Value</dt><dd>1 AIUSD = 1 USD</dd></div>
+          <div><dt>Redeems for</dt><dd>1 USDC</dd></div>
           <div><dt>Get it with</dt><dd>USD wire or USDC</dd></div>
           <div><dt>Interest</dt><dd>None</dd></div>
         </dl>
@@ -524,13 +595,13 @@ footer a:hover{color:var(--on-night)}
 
       <article class="pcard" id="world" style="--i:2">
         <div class="pcard-text">
-          <h3>Judgment</h3>
+          <h3>Simulation</h3>
           <p class="need">Large bets are being made on where AI goes next. Calls should be scored against what actually happens.</p>
           <div class="prod-block">
             <b>Loka World</b>
             <p class="desc">An economic simulation where organizations make calls on real questions and are scored on the outcome.</p>
           <div class="links">
-            <a class="btn btn-ink" href="https://lokaworld.vercel.app/prototypes/lokaworld-v5-lite/map.html" target="_blank" rel="noopener">Visit Loka World<i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>
+            <a class="btn btn-line is-soon" aria-disabled="true">Coming soon</a>
           </div>
           </div>
         </div>
@@ -580,20 +651,107 @@ footer a:hover{color:var(--on-night)}
     </div>
   </section>
 
-  <section class="company" id="company">
-    <div class="w">
-      <div class="company-grid">
-        <div class="rise">
-          <h2>About Loka Labs</h2>
+  <section class="rs" id="company">
+    <div class="rs-wrap">
+      <div class="rs-head rise">
+        <h2>About Loka Labs</h2>
+        <div class="rs-text">
+          <p>Loka Labs designs, builds and operates each product, and every product has its own site, terms and users. A Turing Award laureate and researchers from the world’s leading labs stand behind Loka World’s research, with published, peer-reviewed work.</p>
         </div>
-        <div class="rise">
-          <p>Loka Labs designs, builds and operates each product. Every product has its own site, terms and users.</p>
-          <p>Loka Capital is open to verified institutions. Atara and Loka World have their own sites; the AIUSD page is in preparation.</p>
+      </div>
+      <div class="rs-logos rise">
+        <img src="/assets/logos/color-harvard.png" alt="Harvard" loading="lazy">
+        <img class="lg-mit" src="/assets/logos/color-mit.png" alt="MIT" loading="lazy">
+        <img class="lg-stanford" src="/assets/logos/color-stanford.png" alt="Stanford" loading="lazy">
+        <img src="/assets/logos/color-princeton.png" alt="Princeton" loading="lazy">
+        <img src="/assets/logos/color-uc-berkeley.png" alt="UC Berkeley" loading="lazy">
+        <img src="/assets/logos/color-nus.png" alt="NUS" loading="lazy">
+      </div>
+      <div class="rs-board rise">
+        <div class="rs-grid">
+          <div class="rs-tile rs-stat" style="grid-area:stat">
+            <div><span class="rs-num">12+</span><span class="rs-numlab">papers at top-tier venues</span></div>
+            <div class="rs-areas">Formal verification · Systems · Economics · Data</div>
+          </div>
+          <div class="rs-tile rs-award" style="grid-area:award">
+            <img src="/assets/img/turing-award.webp" alt="A.M. Turing Award" loading="lazy">
+            <span>A.M. Turing Award</span>
+          </div>
+          <div class="rs-tile rs-quote rs-feat" style="grid-area:feat">
+            <img class="rs-ava" src="/assets/img/team-sifakis.jpg" alt="Joseph Sifakis" loading="lazy">
+            <div>
+              <p>Co-invented model checking, the formal-verification method behind mission-critical systems worldwide.</p>
+              <b>Joseph Sifakis</b>
+              <small>A.M. Turing Award · 2007</small>
+            </div>
+          </div>
+          <div class="rs-tile rs-quote" style="grid-area:jialin">
+            <span class="rs-ava" aria-hidden="true">JL</span>
+            <div>
+              <p>In-network consensus and Byzantine fault tolerance: OSDI, SOSP, SIGCOMM.</p>
+              <b>Jialin Li</b>
+              <small>NUS · Distributed Systems</small>
+            </div>
+          </div>
+          <div class="rs-tile rs-person" style="grid-area:frey">
+            <span class="rs-ava" aria-hidden="true">OF</span>
+            <div>
+              <h3>Oberholzer-Gee · Frey</h3>
+              <small>Harvard · Economics</small>
+              <p>Motivation crowding, markets, and behaviour.</p>
+            </div>
+          </div>
+          <div class="rs-tile rs-person" style="grid-area:yao">
+            <span class="rs-ava" aria-hidden="true">YL</span>
+            <div>
+              <h3>Yao Lu</h3>
+              <small>AI-native systems · Data &amp; AI Systems</small>
+              <p>Large-scale analytics and AI-native infrastructure.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
+
 </main>
+
+<dialog class="ct" id="contact" aria-labelledby="ct-title">
+  <div class="ct-in">
+    <div class="ct-top">
+      <div>
+        <h2 id="ct-title">Contact us</h2>
+        <p class="ct-lede">Tell us what you are working on and the right team will reply by email.</p>
+      </div>
+      <button class="ct-x" type="button" data-close aria-label="Close"><i class="ph ph-x" aria-hidden="true"></i></button>
+    </div>
+    <form novalidate>
+      <div class="f"><label for="ct-name">Name</label><input id="ct-name" name="name" autocomplete="name" required></div>
+      <div class="f"><label for="ct-org">Company</label><input id="ct-org" name="company" autocomplete="organization" required></div>
+      <div class="f full"><label for="ct-email">Work email</label><input id="ct-email" name="email" type="email" autocomplete="email" required></div>
+      <div class="f full"><label for="ct-topic">What is it about?</label>
+        <select id="ct-topic" name="topic">
+          <option>Lending on Loka Capital</option>
+          <option>Financing a compute center</option>
+          <option>AIUSD</option>
+          <option>Atara</option>
+          <option>Partnerships</option>
+          <option>Something else</option>
+        </select></div>
+      <div class="f full"><label for="ct-msg">Message <span style="color:var(--ink-3)">(optional)</span></label><textarea id="ct-msg" name="message"></textarea></div>
+      <div class="ct-foot">
+        <small>Send opens your email app with this message filled in.</small>
+        <button class="btn btn-ink" type="submit">Send<i class="ph ph-arrow-right" aria-hidden="true"></i></button>
+      </div>
+    </form>
+    <div class="ct-done" hidden>
+      <b>Your email is ready to send.</b>
+      <p>Your email app should have opened with the message filled in. Send it from there and we will reply to your work email.</p>
+      <button class="btn btn-line" type="button" data-close>Close</button>
+    </div>
+  </div>
+</dialog>
+
 
 <footer>
   <div class="w">
@@ -601,7 +759,7 @@ footer a:hover{color:var(--on-night)}
       <div><a class="brand" href="#top"><i aria-hidden="true"></i>Loka Labs</a></div>
       <div>
         <h4>Products</h4>
-        <ul><li><a href="/" data-capital>Loka Capital</a></li><li><a href="https://www.loka.cash/" target="_blank" rel="noopener">Atara</a></li><li><a href="https://lokaworld.vercel.app/prototypes/lokaworld-v5-lite/map.html" target="_blank" rel="noopener">Loka World</a></li></ul>
+        <ul><li><a href="/" data-capital>Loka Capital</a></li><li><a href="https://www.loka.cash/" target="_blank" rel="noopener">Atara</a></li><li><a class="is-soon" aria-disabled="true">Loka World<span class="soon">Coming soon</span></a></li></ul>
       </div>
       <div>
         <h4>Dollar</h4>
@@ -732,7 +890,7 @@ footer a:hover{color:var(--on-night)}
       <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(20,40,32,.35)" stroke-width="1.2"/>
       <circle cx="100" cy="100" r="60" fill="none" stroke="rgba(20,40,32,.28)" stroke-width="1"/>
       <text font-family="Geist Mono, monospace" font-size="10.5" letter-spacing="3.2" fill="rgba(20,40,32,.62)"><textPath href="#ring-${cls}">AIUSD · REDEEMABLE 1:1 · AIUSD · REDEEMABLE 1:1 ·</textPath></text>
-      <text x="100" y="121" text-anchor="middle" font-family="Inter Tight, sans-serif" font-weight="600" font-size="62" fill="#16302a">A</text>
+      <text x="100" y="119" text-anchor="middle" font-family="Inter Tight, sans-serif" font-weight="600" font-size="54" letter-spacing="-1" fill="#16302a">AI</text>
     </svg>`;
     coin.appendChild(f);
   };
@@ -876,8 +1034,26 @@ footer a:hover{color:var(--on-night)}
     document.addEventListener('click', (e) => { if (!pd.contains(e.target)) set(false); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && pd.classList.contains('open')) { set(false); b.focus(); } });
   })();
+  // Contact dialog: every "Contact us" opens it; Send composes an email to window.LOKA_CONTACT_EMAIL (set in /config.js)
+  (() => {
+    const dlg = document.getElementById('contact'); if (!dlg || !dlg.showModal) return;
+    const form = dlg.querySelector('form'), done = dlg.querySelector('.ct-done');
+    const open = (e) => { e.preventDefault(); form.hidden = false; done.hidden = true; dlg.showModal(); dlg.querySelector('#ct-name').focus(); };
+    document.querySelectorAll('a[data-contact]').forEach((a) => a.addEventListener('click', open));
+    dlg.querySelectorAll('[data-close]').forEach((b) => b.addEventListener('click', () => dlg.close()));
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = new FormData(form);
+      const subject = `${d.get('topic')}: ${d.get('company')}`;
+      const body = `Name: ${d.get('name')}\nCompany: ${d.get('company')}\nWork email: ${d.get('email')}\nTopic: ${d.get('topic')}\n\n${d.get('message') || ''}`;
+      window.location.href = `mailto:${window.LOKA_CONTACT_EMAIL || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      form.hidden = true; done.hidden = false;
+    });
+  })();
 </script>
-<script type="module" src="/shared/coin3d.js"></script>
+<script type="module" src="/shared/coin3d.js?v=7"></script>
 <script src="/config.js"></script>
 <script>
   // Links marked data-capital go to the Loka Capital site, whose address is set in /config.js

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AIUSD · Loka Labs</title>
-<meta name="description" content="AIUSD is the dollar used across Loka: redeemable 1:1 for USDC, used to fund loans, hold escrow and receive repayments.">
+<meta name="description" content="AIUSD is the dollar Loka Capital settles in: redeemable 1:1 for USDC, used to fund loans, hold escrow and receive repayments.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -42,6 +42,11 @@ img,svg{display:block;max-width:100%}
 .nav ul a{text-decoration:none;color:var(--ink-2);transition:color .2s}
 .nav ul a:hover,.nav ul a[aria-current]{color:var(--ink)}
 .nav .sp{flex:1}
+/* Links sit in the centre of the bar: brand left, links centre, button right */
+.nav .w{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+.nav .w>.brand{justify-self:start}
+.nav .sp{display:none}
+.nav .w>:last-child{grid-column:3;justify-self:end}
 .btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;font-size:14.5px;font-weight:500;text-decoration:none;white-space:nowrap;transition:background-color .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease)}
 .btn-ink{background:var(--ink);color:var(--paper)}
 .btn-ink:hover{background:var(--accent-deep)}
@@ -52,13 +57,11 @@ img,svg{display:block;max-width:100%}
 
 /* hero */
 .hero{position:relative;margin-top:-69px;padding-top:69px;background:radial-gradient(60% 80% at 74% 46%,#fbfcfb 0%,#eceeed 50%,#dfe3e1 100%);overflow:hidden}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:center;min-height:min(92svh,860px);padding:clamp(40px,6vw,80px) 0}
-.kicker{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:var(--ink-2)}
-.kicker b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:13px;font-weight:600}
-.hero h1{margin:20px 0 0;font-weight:500;font-size:clamp(48px,6.6vw,104px);line-height:.98;letter-spacing:-.045em;max-width:10ch}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:center;min-height:min(calc(100svh - 69px),780px);padding-block:clamp(28px,3.5vw,48px)}
+.hero h1{margin:0;font-weight:500;font-size:clamp(44px,5vw,76px);line-height:.98;letter-spacing:-.045em;max-width:10ch}
 .hero .lede{margin:24px 0 0;font-size:clamp(17px,1.35vw,19px);color:var(--ink-2);max-width:44ch}
 .hero .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px}
-.peg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:clamp(40px,5vw,64px);border-top:1px solid var(--line-2);max-width:560px}
+.peg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:clamp(32px,3.5vw,48px);border-top:1px solid var(--line-2);max-width:560px}
 .peg div{padding:14px 16px 0 0}
 .peg div+div{padding-left:16px;border-left:1px solid var(--line)}
 .peg dt{font-size:13px;color:var(--ink-3)}
@@ -71,7 +74,7 @@ img,svg{display:block;max-width:100%}
 
 /* three reasons it holds a dollar */
 .why{padding:clamp(88px,11vw,160px) 0 clamp(56px,7vw,96px)}
-.why h2,.flow h2,.use h2,.spec h2,.faq h2{margin:0;font-weight:500;font-size:clamp(34px,4.4vw,64px);line-height:1.02;letter-spacing:-.04em;max-width:14ch}
+.trust h2,.why h2,.flow h2,.use h2,.spec h2,.faq h2{margin:0;font-weight:500;font-size:clamp(34px,4.4vw,64px);line-height:1.02;letter-spacing:-.04em;max-width:14ch}
 .why-grid{margin-top:clamp(40px,5vw,72px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .why-card{position:relative;display:flex;flex-direction:column;gap:12px;min-height:clamp(280px,24vw,340px);padding:clamp(24px,2.2vw,34px);border-radius:24px;background:var(--paper);border:1px solid var(--line);overflow:hidden}
 .why-card .ic{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:var(--bg);border:1px solid var(--line);font-size:24px;color:var(--accent)}
@@ -93,7 +96,34 @@ img,svg{display:block;max-width:100%}
 .steps .tag{display:inline-block;margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--on-night-3)}
 
 /* where it is used */
-.peg{grid-template-columns:repeat(4,minmax(0,1fr));max-width:680px}
+.peg{grid-template-columns:repeat(4,auto);justify-content:start;max-width:none}
+.peg div{padding-right:28px}.peg div+div{padding-left:28px}
+.peg dt,.peg dd{white-space:nowrap}
+@media (max-width:1240px){.peg{grid-template-columns:repeat(2,auto)}.peg div:nth-child(3){padding-left:0;border-left:0}.peg div:nth-child(n+3){padding-top:16px}}
+/* Trust: claims on the left, one large statement on the right */
+.trust{padding:clamp(88px,11vw,160px) 0 clamp(48px,6vw,80px)}
+.trust-grid{margin-top:clamp(40px,5vw,72px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);align-items:stretch}
+.t-item{position:relative;border-top:1px solid var(--line-2)}
+.t-item:last-child{border-bottom:1px solid var(--line-2)}
+.t-item button{all:unset;box-sizing:border-box;display:flex;align-items:center;flex-wrap:wrap;gap:10px 12px;width:100%;padding:24px 0;cursor:pointer;font-size:clamp(20px,1.7vw,24px);font-weight:500;letter-spacing:-.02em;line-height:1.2;color:var(--ink-3);transition:color .3s var(--ease)}
+.t-item button:hover,.t-item.on button{color:var(--ink)}
+.t-item button:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
+.t-tag{font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);border:1px solid var(--line-2);border-radius:999px;padding:3px 9px}
+.t-bar{position:absolute;left:0;top:-1px;height:2px;width:0;background:var(--ink)}
+.t-item.on .t-bar{width:100%}
+.trust.run .t-item.on .t-bar{width:0;animation:tfill 7s linear forwards}
+.trust.run.paused .t-item.on .t-bar{animation-play-state:paused}
+@keyframes tfill{to{width:100%}}
+.t-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
+.t-item.on .t-body{grid-template-rows:1fr}
+.t-body>div{overflow:hidden}
+.t-body p{margin:0 0 26px;color:var(--ink-2);font-size:16px;max-width:52ch}
+.t-panel{position:relative;min-height:clamp(320px,34vw,480px);border-radius:24px;background:var(--mist);overflow:hidden}
+.t-face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:32px;text-align:center;font-weight:500;font-size:clamp(44px,5vw,80px);letter-spacing:-.045em;line-height:1;opacity:0;transform:translateY(12px);transition:opacity .5s var(--ease),transform .7s var(--ease)}
+.t-face.on{opacity:1;transform:none}
+.t-face small{font-family:var(--mono);font-size:12px;font-weight:400;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3)}
+@media (max-width:960px){.trust-grid{grid-template-columns:1fr}.t-panel{order:-1;min-height:220px}}
+@media (prefers-reduced-motion:reduce){.t-body,.t-face,.t-item button{transition:none}.t-face{transform:none}}
 /* Reserves, live (sample until launch) */
 .live{padding:0 0 clamp(24px,3vw,40px)}
 .live-in{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
@@ -189,13 +219,13 @@ img,svg{display:block;max-width:100%}
 .faq details p{margin:0 0 22px;color:var(--ink-2);max-width:60ch}
 
 /* closing */
-.close{padding:clamp(64px,8vw,112px) 0;background:var(--accent-deep);color:var(--on-night)}
+.close{padding:clamp(64px,8vw,112px) 0;background:var(--night);color:var(--on-night)}
 .close .w{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
 .close h2{margin:0;font-weight:500;font-size:clamp(34px,4.4vw,60px);letter-spacing:-.04em;line-height:1.02;max-width:16ch}
 .close .btn-light{background:var(--on-night);color:var(--ink)}
 .close .btn-ghost{border:1px solid rgba(238,240,238,.3);color:var(--on-night)}
 
-footer{background:var(--night);color:var(--on-night-2);padding:48px 0 36px;font-size:14px}
+footer{background:var(--night);color:var(--on-night-2);padding:48px 0 36px;font-size:14px;border-top:1px solid rgba(238,240,238,.1)}
 footer .row{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
 footer .brand{color:var(--on-night)}
 footer nav{display:flex;gap:22px;flex-wrap:wrap}
@@ -255,6 +285,11 @@ footer a:hover{color:var(--on-night)}
 .nav.mega .pd>button,.nav.mega .pd>button:hover,.nav.mega ul a:hover{color:var(--ink)}
 .nav .pmenu a,.nav .pmenu a:hover{color:var(--ink)}
 @media (max-width:960px){.pmenu{display:none}}
+/* Loka World is not open yet: its entries show "Coming soon" and do not link anywhere */
+a.is-soon{cursor:default}
+.pm-col a.is-soon:hover{background:none}
+.soon{display:inline-block;margin-left:8px;padding:2px 8px;border:1px solid var(--line-2);border-radius:999px;font-size:11.5px;font-weight:400;line-height:1.4;color:var(--ink-3);vertical-align:1px;white-space:nowrap}
+.btn.is-soon,.btn.is-soon:hover{opacity:.55;transform:none;box-shadow:none}
 </style>
 </head>
 <body>
@@ -268,11 +303,11 @@ footer a:hover{color:var(--on-night)}
           <div class="pm-in">
             <div class="pm-col">
               <a href="/" data-capital target="_blank" rel="noopener"><span class="ic"><i class="ph ph-buildings" aria-hidden="true"></i></span><span><b>Loka Capital<i class="ph ph-arrow-up-right" aria-hidden="true"></i></b><small>Secured loans to compute centers</small></span></a>
-              <a href="/aiusd/"><span class="ic"><i class="ph ph-coin" aria-hidden="true"></i></span><span><b>AIUSD</b><small>The dollar used across Loka</small></span></a>
+              <a href="/aiusd/"><span class="ic"><i class="ph ph-coin" aria-hidden="true"></i></span><span><b>AIUSD</b><small>The dollar Loka Capital settles in</small></span></a>
             </div>
             <div class="pm-col">
               <a href="https://www.loka.cash/" target="_blank" rel="noopener"><span class="ic"><i class="ph ph-handshake" aria-hidden="true"></i></span><span><b>Atara<i class="ph ph-arrow-up-right" aria-hidden="true"></i></b><small>Conditional payments</small></span></a>
-              <a href="https://lokaworld.vercel.app/prototypes/lokaworld-v5-lite/map.html" target="_blank" rel="noopener"><span class="ic"><i class="ph ph-globe-hemisphere-west" aria-hidden="true"></i></span><span><b>Loka World<i class="ph ph-arrow-up-right" aria-hidden="true"></i></b><small>Economic simulation</small></span></a>
+              <a class="is-soon" aria-disabled="true"><span class="ic"><i class="ph ph-globe-hemisphere-west" aria-hidden="true"></i></span><span><b>Loka World<span class="soon">Coming soon</span></b><small>Economic simulation</small></span></a>
             </div>
             <a class="pm-feature" href="/" data-capital target="_blank" rel="noopener">
               <span class="k">Loka Capital</span>
@@ -293,7 +328,6 @@ footer a:hover{color:var(--on-night)}
   <section class="hero">
     <div class="w hero-grid">
       <div>
-        <span class="kicker rise"><b aria-hidden="true">A</b>AIUSD</span>
         <h1 class="rise">The dollar for compute credit.</h1>
         <p class="lede rise">Backed 1:1 by USDC held in its own contract, checkable on-chain. On Loka Capital, lenders fund loans in it, each loan keeps its reserve in it, and repayments arrive in it. Holding it pays no interest and carries no loan risk.</p>
         <div class="cta rise">
@@ -309,31 +343,43 @@ footer a:hover{color:var(--on-night)}
       </div>
       <div class="coin-wrap" data-coin aria-hidden="true">
         <canvas></canvas>
-        <div class="fallback">A</div>
+        <div class="fallback">AI</div>
       </div>
     </div>
   </section>
 
-  <section class="why">
+  <section class="trust" id="trust">
     <div class="w">
-      <h2 class="rise">Why one AIUSD is one dollar.</h2>
-      <div class="why-grid rise">
-        <article class="why-card">
-          <span class="ic"><i class="ph ph-arrows-left-right" aria-hidden="true"></i></span>
-          <b>Redeemable 1:1</b>
-          <p>Deposit USDC and the same amount of AIUSD is minted; redeem AIUSD and the same amount of USDC comes back. Loka charges no fee either way.</p>
-        </article>
-        <article class="why-card">
-          <span class="ic"><i class="ph ph-vault" aria-hidden="true"></i></span>
-          <b>USDC locked in the contract</b>
-          <p>The reserve is the USDC inside the AIUSD contract. It is not lent, invested or used to cover losses, and no one, Loka included, can move it except to pay a redemption.</p>
-        </article>
-        <article class="why-card">
-          <span class="chip">At launch</span>
-          <span class="ic"><i class="ph ph-magnifying-glass" aria-hidden="true"></i></span>
-          <b>Checkable at any time</b>
-          <p>AIUSD supply and the contract's USDC balance are both on-chain and always equal. Every mint and redemption is recorded.</p>
-        </article>
+      <h2 class="rise">Fully backed, checkable on-chain.</h2>
+      <div class="trust-grid rise">
+        <div class="t-list">
+          <div class="t-item on">
+            <span class="t-bar" aria-hidden="true"></span>
+            <button type="button" aria-expanded="true" aria-controls="tb0">Fully backed 1:1</button>
+            <div class="t-body" id="tb0"><div><p>Every AIUSD is backed by one USDC held in its own contract. On each network, the contract's USDC balance equals AIUSD supply, and the contract enforces it on every mint and redemption.</p></div></div>
+          </div>
+          <div class="t-item">
+            <span class="t-bar" aria-hidden="true"></span>
+            <button type="button" aria-expanded="false" aria-controls="tb1">No one can mint or move the reserve</button>
+            <div class="t-body" id="tb1"><div><p>AIUSD is minted only when USDC is deposited, and the USDC leaves only to pay a redemption. There is no admin key for either, Loka included. The reserve is never lent, invested or used to cover loan losses.</p></div></div>
+          </div>
+          <div class="t-item">
+            <span class="t-bar" aria-hidden="true"></span>
+            <button type="button" aria-expanded="false" aria-controls="tb2">Checkable at any time <span class="t-tag">At launch</span></button>
+            <div class="t-body" id="tb2"><div><p>Supply and reserve are both on-chain, so anyone can check them at any block instead of waiting for a monthly report. Loka also reconciles bank, USDC and AIUSD balances daily and sends each lender a monthly statement.</p></div></div>
+          </div>
+          <div class="t-item">
+            <span class="t-bar" aria-hidden="true"></span>
+            <button type="button" aria-expanded="false" aria-controls="tb3">Audited before every release <span class="t-tag">Planned</span></button>
+            <div class="t-body" id="tb3"><div><p>An independent audit before launch and before every upgrade. Upgrades go through a multisig with a time lock and are announced in advance.</p></div></div>
+          </div>
+        </div>
+        <div class="t-panel" aria-hidden="true">
+          <div class="t-face on">1 : 1<small>USDC in the contract = AIUSD supply</small></div>
+          <div class="t-face">No admin mint<small>Minted only against USDC</small></div>
+          <div class="t-face">Every block<small>Supply and reserve, on-chain</small></div>
+          <div class="t-face">Audited<small>Before launch and every upgrade</small></div>
+        </div>
       </div>
     </div>
   </section>
@@ -349,6 +395,30 @@ footer a:hover{color:var(--on-night)}
       <p class="live-note rise"><span><b>Sample</b>Illustrative figures. From launch, read directly from the contracts.</span><span>Supply and USDC in the contract are always equal.</span></p>
     </div>
   </section>
+
+  <section class="why">
+    <div class="w">
+      <h2 class="rise">Built for institutions.</h2>
+      <div class="why-grid rise">
+        <article class="why-card">
+          <span class="ic"><i class="ph ph-bank" aria-hidden="true"></i></span>
+          <b>From a bank wire to a loan</b>
+          <p>Wire USD from your company account. A licensed partner converts it and AIUSD is minted the same day.</p>
+        </article>
+        <article class="why-card">
+          <span class="ic"><i class="ph ph-share-network" aria-hidden="true"></i></span>
+          <b>Ethereum, Base, Arbitrum</b>
+          <p>One contract on each network, backed by Circle's native USDC there.</p>
+        </article>
+        <article class="why-card">
+          <span class="ic"><i class="ph ph-identification-badge" aria-hidden="true"></i></span>
+          <b>Verified holders only</b>
+          <p>Every holder passes business verification and sanctions screening.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
 
   <section class="flow" id="how">
     <div class="w">
@@ -395,8 +465,8 @@ footer a:hover{color:var(--on-night)}
           <div><a class="btn btn-ink" href="/" data-capital>Visit Loka Capital<i class="ph ph-arrow-right" aria-hidden="true"></i></a></div>
         </div>
         <div class="use-list">
-          <div class="use-item"><i class="ph ph-lock-key" aria-hidden="true"></i><div><b>One escrow per loan</b><span>Commitments wait in that loan’s escrow. If an operating loan is not fully funded by its deadline, every lender is refunded in full.</span></div></div>
-          <div class="use-item"><i class="ph ph-vault" aria-hidden="true"></i><div><b>Reserves held on-chain</b><span>Each loan keeps a cash reserve in AIUSD in its collection contract, three months of payments, controlled by the contract.</span></div></div>
+          <div class="use-item"><i class="ph ph-lock-key" aria-hidden="true"></i><div><b>One escrow per loan</b><span>Commitments wait in that loan’s escrow. If a loan is not fully funded by its deadline, or its drawdown conditions are not met in time, every lender is refunded in full.</span></div></div>
+          <div class="use-item"><i class="ph ph-vault" aria-hidden="true"></i><div><b>Reserves held on-chain</b><span>Each loan keeps a cash reserve in AIUSD in its collection contract, controlled by the contract: three months of payments, or the full build-period interest for a construction loan.</span></div></div>
           <div class="use-item"><i class="ph ph-list-numbers" aria-hidden="true"></i><div><b>Rent split in a fixed order</b><span>Lenders are paid first, then the reserve is topped up, then the service fee, then the borrower.</span></div></div>
           <div class="use-item"><i class="ph ph-trend-down" aria-hidden="true"></i><div><b>Lower rates for on-chain borrowers<span class="prop">Proposed</span></b><span>Borrowers who keep extra reserve in AIUSD, or whose tenants pay rent straight into the collection contract, may get a lower rate. Terms are set per loan.</span></div></div>
         </div>
@@ -449,8 +519,8 @@ footer a:hover{color:var(--on-night)}
           <div class="ps">
             <ol>
                 <li><div><b>Verify your business</b><span>Business verification and sanctions screening; register the wallet you will send from.</span></div></li>
-                <li><div><b>Choose a network</b><span>Pick the network in Fund account. You see the AIUSD contract address for it.</span></div></li>
-                <li><div><b>Deposit USDC</b><span>Send USDC from your registered wallet. Deposits from other addresses are not accepted.</span></div></li>
+                <li><div><b>Choose a network</b><span>Pick Ethereum, Base or Arbitrum in Fund account. You see the AIUSD contract address on that network.</span></div></li>
+                <li><div><b>Deposit USDC</b><span>Send USDC from your registered wallet. Deposits from other addresses are not accepted and are returned to the sender.</span></div></li>
                 <li><div><b>AIUSD is minted</b><span>The contract keeps the USDC and mints the same amount of AIUSD to your account.</span></div></li>
                 <li><div><b>Recorded</b><span>The deposit and the mint are on-chain and in your statement.</span></div></li>
             </ol>
@@ -526,7 +596,7 @@ footer a:hover{color:var(--on-night)}
             <dl>
               <div class="rr"><dt>Who</dt><dd>Businesses that pass verification, including sanctions screening</dd><span class="st on">Set</span></div>
               <div class="rr"><dt>Accounts and wallets</dt><dd>Only bank accounts and wallets registered in the business’s own name</dd><span class="st on">Set</span></div>
-              <div class="rr"><dt>If verification lapses</dt><dd>New mints and redemptions are paused for that business until it is renewed</dd><span class="st">Proposed</span></div>
+              <div class="rr"><dt>If verification lapses</dt><dd>The business leaves the allowlist and can no longer mint; its balance can still be redeemed to its registered wallet or bank account</dd><span class="st">Proposed</span></div>
             </dl>
           </details>
           <details class="rg">
@@ -561,10 +631,21 @@ footer a:hover{color:var(--on-night)}
             </dl>
           </details>
           <details class="rg">
+            <summary><b>Networks</b><span>Where AIUSD is issued<i class="ph ph-plus" aria-hidden="true"></i></span></summary>
+            <dl>
+              <div class="rr"><dt>Networks</dt><dd>Ethereum, Base and Arbitrum</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>Contracts</dt><dd>One AIUSD contract on each network, holding the USDC deposited on that network</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>USDC accepted</dt><dd>Native USDC issued by Circle on that network; bridged USDC is not accepted</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>Mint and redeem</dt><dd>On the network where the USDC is deposited, or where the AIUSD is held</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>Between networks</dt><dd>No transfer between networks in the first release; redeem on one and deposit on the other</dd><span class="st">Proposed</span></div>
+              <div class="rr"><dt>Loans</dt><dd>Each loan runs on one network, shown on its page; lenders commit AIUSD on that network</dd><span class="st on">Set</span></div>
+            </dl>
+          </details>
+          <details class="rg">
             <summary><b>Reserve</b><span>What backs each AIUSD<i class="ph ph-plus" aria-hidden="true"></i></span></summary>
             <dl>
               <div class="rr"><dt>What it is</dt><dd>USDC held in the AIUSD contract</dd><span class="st on">Set</span></div>
-              <div class="rr"><dt>Coverage</dt><dd>The contract’s USDC balance always equals AIUSD supply, enforced by the contract</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>Coverage</dt><dd>On each network, the contract’s USDC balance always equals AIUSD supply on that network, enforced by the contract</dd><span class="st on">Set</span></div>
               <div class="rr"><dt>Use</dt><dd>Only to pay redemptions: not lent, invested or used to cover loan losses</dd><span class="st on">Set</span></div>
               <div class="rr"><dt>Yield</dt><dd>None; the USDC is not put to work</dd><span class="st on">Set</span></div>
               <div class="rr"><dt>Who can move it</dt><dd>No one, except through a redemption</dd><span class="st on">Set</span></div>
@@ -574,8 +655,8 @@ footer a:hover{color:var(--on-night)}
             <summary><b>In Loka Capital</b><span>How AIUSD moves through a loan<i class="ph ph-plus" aria-hidden="true"></i></span></summary>
             <dl>
               <div class="rr"><dt>Loan exposure</dt><dd>None while held; only AIUSD committed to a loan carries that loan’s risk</dd><span class="st on">Set</span></div>
-              <div class="rr"><dt>Escrow</dt><dd>Each loan has its own escrow; operating loans not fully funded by the deadline are refunded in full</dd><span class="st on">Set</span></div>
-              <div class="rr"><dt>Reserve</dt><dd>Three months of payments, held in AIUSD in the loan’s collection contract</dd><span class="st">Proposed</span></div>
+              <div class="rr"><dt>Escrow</dt><dd>Each loan has its own escrow; if the loan is not fully funded by the deadline, or drawdown conditions are not met in time, lenders are refunded in full</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>Reserve</dt><dd>Three months of payments for an operating loan, the full build-period interest for a construction loan; held in AIUSD in the loan’s collection contract</dd><span class="st">Proposed</span></div>
               <div class="rr"><dt>Repayment order</dt><dd>Lenders, then reserve top-up, then service fee, then borrower</dd><span class="st">Proposed</span></div>
               <div class="rr"><dt>Borrower rate</dt><dd>Lower for extra reserve held in AIUSD, or rent paid straight into the collection contract; set in each loan’s terms and fixed once listed</dd><span class="st">Proposed</span></div>
             </dl>
@@ -616,6 +697,10 @@ footer a:hover{color:var(--on-night)}
         <details>
           <summary>How do I get AIUSD?<i class="ph ph-plus" aria-hidden="true"></i></summary>
           <p>Verify your business, then wire USD from a company account with your reference code, or deposit USDC from a registered wallet. Either way, AIUSD is minted 1:1 into your account.</p>
+        </details>
+        <details>
+          <summary>Which networks is AIUSD on?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+          <p>Ethereum, Base and Arbitrum. Each network has its own AIUSD contract backed by native USDC on that network. You mint and redeem on the same network, and each loan runs on one network, shown on its page.</p>
         </details>
         <details>
           <summary>Can I always redeem it?<i class="ph ph-plus" aria-hidden="true"></i></summary>
@@ -660,7 +745,7 @@ footer a:hover{color:var(--on-night)}
   <div class="w">
     <div class="row">
       <a class="brand" href="/"><i aria-hidden="true"></i>Loka Labs</a>
-      <nav aria-label="Footer"><a href="/" data-capital>Loka Capital</a><a href="/aiusd/">AIUSD</a><a href="https://www.loka.cash/" target="_blank" rel="noopener">Atara</a><a href="https://lokaworld.vercel.app/prototypes/lokaworld-v5-lite/map.html" target="_blank" rel="noopener">Loka World</a></nav>
+      <nav aria-label="Footer"><a href="/" data-capital>Loka Capital</a><a href="/aiusd/">AIUSD</a><a href="https://www.loka.cash/" target="_blank" rel="noopener">Atara</a><a class="is-soon" aria-disabled="true">Loka World<span class="soon">Coming soon</span></a></nav>
     </div>
     <div class="fine">
       <span>© 2026 Loka Labs. Design prototype.</span>
@@ -679,6 +764,27 @@ footer a:hover{color:var(--on-night)}
     e.target.classList.add('in'); io.unobserve(e.target);
   }), { rootMargin: '0px 0px -8% 0px' });
   document.querySelectorAll('.rise').forEach((n) => io.observe(n));
+  // Trust claims: one open at a time; advances on its own while in view, pauses on hover or focus
+  (() => {
+    const sec = document.getElementById('trust'); if (!sec) return;
+    const items = [...sec.querySelectorAll('.t-item')], faces = [...sec.querySelectorAll('.t-face')];
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const show = (k) => items.forEach((it, j) => {
+      const on = j === k; it.classList.toggle('on', on); faces[j].classList.toggle('on', on);
+      it.querySelector('button').setAttribute('aria-expanded', on);
+      if (on) { const bar = it.querySelector('.t-bar'); bar.style.animation = 'none'; void bar.offsetWidth; bar.style.animation = ''; }
+    });
+    items.forEach((it, j) => {
+      it.querySelector('button').addEventListener('click', () => show(j));
+      it.querySelector('.t-bar').addEventListener('animationend', () => show((j + 1) % items.length));
+    });
+    sec.addEventListener('mouseenter', () => sec.classList.add('paused'));
+    sec.addEventListener('focusin', (e) => { if (e.target.matches(':focus-visible')) sec.classList.add('paused'); });
+    sec.addEventListener('mouseleave', () => sec.classList.remove('paused'));
+    sec.addEventListener('focusout', (e) => { if (!sec.contains(e.relatedTarget)) sec.classList.remove('paused'); });
+    if (still) return;
+    new IntersectionObserver((es) => es.forEach((e) => sec.classList.toggle('run', e.isIntersecting)), { threshold: .35 }).observe(sec);
+  })();
   // Mint and redeem tabs
   const tabs = [...document.querySelectorAll('.tabs [role="tab"]')];
   tabs.forEach((t, i) => {
@@ -703,7 +809,7 @@ footer a:hover{color:var(--on-night)}
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && pd.classList.contains('open')) { set(false); b.focus(); } });
   })();
 </script>
-<script type="module" src="/shared/coin3d.js"></script>
+<script type="module" src="/shared/coin3d.js?v=7"></script>
 <script src="/config.js"></script>
 <script>
   // Links marked data-capital go to the Loka Capital site, whose address is set in /config.js
