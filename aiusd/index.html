@@ -126,11 +126,20 @@ img,svg{display:block;max-width:100%}
 @media (prefers-reduced-motion:reduce){.t-body,.t-face,.t-item button{transition:none}.t-face{transform:none}}
 /* Reserves, live (sample until launch) */
 .live{padding:0 0 clamp(24px,3vw,40px)}
-.live-in{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
+.live-in{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
 .live-in div{padding:22px 20px 24px 0}
 .live-in div+div{padding-left:20px;border-left:1px solid var(--line)}
 .live-in dt{font-size:13.5px;color:var(--ink-3)}
 .live-in dd{margin:8px 0 0;font-weight:500;font-size:clamp(24px,2.4vw,34px);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.live-split{padding:18px 0 4px;border-bottom:1px solid var(--line)}
+.ls-bar{display:flex;gap:3px;height:10px}
+.ls-bar span{border-radius:3px}
+.ls-a{background:var(--ink)}.ls-b{background:var(--accent)}.ls-c{background:var(--ink-3)}
+.ls-key{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 20px;margin:14px 0 0}
+.ls-key dt{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink-3)}
+.ls-key dt i{width:9px;height:9px;border-radius:2px;flex:none}
+.ls-key dd{margin:4px 0 14px;font-weight:500;font-size:clamp(18px,1.6vw,22px);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+@media (max-width:640px){.ls-key{grid-template-columns:1fr;gap:0}}
 .live-note{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:13px;color:var(--ink-3)}
 .live-note b{font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line-2);border-radius:999px;padding:3px 9px;margin-right:8px}
 .use-item .prop{display:inline-block;margin-left:8px;vertical-align:2px;font-family:var(--mono);font-size:10.5px;font-weight:400;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);border:1px solid var(--line-2);border-radius:999px;padding:2px 8px}
@@ -388,11 +397,17 @@ a.is-soon{cursor:default}
     <div class="w">
       <dl class="live-in rise">
         <div><dt>AIUSD supply</dt><dd>48,250,000</dd></div>
-        <div><dt>USDC in the contract</dt><dd>48,250,000</dd></div>
-        <div><dt>Committed to loans</dt><dd>31,400,000</dd></div>
-        <div><dt>Repaid to lenders</dt><dd>2,860,000</dd></div>
+        <div><dt>USDC in the contracts</dt><dd>48,250,000</dd></div>
       </dl>
-      <p class="live-note rise"><span><b>Sample</b>Illustrative figures. From launch, read directly from the contracts.</span><span>Supply and USDC in the contract are always equal.</span></p>
+      <div class="live-split rise" aria-label="Where the supply sits">
+        <div class="ls-bar" aria-hidden="true"><span class="ls-a" style="flex:12.6"></span><span class="ls-b" style="flex:31.4"></span><span class="ls-c" style="flex:4.25"></span></div>
+        <dl class="ls-key">
+          <div><dt><i class="ls-a"></i>Held by institutions</dt><dd>12,600,000</dd></div>
+          <div><dt><i class="ls-b"></i>In loan escrow</dt><dd>31,400,000</dd></div>
+          <div><dt><i class="ls-c"></i>In collection contracts</dt><dd>4,250,000</dd></div>
+        </dl>
+      </div>
+      <p class="live-note rise"><span><b>Sample</b>Illustrative figures, all networks. From launch, read directly from the contracts.</span><span>Supply equals the USDC in the contracts; the three parts add up to supply.</span></p>
     </div>
   </section>
 
@@ -445,8 +460,8 @@ a.is-soon{cursor:default}
         </li>
         <li>
           <span class="dot"><i class="ph ph-arrow-u-up-left" aria-hidden="true"></i></span>
-          <b>Get repaid, redeem</b>
-          <p>Monthly repayments arrive in AIUSD. Redeem 1:1 for USDC, or have the partner pay USD to your registered account.</p>
+          <b>Get repaid, lend again</b>
+          <p>Monthly repayments land in your AIUSD balance. Lend them to the next loan, or redeem 1:1 for USDC or USD to your registered account.</p>
           <span class="tag">AIUSD → USDC / USD</span>
         </li>
       </ol>
@@ -657,6 +672,7 @@ a.is-soon{cursor:default}
               <div class="rr"><dt>Loan exposure</dt><dd>None while held; only AIUSD committed to a loan carries that loan’s risk</dd><span class="st on">Set</span></div>
               <div class="rr"><dt>Escrow</dt><dd>Each loan has its own escrow; if the loan is not fully funded by the deadline, or drawdown conditions are not met in time, lenders are refunded in full</dd><span class="st on">Set</span></div>
               <div class="rr"><dt>Reserve</dt><dd>Three months of payments for an operating loan, the full build-period interest for a construction loan; held in AIUSD in the loan’s collection contract</dd><span class="st">Proposed</span></div>
+              <div class="rr"><dt>Your balance</dt><dd>One AIUSD balance funds any number of loans; repayments and refunds return to it, to lend again or redeem</dd><span class="st on">Set</span></div>
               <div class="rr"><dt>Repayment order</dt><dd>Lenders, then reserve top-up, then service fee, then borrower</dd><span class="st">Proposed</span></div>
               <div class="rr"><dt>Borrower rate</dt><dd>Lower for extra reserve held in AIUSD, or rent paid straight into the collection contract; set in each loan’s terms and fixed once listed</dd><span class="st">Proposed</span></div>
             </dl>
@@ -701,6 +717,10 @@ a.is-soon{cursor:default}
         <details>
           <summary>Which networks is AIUSD on?<i class="ph ph-plus" aria-hidden="true"></i></summary>
           <p>Ethereum, Base and Arbitrum. Each network has its own AIUSD contract backed by native USDC on that network. You mint and redeem on the same network, and each loan runs on one network, shown on its page.</p>
+        </details>
+        <details>
+          <summary>Do I mint for every loan?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+          <p>No. AIUSD stays in your balance and can be committed to several loans over time. Repayments and refunds land back in the same balance, so you can lend them again without another wire, or redeem them.</p>
         </details>
         <details>
           <summary>Can I always redeem it?<i class="ph ph-plus" aria-hidden="true"></i></summary>
