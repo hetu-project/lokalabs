@@ -329,7 +329,7 @@ a.is-soon{cursor:default}
       <li><a href="/#company">Company</a></li>
     </ul>
     <span class="sp"></span>
-    <a class="btn btn-line" href="/app/index.html#/v7/fund-account" data-capital>Get AIUSD<i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+    <a class="btn btn-line" href="/app/index.html#/v7/swap" data-capital>Get AIUSD<i class="ph ph-arrow-right" aria-hidden="true"></i></a>
   </div>
 </header>
 
@@ -338,9 +338,9 @@ a.is-soon{cursor:default}
     <div class="w hero-grid">
       <div>
         <h1 class="rise">The dollar for compute credit.</h1>
-        <p class="lede rise">Backed 1:1 by USDC held in its own contract, checkable on-chain. On Loka Capital, lenders fund loans in it, each loan keeps its reserve in it, and repayments arrive in it. Holding it pays no interest and carries no loan risk.</p>
+        <p class="lede rise">Issued on Loka Chain and backed 1:1 by native USDC held in a reserve contract on Ethereum, checkable on-chain. On Loka Capital, lenders fund loans in it, each loan keeps its reserve in it, and repayments arrive in it. Holding it pays no interest and carries no loan risk.</p>
         <div class="cta rise">
-          <a class="btn btn-ink" href="/app/index.html#/v7/fund-account" data-capital>Get AIUSD<i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+          <a class="btn btn-ink" href="/app/index.html#/v7/swap" data-capital>Get AIUSD<i class="ph ph-arrow-right" aria-hidden="true"></i></a>
           <a class="btn btn-line" href="#mint">How to mint</a>
         </div>
         <dl class="peg rise">
@@ -365,17 +365,17 @@ a.is-soon{cursor:default}
           <div class="t-item on">
             <span class="t-bar" aria-hidden="true"></span>
             <button type="button" aria-expanded="true" aria-controls="tb0">Fully backed 1:1</button>
-            <div class="t-body" id="tb0"><div><p>Every AIUSD is backed by one USDC held in its own contract. On each network, the contract's USDC balance equals AIUSD supply, and the contract enforces it on every mint and redemption.</p></div></div>
+            <div class="t-body" id="tb0"><div><p>Every AIUSD on Loka Chain is backed by one native USDC in the reserve contract on Ethereum. The reserve is never less than supply: AIUSD is minted only after the USDC has arrived, and burned before any USDC leaves.</p></div></div>
           </div>
           <div class="t-item">
             <span class="t-bar" aria-hidden="true"></span>
             <button type="button" aria-expanded="false" aria-controls="tb1">No one can mint or move the reserve</button>
-            <div class="t-body" id="tb1"><div><p>AIUSD is minted only when USDC is deposited, and the USDC leaves only to pay a redemption. There is no admin key for either, Loka included. The reserve is never lent, invested or used to cover loan losses.</p></div></div>
+            <div class="t-body" id="tb1"><div><p>AIUSD is minted only against a verified deposit into the reserve, and the USDC leaves only to pay a redemption. There is no admin key for either, Loka included. Minting has a daily cap and stops on its own if supply ever exceeds the reserve. The reserve is never lent, invested or used to cover loan losses.</p></div></div>
           </div>
           <div class="t-item">
             <span class="t-bar" aria-hidden="true"></span>
             <button type="button" aria-expanded="false" aria-controls="tb2">Checkable at any time <span class="t-tag">At launch</span></button>
-            <div class="t-body" id="tb2"><div><p>Supply and reserve are both on-chain, so anyone can check them at any block instead of waiting for a monthly report. Loka also reconciles bank, USDC and AIUSD balances daily and sends each lender a monthly statement.</p></div></div>
+            <div class="t-body" id="tb2"><div><p>Supply on Loka Chain and the reserve on Ethereum are both on-chain, so anyone can check them at any time instead of waiting for a monthly report. Loka also reconciles bank, USDC and AIUSD balances daily and sends each lender a monthly statement.</p></div></div>
           </div>
           <div class="t-item">
             <span class="t-bar" aria-hidden="true"></span>
@@ -384,7 +384,7 @@ a.is-soon{cursor:default}
           </div>
         </div>
         <div class="t-panel" aria-hidden="true">
-          <div class="t-face on">1 : 1<small>USDC in the contract = AIUSD supply</small></div>
+          <div class="t-face on">1 : 1<small>USDC in reserve = AIUSD supply</small></div>
           <div class="t-face">No admin mint<small>Minted only against USDC</small></div>
           <div class="t-face">Every block<small>Supply and reserve, on-chain</small></div>
           <div class="t-face">Audited<small>Before launch and every upgrade</small></div>
@@ -397,7 +397,7 @@ a.is-soon{cursor:default}
     <div class="w">
       <dl class="live-in rise">
         <div><dt>AIUSD supply</dt><dd>48,250,000</dd></div>
-        <div><dt>USDC in the contracts</dt><dd>48,250,000</dd></div>
+        <div><dt>USDC in reserve, Ethereum</dt><dd>48,250,000</dd></div>
       </dl>
       <div class="live-split rise" aria-label="Where the supply sits">
         <div class="ls-bar" aria-hidden="true"><span class="ls-a" style="flex:12.6"></span><span class="ls-b" style="flex:31.4"></span><span class="ls-c" style="flex:4.25"></span></div>
@@ -407,7 +407,7 @@ a.is-soon{cursor:default}
           <div><dt><i class="ls-c"></i>In collection contracts</dt><dd>4,250,000</dd></div>
         </dl>
       </div>
-      <p class="live-note rise"><span><b>Sample</b>Illustrative figures, all networks. From launch, read directly from the contracts.</span><span>Supply equals the USDC in the contracts; the three parts add up to supply.</span></p>
+      <p class="live-note rise"><span><b>Sample</b>Illustrative figures. From launch, read directly from the contracts.</span><span>Supply on Loka Chain equals the USDC in reserve; the three parts add up to supply.</span></p>
     </div>
   </section>
 
@@ -422,8 +422,8 @@ a.is-soon{cursor:default}
         </article>
         <article class="why-card">
           <span class="ic"><i class="ph ph-share-network" aria-hidden="true"></i></span>
-          <b>Ethereum, Base, Arbitrum</b>
-          <p>One contract on each network, backed by Circle's native USDC there.</p>
+          <b>One balance on Loka Chain</b>
+          <p>AIUSD and every loan live on Loka Chain, so one balance works for any loan. The USDC reserve sits on Ethereum.</p>
         </article>
         <article class="why-card">
           <span class="ic"><i class="ph ph-identification-badge" aria-hidden="true"></i></span>
@@ -443,14 +443,14 @@ a.is-soon{cursor:default}
         <li>
           <span class="dot"><i class="ph ph-bank" aria-hidden="true"></i></span>
           <b>Fund</b>
-          <p>Deposit USDC from a registered wallet, or wire USD from your company account and a licensed partner converts it to USDC.</p>
+          <p>Deposit USDC on Ethereum from a registered wallet, or wire USD from your company account and a licensed partner converts it to USDC.</p>
           <span class="tag">USD → USDC (partner)</span>
         </li>
         <li>
           <span class="dot"><i class="ph ph-coin" aria-hidden="true"></i></span>
           <b>Mint</b>
-          <p>The USDC goes into the AIUSD contract and the same amount of AIUSD is minted to your account.</p>
-          <span class="tag">USDC → AIUSD contract</span>
+          <p>The USDC goes into the reserve contract on Ethereum, and the same amount of AIUSD is minted to your address on Loka Chain.</p>
+          <span class="tag">USDC on Ethereum → AIUSD on Loka Chain</span>
         </li>
         <li>
           <span class="dot"><i class="ph ph-lock-key" aria-hidden="true"></i></span>
@@ -534,15 +534,15 @@ a.is-soon{cursor:default}
           <div class="ps">
             <ol>
                 <li><div><b>Verify your business</b><span>Business verification and sanctions screening; register the wallet you will send from.</span></div></li>
-                <li><div><b>Choose a network</b><span>Pick Ethereum, Base or Arbitrum in Fund account. You see the AIUSD contract address on that network.</span></div></li>
-                <li><div><b>Deposit USDC</b><span>Send USDC from your registered wallet. Deposits from other addresses are not accepted and are returned to the sender.</span></div></li>
-                <li><div><b>AIUSD is minted</b><span>The contract keeps the USDC and mints the same amount of AIUSD to your account.</span></div></li>
+                <li><div><b>Have USDC on Ethereum</b><span>The reserve is on Ethereum. USDC on another network is moved there first with Circle's CCTP, which the app can do in the same flow.</span></div></li>
+                <li><div><b>Deposit USDC</b><span>Send USDC from your registered wallet to the reserve contract. Deposits from other addresses are not accepted and are returned to the sender.</span></div></li>
+                <li><div><b>AIUSD is minted on Loka Chain</b><span>Once the deposit is confirmed on Ethereum, a verified message mints the same amount of AIUSD to your Loka Chain address.</span></div></li>
                 <li><div><b>Recorded</b><span>The deposit and the mint are on-chain and in your statement.</span></div></li>
             </ol>
           </div>
           <dl class="pk">
             <div><dt>Rate</dt><dd>1 USDC → 1 AIUSD</dd></div>
-            <div><dt>Time</dt><dd>Minutes<small>Once the network confirms the transfer</small></dd></div>
+            <div><dt>Time</dt><dd>Set at launch<small>Ethereum confirmation, then the message to Loka Chain</small></dd></div>
             <div><dt>Fee from Loka</dt><dd>None<small>Network fees are paid by the sender</small></dd></div>
             <div><dt>Minimum</dt><dd>None</dd></div>
           </dl>
@@ -554,7 +554,7 @@ a.is-soon{cursor:default}
                 <li><div><b>Get wire details</b><span>Fund account shows the receiving account at our licensed partner and your reference code.</span></div></li>
                 <li><div><b>Wire USD</b><span>Send a wire from the registered company account, with the reference code in the payment details.</span></div></li>
                 <li><div><b>Converted to USDC</b><span>The partner matches the wire, screens it and converts the amount received to USDC.</span></div></li>
-                <li><div><b>AIUSD is minted</b><span>The USDC goes into the AIUSD contract and the same amount of AIUSD is minted to your account.</span></div></li>
+                <li><div><b>AIUSD is minted</b><span>The USDC goes into the reserve contract on Ethereum and the same amount of AIUSD is minted to your Loka Chain address.</span></div></li>
             </ol>
           </div>
           <dl class="pk">
@@ -568,16 +568,16 @@ a.is-soon{cursor:default}
           <div class="ps">
             <ol>
                 <li><div><b>Enter an amount</b><span>Any amount up to your available balance. AIUSD committed to a loan cannot be redeemed until it is returned.</span></div></li>
-                <li><div><b>Choose a registered wallet</b><span>USDC goes only to a wallet registered to your business.</span></div></li>
-                <li><div><b>AIUSD is burned</b><span>The contract burns the AIUSD and releases the same amount of USDC to the wallet.</span></div></li>
+                <li><div><b>Choose a registered wallet</b><span>USDC is paid on Ethereum, only to a wallet registered to your business.</span></div></li>
+                <li><div><b>AIUSD is burned</b><span>AIUSD is burned on Loka Chain first; the reserve contract then releases the same amount of USDC to the wallet.</span></div></li>
                 <li><div><b>Recorded</b><span>The redemption is on-chain and in your statement.</span></div></li>
             </ol>
           </div>
           <dl class="pk">
             <div><dt>Rate</dt><dd>1 AIUSD → 1 USDC</dd></div>
-            <div><dt>Time</dt><dd>Minutes</dd></div>
+            <div><dt>Time</dt><dd>Set at launch<small>Loka Chain, then the message to Ethereum</small></dd></div>
             <div><dt>Fee from Loka</dt><dd>None<small>Network fees are paid by the sender</small></dd></div>
-            <div><dt>Queue</dt><dd>None<small>The contract always holds USDC equal to supply</small></dd></div>
+            <div><dt>Queue</dt><dd>None<small>The reserve always holds at least the supply</small></dd></div>
           </dl>
         </div>
         <div class="panel" id="p-redeem-usd" role="tabpanel" aria-labelledby="t-redeem-usd">
@@ -585,7 +585,7 @@ a.is-soon{cursor:default}
             <ol>
                 <li><div><b>Enter an amount</b><span>Any amount up to your available balance.</span></div></li>
                 <li><div><b>Confirm your bank account</b><span>USD goes only to the registered account in your company’s name. A newly added account can be used after 24 hours.</span></div></li>
-                <li><div><b>AIUSD is burned</b><span>The contract burns the AIUSD and releases the same amount of USDC to our licensed partner.</span></div></li>
+                <li><div><b>AIUSD is burned</b><span>AIUSD is burned on Loka Chain and the reserve contract releases the same amount of USDC to our licensed partner.</span></div></li>
                 <li><div><b>Paid in USD</b><span>The partner converts the USDC and wires USD to your account.</span></div></li>
             </ol>
           </div>
@@ -617,9 +617,9 @@ a.is-soon{cursor:default}
           <details class="rg">
             <summary><b>Minting</b><span>How new AIUSD comes into existence<i class="ph ph-plus" aria-hidden="true"></i></span></summary>
             <dl>
-              <div class="rr"><dt>Source</dt><dd>Only USDC deposited into the AIUSD contract; no one can mint without it, Loka included</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>Source</dt><dd>Only a verified deposit of USDC into the reserve contract on Ethereum; no one can mint without it, Loka included</dd><span class="st on">Set</span></div>
               <div class="rr"><dt>Rate</dt><dd>1 USDC mints 1 AIUSD</dd><span class="st on">Set</span></div>
-              <div class="rr"><dt>USD route</dt><dd>Wire USD to the licensed partner; it converts to USDC and deposits it into the contract</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>USD route</dt><dd>Wire USD to the licensed partner; it converts to USDC and deposits it into the reserve contract</dd><span class="st on">Set</span></div>
               <div class="rr"><dt>Amount credited</dt><dd>The USDC actually received, after bank and partner fees</dd><span class="st on">Set</span></div>
               <div class="rr"><dt>Fees</dt><dd>None from Loka; bank, partner and network fees are paid by the sender</dd><span class="st on">Set</span></div>
               <div class="rr"><dt>Minimum</dt><dd>None for USDC; 100,000 USD per wire</dd><span class="st">Proposed</span></div>
@@ -631,39 +631,39 @@ a.is-soon{cursor:default}
             <dl>
               <div class="rr"><dt>Rate</dt><dd>1 AIUSD redeems for 1 USDC</dd><span class="st on">Set</span></div>
               <div class="rr"><dt>What can be redeemed</dt><dd>Your available balance; AIUSD committed to a loan follows the loan and is redeemable once returned or repaid</dd><span class="st on">Set</span></div>
-              <div class="rr"><dt>To USDC</dt><dd>Released by the contract to a registered wallet, in minutes</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>To USDC</dt><dd>Burned on Loka Chain, then released on Ethereum to a registered wallet</dd><span class="st on">Set</span></div>
               <div class="rr"><dt>To USD</dt><dd>Released to the licensed partner and wired to your registered company account, usually next business day</dd><span class="st on">Set</span></div>
               <div class="rr"><dt>New bank account</dt><dd>Usable 24 hours after it is verified</dd><span class="st">Proposed</span></div>
-              <div class="rr"><dt>Queue</dt><dd>None; the contract always holds USDC equal to supply</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>Queue</dt><dd>None; the reserve always holds at least the supply</dd><span class="st on">Set</span></div>
             </dl>
           </details>
           <details class="rg">
             <summary><b>Transfers</b><span>Where AIUSD can move<i class="ph ph-plus" aria-hidden="true"></i></span></summary>
             <dl>
-              <div class="rr"><dt>Who can hold AIUSD</dt><dd>Allowlisted addresses only: verified businesses’ registered wallets, Loka Capital escrow and collection contracts, the partner’s address</dd><span class="st">Proposed</span></div>
+              <div class="rr"><dt>Who can hold AIUSD</dt><dd>Allowlisted addresses only: verified businesses’ registered addresses on Loka Chain, Loka Capital escrow and collection contracts, the partner’s address</dd><span class="st">Proposed</span></div>
               <div class="rr"><dt>Between businesses</dt><dd>Not available in the first release</dd><span class="st">Proposed</span></div>
               <div class="rr"><dt>Allowlist</dt><dd>Kept by Loka, following verification results</dd><span class="st">Proposed</span></div>
             </dl>
           </details>
           <details class="rg">
-            <summary><b>Networks</b><span>Where AIUSD is issued<i class="ph ph-plus" aria-hidden="true"></i></span></summary>
+            <summary><b>Network</b><span>Where AIUSD and its reserve are<i class="ph ph-plus" aria-hidden="true"></i></span></summary>
             <dl>
-              <div class="rr"><dt>Networks</dt><dd>Ethereum, Base and Arbitrum</dd><span class="st on">Set</span></div>
-              <div class="rr"><dt>Contracts</dt><dd>One AIUSD contract on each network, holding the USDC deposited on that network</dd><span class="st on">Set</span></div>
-              <div class="rr"><dt>USDC accepted</dt><dd>Native USDC issued by Circle on that network; bridged USDC is not accepted</dd><span class="st on">Set</span></div>
-              <div class="rr"><dt>Mint and redeem</dt><dd>On the network where the USDC is deposited, or where the AIUSD is held</dd><span class="st on">Set</span></div>
-              <div class="rr"><dt>Between networks</dt><dd>No transfer between networks in the first release; redeem on one and deposit on the other</dd><span class="st">Proposed</span></div>
-              <div class="rr"><dt>Loans</dt><dd>Each loan runs on one network, shown on its page; lenders commit AIUSD on that network</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>AIUSD</dt><dd>Issued on Loka Chain; one balance for every loan</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>Reserve</dt><dd>One reserve contract on Ethereum, native USDC issued by Circle only; bridged USDC is not accepted</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>USDC on other networks</dt><dd>Moved to Ethereum with Circle’s CCTP before it is deposited</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>Order of steps</dt><dd>Minting waits until the deposit is confirmed on Ethereum; redemption burns AIUSD on Loka Chain before USDC is released</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>Messages between chains</dt><dd>Each mint is tied to a real deposit anyone can check; daily minting cap and a delay on large mints; audited on its own</dd><span class="st">Proposed</span></div>
+              <div class="rr"><dt>Loans</dt><dd>All Loka Capital escrow and collection contracts run on Loka Chain</dd><span class="st on">Set</span></div>
             </dl>
           </details>
           <details class="rg">
             <summary><b>Reserve</b><span>What backs each AIUSD<i class="ph ph-plus" aria-hidden="true"></i></span></summary>
             <dl>
-              <div class="rr"><dt>What it is</dt><dd>USDC held in the AIUSD contract</dd><span class="st on">Set</span></div>
-              <div class="rr"><dt>Coverage</dt><dd>On each network, the contract’s USDC balance always equals AIUSD supply on that network, enforced by the contract</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>What it is</dt><dd>Native USDC held in one reserve contract on Ethereum</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>Coverage</dt><dd>Never less than AIUSD supply on Loka Chain: minting waits for the deposit, and redemption burns before USDC leaves</dd><span class="st on">Set</span></div>
               <div class="rr"><dt>Use</dt><dd>Only to pay redemptions: not lent, invested or used to cover loan losses</dd><span class="st on">Set</span></div>
               <div class="rr"><dt>Yield</dt><dd>None; the USDC is not put to work</dd><span class="st on">Set</span></div>
-              <div class="rr"><dt>Who can move it</dt><dd>No one, except through a redemption</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>Who can move it</dt><dd>No one; it leaves only to pay a redemption</dd><span class="st on">Set</span></div>
             </dl>
           </details>
           <details class="rg">
@@ -680,10 +680,10 @@ a.is-soon{cursor:default}
           <details class="rg">
             <summary><b>Contract controls</b><span>Who can do what on-chain<i class="ph ph-plus" aria-hidden="true"></i></span></summary>
             <dl>
-              <div class="rr"><dt>Mint and burn</dt><dd>No admin role; only deposit and redeem functions</dd><span class="st on">Set</span></div>
+              <div class="rr"><dt>Mint and burn</dt><dd>No admin role; minting only from a verified deposit, burning only on redemption or drawdown</dd><span class="st on">Set</span></div>
               <div class="rr"><dt>Allowlist</dt><dd>Loka operations multisig</dd><span class="st">Proposed</span></div>
               <div class="rr"><dt>Freeze</dt><dd>Loka compliance multisig, for sanctions and court orders</dd><span class="st">Proposed</span></div>
-              <div class="rr"><dt>Pause</dt><dd>Multisig; stops transfers, minting and redemption, cannot move balances</dd><span class="st">Proposed</span></div>
+              <div class="rr"><dt>Pause</dt><dd>Multisig, separately for the AIUSD contract on Loka Chain and the reserve on Ethereum; cannot move balances. Minting also stops on its own if supply exceeds the reserve</dd><span class="st">Proposed</span></div>
               <div class="rr"><dt>Upgrade</dt><dd>Multisig with a time lock, announced and audited in advance</dd><span class="st">Proposed</span></div>
               <div class="rr"><dt>Audit</dt><dd>Independent audit before launch and before every upgrade</dd><span class="st">Planned</span></div>
             </dl>
@@ -695,6 +695,7 @@ a.is-soon{cursor:default}
               <div class="rr"><dt>Contract issue</dt><dd>Multisig pauses the contract; balances stay as recorded on-chain</dd><span class="st">Proposed</span></div>
               <div class="rr"><dt>Partner outage</dt><dd>USD route stops; USDC minting and redemption continue</dd><span class="st">Proposed</span></div>
               <div class="rr"><dt>Sanctions match</dt><dd>The address is frozen and handled as the law requires</dd><span class="st">Proposed</span></div>
+              <div class="rr"><dt>Loka Chain stops producing blocks</dt><dd>Minting, redemption and lending pause; the reserve on Ethereum is unaffected</dd><span class="st">Proposed</span></div>
               <div class="rr"><dt>USDC frozen by its issuer</dt><dd>AIUSD backed by that USDC could not be redeemed; this risk sits with USDC itself</dd><span class="st on">Set</span></div>
             </dl>
           </details>
@@ -715,8 +716,8 @@ a.is-soon{cursor:default}
           <p>Verify your business, then wire USD from a company account with your reference code, or deposit USDC from a registered wallet. Either way, AIUSD is minted 1:1 into your account.</p>
         </details>
         <details>
-          <summary>Which networks is AIUSD on?<i class="ph ph-plus" aria-hidden="true"></i></summary>
-          <p>Ethereum, Base and Arbitrum. Each network has its own AIUSD contract backed by native USDC on that network. You mint and redeem on the same network, and each loan runs on one network, shown on its page.</p>
+          <summary>Which network is AIUSD on?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+          <p>AIUSD is issued on Loka Chain, where every Loka Capital loan also runs, so you hold one balance. The reserve is native USDC in a contract on Ethereum. USDC on another network can be moved to Ethereum with Circle's CCTP before you deposit.</p>
         </details>
         <details>
           <summary>Do I mint for every loan?<i class="ph ph-plus" aria-hidden="true"></i></summary>
@@ -744,7 +745,7 @@ a.is-soon{cursor:default}
         </details>
         <details>
           <summary>Who issues AIUSD and where is the reserve?<i class="ph ph-plus" aria-hidden="true"></i></summary>
-          <p>AIUSD is issued by its own contract, deployed by Loka. The reserve is the USDC locked in that contract. AIUSD can only be minted when USDC is deposited, and the USDC can only leave to pay a redemption.</p>
+          <p>AIUSD is issued by a contract on Loka Chain, deployed by Loka. The reserve is the native USDC locked in Loka's reserve contract on Ethereum. AIUSD is minted only after USDC arrives in the reserve, and the USDC can only leave to pay a redemption.</p>
         </details>
       </div>
     </div>
@@ -754,7 +755,7 @@ a.is-soon{cursor:default}
     <div class="w">
       <h2>Start with AIUSD, lend on Loka Capital.</h2>
       <div class="cta" style="display:flex;gap:10px;flex-wrap:wrap">
-        <a class="btn btn-light" href="/app/index.html#/v7/fund-account" data-capital>Get AIUSD<i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+        <a class="btn btn-light" href="/app/index.html#/v7/swap" data-capital>Get AIUSD<i class="ph ph-arrow-right" aria-hidden="true"></i></a>
         <a class="btn btn-ghost" href="/">Back to Loka Labs</a>
       </div>
     </div>
