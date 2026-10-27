@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Loka Labs</title>
-<meta name="description" content="Loka Labs builds Loka Capital, AIUSD, Atara and Loka World.">
+<meta name="description" content="Loka Labs trains behavior models and builds Loka Capital, AIUSD, Atara and Loka World.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Kaushan+Script&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font
 a{color:inherit}
 img,svg{display:block;max-width:100%}
 .w{max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter)}
-.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:0;color:var(--ink-3)}
 .num{font-variant-numeric:tabular-nums}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
 
@@ -106,9 +106,18 @@ img,svg{display:block;max-width:100%}
 .scrub .wd{color:rgba(14,15,15,.13);transition:color .35s var(--ease)}
 .scrub .wd.on{color:var(--ink)}
 .scrub em .wd.on{color:var(--accent)}
-.ov-grid{margin-top:clamp(48px,6vw,88px);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;scroll-margin-top:84px}
+.ov-grid{margin-top:clamp(48px,6vw,88px);display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;scroll-margin-top:84px}
 .ov{position:relative;display:flex;flex-direction:column;gap:10px;min-height:clamp(230px,20vw,280px);padding:clamp(20px,1.8vw,28px);border-radius:20px;background:var(--paper);border:1px solid var(--line);text-decoration:none;overflow:hidden;transition:background-color .4s var(--ease),color .4s var(--ease),border-color .4s var(--ease),transform .45s var(--ease)}
 .ov b{font-weight:500;font-size:clamp(26px,2.3vw,34px);letter-spacing:-.035em;line-height:1}
+/* the behavior model and AIUSD take the first row at a larger size; the three products follow */
+.ov{grid-column:span 2}
+.ov.ov-lg{grid-column:span 3;min-height:clamp(280px,25vw,350px)}
+.ov.ov-lg b{font-size:clamp(34px,3.4vw,52px)}
+.ov.ov-lg p{font-size:clamp(16px,1.2vw,18px);max-width:32ch}
+.ov-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:20px}
+.ov-tags span{padding:5px 12px;border:1px solid var(--line-2);border-radius:999px;font-size:13.5px;color:var(--ink-2);transition:border-color .4s var(--ease),color .4s var(--ease)}
+.ov:hover .ov-tags span{border-color:rgba(238,240,238,.2);color:var(--on-night-2)}
+.ov .ov-tags+.key{margin-top:18px}
 .ov p{margin:0;color:var(--ink-2);font-size:15px;line-height:1.45;max-width:26ch;transition:color .4s var(--ease)}
 .ov .key{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:14px;border-top:1px solid var(--line);transition:border-color .4s var(--ease)}
 .ov .key small{font-size:15px;font-weight:500;color:inherit}
@@ -120,6 +129,159 @@ img,svg{display:block;max-width:100%}
 .ov:hover .key i{background:var(--on-night);color:var(--ink);border-color:var(--on-night);transform:rotate(-45deg)}
 .ov:hover::after{opacity:1}
 
+/* ---------- behavior model: black page, neutral grey panels; one situation answered twice, three steps that advance as you scroll, the questions it can answer ---------- */
+.model{--m-bg:#050505;--m-pan:#101010;--m-card:#191919;--m-line:rgba(255,255,255,.09);--m-1:#f4f4f4;--m-2:rgba(244,244,244,.62);--m-3:rgba(244,244,244,.4);background:var(--m-bg);color:var(--m-1);padding:clamp(12px,2.4vw,36px);scroll-margin-top:68px}
+.mx{max-width:1520px;margin:0 auto;display:grid;gap:clamp(12px,1.4vw,20px)}
+.mp{position:relative;border-radius:clamp(24px,2.8vw,40px);background:var(--m-pan);overflow:hidden;isolation:isolate}
+.m-cap{font-family:var(--mono);font-size:12px;letter-spacing:0;color:var(--m-3)}
+.m-h{margin:0;font-weight:400;font-size:clamp(32px,3.4vw,54px);line-height:1.08;letter-spacing:-.03em}
+.m-h span{display:block;color:var(--m-3)}
+.m-h .mw{display:inline-block;opacity:0;transform:translateY(.35em);filter:blur(6px);transition:opacity .7s var(--ease),transform .8s var(--ease),filter .7s var(--ease)}
+.m-h.on .mw{opacity:1;transform:none;filter:none}
+/* panel 1: the copy and three scenarios on the left, a conversation on the right; pinned, so scrolling moves through the scenarios */
+.m-pin-cmp{height:280vh;position:relative}
+.m-pin-cmp .mp-cmp{position:sticky;top:80px;min-height:calc(100vh - 100px)}
+@media (max-width:960px),(max-height:720px){.m-pin-cmp{height:auto}.m-pin-cmp .mp-cmp{position:relative;top:auto;min-height:0}}
+.mp-cmp{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,5vw,88px);align-items:center;padding:clamp(48px,6vw,96px) clamp(24px,4.4vw,72px)}
+.mp-cmp .m-cap{display:inline-flex;align-items:center;gap:10px}
+.mp-cmp .m-cap i{width:6px;height:6px;border-radius:50%;background:#8fe0b4;box-shadow:0 0 0 4px rgba(143,224,180,.12);animation:mblink 2.4s ease-in-out infinite}
+@keyframes mblink{50%{opacity:.35}}
+.mp-cmp .m-h{margin-top:20px}
+.mp-cmp .m-h .lo{display:block;color:var(--m-3)}
+.mp-cmp .m-h .hi{display:block;color:var(--m-1)}
+.m-lede{margin:22px 0 0;max-width:46ch;font-size:clamp(15.5px,1.15vw,17px);line-height:1.6;color:var(--m-2)}
+.m-scn{margin:clamp(28px,3vw,40px) 0 0;padding:0;list-style:none;border-top:1px solid var(--m-line)}
+.m-scn button{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);gap:2px 0;width:100%;padding:16px 0;border:0;border-bottom:1px solid var(--m-line);background:none;color:var(--m-3);font:inherit;text-align:left;cursor:pointer;transition:color .3s var(--ease)}
+.m-scn button .k{grid-row:span 2;font-family:var(--mono);font-size:12px;padding-top:4px}
+.m-scn button b{font-weight:500;font-size:17px}
+.m-scn button small{font-size:14px;color:var(--m-3)}
+.m-scn button::after{content:"";position:absolute;left:0;bottom:-1px;height:1px;width:100%;background:#fff;transform:scaleX(0);transform-origin:left}
+.m-scn button[aria-selected="true"]::after{transform:scaleX(var(--fill,1))}
+.m-scn button[aria-selected="true"]{color:var(--m-1)}
+.m-scn button:hover{color:var(--m-1)}
+.m-scn button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+/* the conversation window: light, like the rest of the site */
+.m-chat{position:relative;border-radius:26px;background:var(--paper);color:var(--ink);box-shadow:0 30px 80px -40px rgba(0,0,0,.8);overflow:hidden}
+.m-chat-top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px 16px 22px;border-bottom:1px solid var(--line)}
+.m-chat-top .who{display:flex;align-items:center;gap:10px;min-width:0;font-size:14.5px;font-weight:500}
+.m-chat-top .who em{font-style:normal;font-weight:400;color:var(--ink-3)}
+.m-cnt{flex:none;font-family:var(--mono);font-size:12px;color:var(--ink-3)}
+.m-av{display:grid;place-items:center;flex:none;width:30px;height:30px;border-radius:50%;background:var(--mist);font-family:var(--mono);font-size:11px;color:var(--ink-2)}
+.m-thread{display:flex;flex-direction:column;gap:14px;min-height:330px;padding:24px 22px 26px}
+.m-msg{max-width:84%;padding:13px 16px;border-radius:18px;font-size:16px;line-height:1.45}
+.m-in{align-self:flex-start;background:var(--mist);border-bottom-left-radius:6px;color:var(--ink)}
+.m-meta{align-self:flex-end;font-family:var(--mono);font-size:11.5px;letter-spacing:0;color:var(--ink-3);margin-top:6px}
+.m-out{align-self:flex-end;min-height:48px;border-bottom-right-radius:6px;transition:background-color .4s var(--ease),color .4s var(--ease)}
+.m-out{background:var(--ink);color:var(--paper)}
+.m-out.typing::after{content:"";display:inline-block;width:2px;height:1em;margin-left:3px;vertical-align:-.12em;background:currentColor;animation:mcaret .9s steps(2) infinite}
+@keyframes mcaret{50%{opacity:0}}
+.m-dots3{display:inline-flex;gap:4px;padding:4px 0}
+.m-dots3 i{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.4;animation:mdot 1s ease-in-out infinite}
+.m-dots3 i:nth-child(2){animation-delay:.15s}.m-dots3 i:nth-child(3){animation-delay:.3s}
+@keyframes mdot{50%{opacity:1;transform:translateY(-2px)}}
+.m-why{align-self:flex-end;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;max-width:84%;opacity:0;transform:translateY(6px);transition:opacity .45s var(--ease),transform .5s var(--ease)}
+.m-why.on{opacity:1;transform:none}
+.m-why span{padding:4px 10px;border:1px solid var(--line-2);border-radius:999px;font-size:12.5px;color:var(--ink-2)}
+.m-note{margin:14px 0 0;font-size:13px;color:var(--m-3)}
+/* panel 2: pinned while you scroll; the field moves through three steps */
+.m-pin{height:300vh;position:relative}
+.mp-steps{position:sticky;top:80px;height:calc(100vh - 100px);min-height:540px}
+.mp-steps canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
+.m-steps-h{position:absolute;top:clamp(28px,3.4vw,52px);left:clamp(24px,3.4vw,52px)}
+.m-step{position:absolute;left:50%;bottom:clamp(20px,3vw,40px);transform:translateX(-50%);width:min(560px,calc(100% - 40px));padding:22px 24px 20px;border-radius:24px;background:rgba(30,30,30,.7);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--m-line)}
+.m-step .top{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.m-step b{display:block;font-weight:500;font-size:clamp(18px,1.5vw,21px);letter-spacing:-.01em}
+.m-step p{margin:8px 0 0;font-size:14.5px;line-height:1.5;color:var(--m-2)}
+.m-step .n{flex:none;font-size:12.5px;letter-spacing:.1em;color:var(--m-3);font-variant-numeric:tabular-nums}
+.m-step .swap{animation:mswap .55s var(--ease)}
+@keyframes mswap{from{opacity:0;transform:translateY(8px)}}
+.m-bars{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:16px}
+.m-bars button{height:14px;padding:5px 0;border:0;background:none;cursor:pointer}
+.m-bars button span{display:block;height:3px;border-radius:2px;background:rgba(255,255,255,.14);overflow:hidden}
+.m-bars button span i{display:block;height:100%;width:0;background:#fff;border-radius:2px;transition:width .9s var(--ease)}
+.m-bars button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.m-hint{position:absolute;right:clamp(24px,3.4vw,52px);top:clamp(36px,3.8vw,60px);display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;letter-spacing:0;color:var(--m-3);transition:opacity .4s}
+.m-hint i{animation:mhint 1.8s var(--ease) infinite}
+@keyframes mhint{50%{transform:translateY(4px)}}
+/* panel 3 */
+.mp-q{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(32px,5vw,96px);padding:clamp(48px,6vw,96px) clamp(24px,4.4vw,72px)}
+.m-q-side{display:flex;flex-direction:column}
+.m-q-side p{margin:20px 0 0;max-width:36ch;font-size:15px;line-height:1.6;color:var(--m-2)}
+.m-dots{flex:1;min-height:240px;margin-top:32px;position:relative}
+.m-dots canvas{position:absolute;inset:0;width:100%;height:100%}
+.m-q{margin:0;padding:0;list-style:none}
+.m-q>li{border-top:1px solid var(--m-line);transition:background-color .3s}
+.m-q>li:last-child{border-bottom:1px solid var(--m-line)}
+.m-q button{display:grid;grid-template-columns:56px minmax(0,1fr) auto;align-items:center;width:100%;padding:22px 0;border:0;background:none;color:var(--m-3);font:inherit;text-align:left;cursor:pointer;transition:color .3s var(--ease),padding .4s var(--ease)}
+.m-q button .k{font-size:15px;font-variant-numeric:tabular-nums}
+.m-q button b{font-weight:400;font-size:clamp(19px,1.7vw,24px);letter-spacing:-.015em}
+.m-q button i{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;font-size:16px;transition:transform .4s var(--ease),background-color .3s,color .3s}
+.m-q button:hover{color:var(--m-1);padding-left:6px}
+.m-q button:hover i{background:#222}
+.m-q button[aria-expanded="true"]{color:var(--m-1)}
+.m-q button[aria-expanded="true"] i{transform:rotate(90deg);background:#fff;color:#000}
+.m-q button:focus-visible{outline:2px solid #fff;outline-offset:2px;border-radius:6px}
+.m-q .qs{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
+.m-q .qs>div{overflow:hidden;display:grid;gap:8px;padding-left:56px}
+.m-q li.open .qs{grid-template-rows:1fr}
+.m-q li.open .qs>div{padding-bottom:22px}
+.m-q .qs span{display:block;padding:14px 18px;border-radius:14px;background:var(--m-card);font-size:15px;line-height:1.45;color:var(--m-1);opacity:0;transform:translateY(10px);transition:opacity .45s var(--ease),transform .5s var(--ease),background-color .25s}
+.m-q li.open .qs span{opacity:1;transform:none}
+.m-q li.open .qs span:nth-child(2){transition-delay:.08s,.08s,0s}
+.m-q li.open .qs span:nth-child(3){transition-delay:.16s,.16s,0s}
+.m-q .qs span:hover{background:#222}
+/* panel 4 */
+.mp-test{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(32px,5vw,96px);padding:clamp(48px,6vw,88px) clamp(24px,4.4vw,72px)}
+.m-tests{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-self:end}
+.m-tests div{display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:20px;background:var(--m-card);transition:transform .4s var(--ease),background-color .3s}
+.m-tests div:hover{transform:translateY(-3px);background:#1f1f1f}
+.m-tests b{font-weight:500;font-size:17px}
+.m-tests p{margin:0;font-size:14.5px;line-height:1.5;color:var(--m-2)}
+.mp-test.rise .m-tests div{opacity:0;transform:translateY(12px);transition:opacity .6s var(--ease),transform .7s var(--ease),background-color .3s}
+.mp-test.rise.in .m-tests div{opacity:1;transform:none}
+.mp-test.rise.in .m-tests div:nth-child(2){transition-delay:.1s}
+.mp-test.rise.in .m-tests div:nth-child(3){transition-delay:.2s}
+/* chapter marks, Loka World, and the bridge into the real economy */
+.m-chap{margin:0 0 18px;font-family:var(--mono);font-size:12px;letter-spacing:0;color:var(--m-2,rgba(244,244,244,.62))}
+.mp-world{min-height:clamp(620px,60vw,860px);display:flex;align-items:flex-end;cursor:grab;touch-action:pan-y}
+.mp-world.grab{cursor:grabbing}
+.mp-world canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
+.mp-world::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(16,16,16,.9) 0%,rgba(16,16,16,.4) 34%,rgba(16,16,16,0) 52%)}
+.mw-text{position:relative;max-width:560px;padding:clamp(32px,4.4vw,72px);cursor:auto}
+.mw-text .m-h{font-size:clamp(40px,4.6vw,72px)}
+.mw-text .m-lede{margin-top:20px;max-width:44ch}
+@media (max-width:760px){.mp-world{min-height:760px}.mp-world::after{background:linear-gradient(0deg,rgba(16,16,16,.95) 0%,rgba(16,16,16,.7) 45%,rgba(16,16,16,0) 62%)}}
+.mw-soon{display:inline-flex;align-items:center;gap:8px;margin:24px 0 0;padding:6px 14px;border:1px solid var(--m-line);border-radius:999px;font-size:13px;color:var(--m-2)}
+.mw-soon i{width:6px;height:6px;border-radius:50%;background:rgba(244,244,244,.5)}
+.chap{padding-bottom:clamp(72px,8vw,120px);scroll-margin-top:68px}
+.chap .chap-h{margin:0;font-weight:500;font-size:clamp(34px,3.8vw,56px);line-height:1.04;letter-spacing:-.035em}
+.chap-idx{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.4vw,36px);margin-top:clamp(28px,3vw,44px)}
+.chap-idx a{display:flex;flex-direction:column;gap:6px;padding-top:16px;border-top:1px solid var(--line-2);text-decoration:none;transition:border-color .3s var(--ease)}
+.chap-idx a b{font-weight:500;font-size:clamp(18px,1.5vw,21px);letter-spacing:-.01em}
+.chap-idx a span{font-size:15px;color:var(--ink-2)}
+.chap-idx a:hover{border-color:var(--ink)}
+#aiusd-main{scroll-margin-top:96px}
+@media (max-width:640px){.chap-idx{grid-template-columns:1fr}}
+/* nav over the black band */
+.nav.on-band{background:rgba(8,8,8,.72);color:var(--m-1,#f4f4f4);border-bottom-color:rgba(255,255,255,.06)}
+.nav.on-band ul a,.nav.on-band .pd>button{color:rgba(244,244,244,.62)}
+.nav.on-band ul a:hover{color:#f4f4f4}
+.nav.on-band .btn-line{border-color:rgba(255,255,255,.22)}
+@media (max-width:1100px){.mp-test{grid-template-columns:1fr}}
+@media (max-width:960px){.mp-q,.mp-cmp{grid-template-columns:1fr}.m-dots{display:none}}
+@media (max-width:640px){
+  .m-chat-top{flex-wrap:wrap}
+  .m-msg,.m-why{max-width:92%}
+  .m-hint{display:none}
+  .m-q button{grid-template-columns:40px minmax(0,1fr) auto}
+  .m-q .qs>div{padding-left:0}
+  .m-tests{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  .mp-cmp .m-cap i,.m-hint i{animation:none}
+  .m-h .mw,.m-why,.m-q .qs span{opacity:1;transform:none;filter:none;transition:none}
+  .m-q .qs{transition:none}.m-dots3 i{animation:none}
+}
 /* ---------- product cards: each sticks under the nav and the next one slides over it ---------- */
 .cards{padding:0 0 clamp(32px,4vw,64px)}
 .cards>.w{max-width:1560px;padding:0 clamp(12px,2vw,32px)}
@@ -149,7 +311,7 @@ img,svg{display:block;max-width:100%}
 .tile ol li{display:grid;grid-template-columns:22px 1fr;gap:8px;align-items:baseline}
 .tile ol li span{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
 .media{position:relative;border-radius:24px;overflow:hidden;isolation:isolate;padding:0}
-.media .tag{position:absolute;left:20px;top:18px;z-index:2;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.media .tag{position:absolute;left:20px;top:18px;z-index:2;font-family:var(--mono);font-size:11px;letter-spacing:.06em}
 
 /* principal chart */
 .chart{position:relative;flex:1;min-height:120px;margin-top:14px}
@@ -168,7 +330,7 @@ img,svg{display:block;max-width:100%}
 .pcard.in .m-capital img{transform:scale(1)}
 .m-capital .cap{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:20px 22px;color:var(--on-night);background:linear-gradient(to top,rgba(11,15,14,.78),rgba(11,15,14,0))}
 .m-capital .cap b{display:block;font-weight:500;font-size:clamp(20px,1.8vw,28px);letter-spacing:-.025em;line-height:1.05}
-.m-capital .cap span{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--on-night-2)}
+.m-capital .cap span{font-family:var(--mono);font-size:11.5px;letter-spacing:0;color:var(--on-night-2)}
 
 /* AIUSD: a coin turning slowly */
 .m-coin{display:grid!important;place-items:center;background:radial-gradient(90% 80% at 50% 38%,#2c5446 0%,var(--accent-deep) 55%,#13241e 100%);color:var(--on-night);display:grid;place-items:center}
@@ -195,9 +357,6 @@ img,svg{display:block;max-width:100%}
 .win img{width:100%;height:auto}
 
 /* Loka World: illustration */
-.m-world{background:var(--night)}
-.m-world .tag{color:var(--on-night-3)}
-.m-world svg{position:absolute;inset:0;width:100%;height:100%}
 .edge{stroke:rgba(238,240,238,.22);stroke-width:1;fill:none;stroke-dasharray:3 5;animation:flow 6s linear infinite}
 @keyframes flow{to{stroke-dashoffset:-80}}
 .q rect{fill:#18201d;stroke:rgba(238,240,238,.22)}
@@ -231,7 +390,7 @@ img,svg{display:block;max-width:100%}
 
 /* ---------- audiences ---------- */
 .aud{padding:clamp(56px,8vw,104px) 0}
-.aud-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:24px}
+.aud-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:24px}
 .aud a{display:flex;flex-direction:column;gap:10px;padding:clamp(24px,2.2vw,32px);border-radius:20px;background:var(--paper);box-shadow:0 1px 2px rgba(14,15,15,.04);text-decoration:none;min-height:210px;transition:background-color .3s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease)}
 .aud a:hover{background:#fff;transform:translateY(-2px);box-shadow:0 18px 40px -24px rgba(14,15,15,.22)}
 .aud a b{font-weight:500;font-size:clamp(22px,2vw,28px);letter-spacing:-.02em;transition:color .2s}
@@ -288,9 +447,9 @@ img,svg{display:block;max-width:100%}
 
 /* ---------- footer ---------- */
 footer{background:var(--night);color:var(--on-night-2);padding:56px 0 40px;font-size:14px}
-.foot{display:grid;grid-template-columns:1.4fr repeat(3,minmax(0,1fr));gap:40px}
+.foot{display:grid;grid-template-columns:1.4fr repeat(4,minmax(0,1fr));gap:40px}
 footer .brand{color:var(--on-night)}
-footer h4{margin:0 0 14px;font-family:var(--mono);font-weight:400;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--on-night-3)}
+footer h4{margin:0 0 14px;font-family:var(--mono);font-weight:400;font-size:11.5px;letter-spacing:0;color:var(--on-night-3)}
 footer ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 footer a{text-decoration:none;color:var(--on-night-2);transition:color .2s}
 footer a:hover{color:var(--on-night)}
@@ -309,8 +468,8 @@ footer a:hover{color:var(--on-night)}
 }
 
 /* ---------- responsive ---------- */
+@media (max-width:1200px) and (min-width:961px){.aud-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:960px){
-  .ov-grid{grid-template-columns:1fr 1fr}
   .ov{min-height:220px}
   .pcard{position:relative;top:auto;grid-template-columns:1fr}
   .bento{height:auto;grid-template-rows:none;grid-auto-rows:minmax(220px,auto)}
@@ -329,7 +488,7 @@ footer a:hover{color:var(--on-night)}
   .nav .btn{height:36px;padding:0 14px;font-size:13.5px}
   .btn .l{display:none}.btn .s{display:inline}
   .ov-grid{grid-template-columns:1fr}
-  .ov{min-height:0}
+  .ov,.ov.ov-lg{grid-column:auto;min-height:0}
   .bento{grid-template-columns:1fr}
   .dfacts{grid-template-columns:1fr}
   .dfacts div+div{padding-left:0;border-left:0;border-top:1px solid var(--line)}
@@ -431,6 +590,7 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
             </a>
           </div>
         </div></li>
+      <li><a href="#model">Model</a></li>
       <li><a href="#audiences">Get started</a></li>
       <li><a href="#company">Company</a></li>
     </ul>
@@ -445,8 +605,8 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
     <div class="hero-main">
       <div class="w hero-grid">
         <div>
-          <h1 id="h1">The financial layer of the <em>AI economy</em>.</h1>
-          <p class="lede fade" style="transition-delay:.55s">Compute is built on credit. Agents pay for work. Decisions about AI are made under uncertainty. Each needs financial rules made for how AI works, and Loka Labs builds them.</p>
+          <h1 id="h1">Building the economy <em>AI runs on</em>.</h1>
+          <p class="lede fade" style="transition-delay:.55s">Loka Labs trains models of how people behave, and builds the products the AI economy lends, pays and settles with.</p>
           <div class="cta fade" style="transition-delay:.7s">
             <a class="btn btn-light" href="#thesis">Explore<i class="ph ph-arrow-down" aria-hidden="true"></i></a>
             <a class="btn btn-ghost" href="#company" data-contact>Contact us</a>
@@ -474,34 +634,136 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
   </section>
   <section class="overview" id="thesis">
     <div class="w">
-      <h2 class="statement scrub" id="scrub">Money that works the way <em>AI does</em>.</h2>
+      <h2 class="statement scrub" id="scrub">From one person, to a whole society, to the <em>money it runs on</em>.</h2>
       <div class="ov-grid rise" id="products">
+        <a class="ov ov-lg" href="#model">
+          <b>Behavior</b>
+          <p>Models that act like people, not assistants.</p>
+          <span class="ov-tags"><span>In training</span><span>Settings</span><span>Populations</span><span>Judgment</span><span>Roles</span></span>
+          <span class="key"><small>Behavior model</small><i class="ph ph-arrow-down" aria-hidden="true"></i></span>
+        </a>
+        <a class="ov ov-lg" href="#world">
+          <b>Simulation</b>
+          <p>A simulated civilization where people and agents live, trade and decide together.</p>
+          <span class="ov-tags"><span>Coming soon</span><span>Simulated civilization</span></span>
+          <span class="key"><small>Loka World</small><i class="ph ph-arrow-down" aria-hidden="true"></i></span>
+        </a>
         <a class="ov" href="#aiusd">
           <b>Settlement</b>
           <p>Loans, escrow and repayments need one dollar that settles on-chain.</p>
           <span class="key"><small>AIUSD</small><i class="ph ph-arrow-down" aria-hidden="true"></i></span>
-        </a>
-        <a class="ov" href="#capital">
-          <b>Capital</b>
-          <p>Compute is built before it earns. Lenders need security they can see.</p>
-          <span class="key"><small>Loka Capital</small><i class="ph ph-arrow-down" aria-hidden="true"></i></span>
         </a>
         <a class="ov" href="#atara">
           <b>Payments</b>
           <p>Agents pay for work they cannot inspect first. Money should move when the work is done.</p>
           <span class="key"><small>Atara</small><i class="ph ph-arrow-down" aria-hidden="true"></i></span>
         </a>
-        <a class="ov" href="#world">
-          <b>Simulation</b>
-          <p>Calls on the AI economy should be scored against what actually happens.</p>
-          <span class="key"><small>Loka World</small><i class="ph ph-arrow-down" aria-hidden="true"></i></span>
+        <a class="ov" href="#capital">
+          <b>Capital</b>
+          <p>Compute is built before it earns. Lenders need security they can see.</p>
+          <span class="key"><small>Loka Capital</small><i class="ph ph-arrow-down" aria-hidden="true"></i></span>
         </a>
       </div>
     </div>
   </section>
 
+  <section class="model" id="model">
+    <div class="mx">
+      <div class="m-pin m-pin-cmp" id="m-cmp-pin">
+      <div class="mp mp-cmp">
+        <div>
+          <p class="m-cap"><i aria-hidden="true"></i>Behavior model · In training</p>
+          <h2 class="m-h"><span class="lo">Not an assistant.</span><span class="hi">A person.</span></h2>
+          <p class="m-lede">A model that bargains, loses patience and misjudges, the way people do.</p>
+          <div class="m-scn" role="tablist" aria-label="Examples" id="m-scn">
+            <button type="button" role="tab" aria-selected="true" data-i="0"><span class="k">01</span><b>Negotiation</b><small>A lease renewal</small></button>
+            <button type="button" role="tab" aria-selected="false" tabindex="-1" data-i="1"><span class="k">02</span><b>A user in a hurry</b><small>A refund that stalls</small></button>
+            <button type="button" role="tab" aria-selected="false" tabindex="-1" data-i="2"><span class="k">03</span><b>A judgment call</b><small>Two loans, one headline</small></button>
+          </div>
+        </div>
+        <div>
+          <div class="m-chat" id="m-chat" role="tabpanel" aria-live="polite">
+            <div class="m-chat-top">
+              <span class="who"><span class="m-av" id="m-av">CC</span><span id="m-from">Compute center</span></span>
+              <span class="m-cnt" id="m-cnt">1 / 3</span>
+            </div>
+            <div class="m-thread">
+              <p class="m-msg m-in" id="m-in">We can renew your GPU lease at the current rate. Shall I send the contract?</p>
+              <span class="m-meta">A person, as we train it</span>
+              <p class="m-msg m-out" id="m-out">We’re quoted less elsewhere. Twelve months if you come down; otherwise month to month at your price.</p>
+              <p class="m-why" id="m-why"></p>
+            </div>
+          </div>
+          <p class="m-note">Illustrations of the behavior we train for, written by our team. Not model output.</p>
+        </div>
+      </div>
+      </div>
+
+      <div class="m-pin" id="m-steps">
+        <div class="mp mp-steps">
+          <canvas id="m-field" aria-hidden="true"></canvas>
+          <h3 class="m-h m-steps-h">How it is built.<span>One model, three steps.</span></h3>
+          <p class="m-hint" aria-hidden="true">Scroll<i class="ph ph-arrow-down"></i></p>
+          <div class="m-step">
+            <div class="top" aria-live="polite"><b id="m-step-t">Start from a base model</b><span class="n" id="m-step-n">1 / 3</span></div>
+            <p id="m-step-p">Training a model to be helpful is what makes it stop acting like a person, so we start before that step, from the full range of how people talk.</p>
+            <div class="m-bars">
+              <button type="button" aria-label="Step 1"><span><i></i></span></button>
+              <button type="button" aria-label="Step 2"><span><i></i></span></button>
+              <button type="button" aria-label="Step 3"><span><i></i></span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mp mp-q rise">
+        <div class="m-q-side">
+          <h3 class="m-h">Questions<span>it can answer.</span></h3>
+          <p>The kinds of questions we are building it for, once training is complete.</p>
+          <div class="m-dots" aria-hidden="true"><canvas id="m-dots"></canvas></div>
+        </div>
+        <ul class="m-q" id="m-q">
+          <li class="open"><button type="button" aria-expanded="true"><span class="k">01</span><b>Testing agents and products</b><i class="ph ph-arrow-right" aria-hidden="true"></i></button>
+            <div class="qs"><div><span>How do impatient users react when an agent asks for one more step?</span><span>Where do confused users give up, and what do they say when they do?</span><span>Which wording makes a delay feel fair rather than evasive?</span></div></div></li>
+          <li><button type="button" aria-expanded="false"><span class="k">02</span><b>Negotiation</b><i class="ph ph-arrow-right" aria-hidden="true"></i></button>
+            <div class="qs"><div><span>How hard will a tenant push back on a renewal price?</span><span>Which offer gets a counterparty to sign for longer?</span><span>When does holding firm end the conversation?</span></div></div></li>
+          <li><button type="button" aria-expanded="false"><span class="k">03</span><b>Different people</b><i class="ph ph-arrow-right" aria-hidden="true"></i></button>
+            <div class="qs"><div><span>Does the same message land differently by age, culture or temperament?</span><span>Which customers leave after a price change, and which stay?</span></div></div></li>
+          <li><button type="button" aria-expanded="false"><span class="k">04</span><b>Judging conversations</b><i class="ph ph-arrow-right" aria-hidden="true"></i></button>
+            <div class="qs"><div><span>Would a person find this reply pushy, cold or helpful?</span><span>Which of two agents feels more trustworthy, and why?</span></div></div></li>
+        </ul>
+      </div>
+
+      <div class="mp mp-test rise">
+        <h3 class="m-h">How we test it.<span>Results follow training.</span></h3>
+        <div class="m-tests">
+          <div><span class="m-cap">01</span><b>Unseen people</b><p>Test personas never appear in training.</p></div>
+          <div><span class="m-cap">02</span><b>Four levels of fidelity</b><p>One person, a population, a whole conversation, and the response to a change.</p></div>
+          <div><span class="m-cap">03</span><b>No leakage</b><p>Hard bargaining stays out of support conversations.</p></div>
+        </div>
+      </div>
+
+      <div class="mp mp-world rise" id="world">
+        <canvas id="m-world" aria-hidden="true"></canvas>
+        <div class="mw-text">
+          <h3 class="m-h">Loka World.<span>A civilization, simulated.</span></h3>
+          <p class="m-lede">Many people and agents in one world, living, trading and deciding together. Loka World is a simulated civilization for watching how a whole society behaves.</p>
+          <p class="mw-soon"><i aria-hidden="true"></i>Coming soon</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="dollar" id="aiusd">
-    <div class="w dollar-grid">
+    <div class="w chap rise" id="economy">
+      <h2 class="chap-h">The money it runs on.</h2>
+      <div class="chap-idx">
+        <a href="#aiusd-main"><b>AIUSD</b><span>A dollar to settle in</span></a>
+        <a href="#atara"><b>Atara</b><span>Pay once the work is done</span></a>
+        <a href="#capital"><b>Loka Capital</b><span>Fund the compute</span></a>
+      </div>
+    </div>
+    <div class="w dollar-grid" id="aiusd-main">
       <div class="rise">
         <h2>AIUSD</h2>
         <p class="what">The dollar Loka Capital settles in.</p>
@@ -511,7 +773,7 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
           <div><dt>Get it with</dt><dd>USD wire or USDC</dd></div>
           <div><dt>Interest</dt><dd>None</dd></div>
         </dl>
-        <div class="links"><a class="btn btn-ink" href="/aiusd/">Learn about AIUSD<i class="ph ph-arrow-right" aria-hidden="true"></i></a><a class="btn btn-line" href="/app/index.html#/v7/fund-account" data-capital>Get AIUSD</a></div>
+        <div class="links"><a class="btn btn-ink" href="/aiusd/">Learn about AIUSD<i class="ph ph-arrow-right" aria-hidden="true"></i></a><a class="btn btn-line" href="/app/index.html#/v7/swap" data-capital>Get AIUSD</a></div>
       </div>
       <div class="coin-wrap rise" id="coin-wrap" data-coin aria-hidden="true">
         <canvas id="coin3d"></canvas>
@@ -522,7 +784,42 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
 
   <section class="cards">
     <div class="w">
-      <article class="pcard" id="capital" style="--i:0">
+      <article class="pcard" id="atara" style="--i:0">
+        <div class="pcard-text">
+          <h3>Payments</h3>
+          <p class="need">Agents pay for data and work they cannot inspect first. Money should move only when the work is done.</p>
+          <div class="prod-block">
+            <b>Atara</b>
+            <p class="desc">Payments that release when the agreed condition is met. If it is not, the funds return to the payer.</p>
+          <div class="links">
+            <a class="btn btn-ink" href="https://www.loka.cash/" target="_blank" rel="noopener">Visit Atara<i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>
+          </div>
+          </div>
+        </div>
+        <div class="bento">
+          <div class="tile media m-atara w2 h2">
+            <div class="win">
+              <div class="win-bar"><i></i><i></i><i></i><span>loka.cash</span></div>
+              <img src="/assets/img/labs-atara.jpg" alt="Atara website" width="2880" height="1800" loading="lazy">
+            </div>
+          </div>
+          <div class="tile">
+            <span class="tl">How a payment moves</span>
+            <ol>
+              <li><span>01</span>Funds wait in a contract</li>
+              <li><span>02</span>The condition is confirmed</li>
+              <li><span>03</span>Released to the payee, or returned</li>
+            </ol>
+          </div>
+          <div class="tile">
+            <span class="tl">Built for</span>
+            <span class="tv">Apps and agents</span>
+            <span class="ts">Conditional settlement through an API</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="pcard" id="capital" style="--i:1">
         <div class="pcard-text">
           <h3>Capital</h3>
           <p class="need">Compute is built before it earns. Lenders need security they can see, and a claim on the rent.</p>
@@ -558,73 +855,6 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
         </div>
       </article>
 
-      <article class="pcard" id="atara" style="--i:1">
-        <div class="pcard-text">
-          <h3>Payments</h3>
-          <p class="need">Agents pay for data and work they cannot inspect first. Money should move only when the work is done.</p>
-          <div class="prod-block">
-            <b>Atara</b>
-            <p class="desc">Payments that release when the agreed condition is met. If it is not, the funds return to the payer.</p>
-          <div class="links">
-            <a class="btn btn-ink" href="https://www.loka.cash/" target="_blank" rel="noopener">Visit Atara<i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>
-          </div>
-          </div>
-        </div>
-        <div class="bento">
-          <div class="tile media m-atara w2 h2">
-            <div class="win">
-              <div class="win-bar"><i></i><i></i><i></i><span>loka.cash</span></div>
-              <img src="/assets/img/labs-atara.jpg" alt="Atara website" width="2880" height="1800" loading="lazy">
-            </div>
-          </div>
-          <div class="tile">
-            <span class="tl">How a payment moves</span>
-            <ol>
-              <li><span>01</span>Funds wait in a contract</li>
-              <li><span>02</span>The condition is confirmed</li>
-              <li><span>03</span>Released to the payee, or returned</li>
-            </ol>
-          </div>
-          <div class="tile">
-            <span class="tl">Built for</span>
-            <span class="tv">Apps and agents</span>
-            <span class="ts">Conditional settlement through an API</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="pcard" id="world" style="--i:2">
-        <div class="pcard-text">
-          <h3>Simulation</h3>
-          <p class="need">Large bets are being made on where AI goes next. Calls should be scored against what actually happens.</p>
-          <div class="prod-block">
-            <b>Loka World</b>
-            <p class="desc">An economic simulation where organizations make calls on real questions and are scored on the outcome.</p>
-          <div class="links">
-            <a class="btn btn-line is-soon" aria-disabled="true">Coming soon</a>
-          </div>
-          </div>
-        </div>
-        <div class="bento">
-          <div class="tile media m-world w2 h2" aria-hidden="true">
-            <span class="tag">Illustration</span>
-            <svg id="world-svg" viewBox="0 0 640 440" preserveAspectRatio="xMidYMid meet"></svg>
-          </div>
-          <div class="tile">
-            <span class="tl">Questions</span>
-            <ol>
-              <li><span>01</span>AI agent activity</li>
-              <li><span>02</span>Bloom Energy share price</li>
-              <li><span>03</span>USDC in circulation</li>
-            </ol>
-          </div>
-          <div class="tile">
-            <span class="tl">Scoring</span>
-            <span class="tv">Real outcomes</span>
-            <span class="ts">Each call is scored when the question resolves</span>
-          </div>
-        </div>
-      </article>
     </div>
   </section>
 
@@ -647,6 +877,11 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
           <p>Add conditional payments to an app or an agent with Atara.</p>
           <em>Visit Atara<i class="ph ph-arrow-up-right" aria-hidden="true"></i></em>
         </a>
+        <a href="#company" data-contact data-topic="Behavior model and research">
+          <b>For researchers</b>
+          <p>Work with us on behavior models and simulation.</p>
+          <em>Contact us<i class="ph ph-arrow-right" aria-hidden="true"></i></em>
+        </a>
       </div>
     </div>
   </section>
@@ -656,7 +891,7 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
       <div class="rs-head rise">
         <h2>About Loka Labs</h2>
         <div class="rs-text">
-          <p>Loka Labs designs, builds and operates each product, and every product has its own site, terms and users. A Turing Award laureate and researchers from the world’s leading labs stand behind Loka World’s research, with published, peer-reviewed work.</p>
+          <p>Loka Labs designs, builds and operates each product, and every product has its own site, terms and users. A Turing Award laureate and researchers from the world’s leading labs stand behind our research, with published, peer-reviewed work.</p>
         </div>
       </div>
       <div class="rs-logos rise">
@@ -735,6 +970,7 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
           <option>Financing a compute center</option>
           <option>AIUSD</option>
           <option>Atara</option>
+          <option>Behavior model and research</option>
           <option>Partnerships</option>
           <option>Something else</option>
         </select></div>
@@ -760,6 +996,10 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
       <div>
         <h4>Products</h4>
         <ul><li><a href="/" data-capital>Loka Capital</a></li><li><a href="https://www.loka.cash/" target="_blank" rel="noopener">Atara</a></li><li><a class="is-soon" aria-disabled="true">Loka World<span class="soon">Coming soon</span></a></li></ul>
+      </div>
+      <div>
+        <h4>Research</h4>
+        <ul><li><a href="#model">Behavior model</a></li></ul>
       </div>
       <div>
         <h4>Dollar</h4>
@@ -896,43 +1136,6 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
   };
   face('front'); face('back');
 
-  /* ---- Loka World: organizations around three questions, with score changes ---- */
-  const w = document.getElementById('world-svg');
-  const Q = [
-    { x: 320, y: 120, k: 'QUESTION 1', t: 'AI agent activity, next week' },
-    { x: 190, y: 268, k: 'QUESTION 2', t: 'Bloom Energy share price' },
-    { x: 452, y: 288, k: 'QUESTION 3', t: 'USDC in circulation' },
-  ];
-  const O = [
-    { x: 92, y: 96, n: 'Macro fund', s: '+12', q: [0, 1] },
-    { x: 548, y: 92, n: 'AI lab', s: '+8', q: [0, 2] },
-    { x: 66, y: 352, n: 'Venture fund', s: '−4', q: [1] },
-    { x: 300, y: 392, n: 'Research desk', s: '+5', q: [1, 2] },
-    { x: 584, y: 388, n: 'Market maker', s: '−2', q: [2] },
-    { x: 196, y: 180, n: 'Index fund', s: '+3', q: [0, 1] },
-    { x: 478, y: 196, n: 'Data center', s: '+6', q: [0, 2] },
-  ];
-  const edges = el('g', {}, w);
-  O.forEach((o, i) => o.q.forEach((qi) => {
-    const q = Q[qi];
-    el('path', { d: `M${o.x},${o.y} Q${(o.x + q.x) / 2},${(o.y + q.y) / 2 - 30} ${q.x},${q.y}`, class: 'edge', style: `animation-delay:${(-i * 0.7).toFixed(1)}s` }, edges);
-  }));
-  Q.forEach((q) => {
-    const g2 = el('g', { class: 'q' }, w);
-    const wd = Math.max(150, q.t.length * 7 + 28);
-    el('rect', { x: q.x - wd / 2, y: q.y - 24, width: wd, height: 48, rx: 10 }, g2);
-    el('text', { x: q.x - wd / 2 + 14, y: q.y - 6, class: 'k' }, g2).textContent = q.k;
-    el('text', { x: q.x - wd / 2 + 14, y: q.y + 12 }, g2).textContent = q.t;
-  });
-  O.forEach((o, i) => {
-    const g3 = el('g', { class: 'org' }, w);
-    el('circle', { cx: o.x, cy: o.y, r: 9, class: 'pulse', style: `animation-delay:${(i * 0.5).toFixed(1)}s` }, g3);
-    el('circle', { cx: o.x, cy: o.y, r: 7, class: 'o' }, g3);
-    const right = o.x < 320;
-    el('text', { x: o.x + (right ? 14 : -14), y: o.y - 2, 'text-anchor': right ? 'start' : 'end' }, g3).textContent = o.n;
-    el('text', { x: o.x + (right ? 14 : -14), y: o.y + 13, 'text-anchor': right ? 'start' : 'end', class: `sc ${o.s.startsWith('+') ? 'up' : 'dn'}` }, g3).textContent = `${o.s} pts`;
-  });
-
   /* ---- Loka Capital: principal outstanding by month (sample data, the prototype's figure at the end) ---- */
   const DATA = [
     ['Nov 2025', 3.2], ['Dec 2025', 4.1], ['Jan 2026', 5.0], ['Feb 2026', 6.4], ['Mar 2026', 8.0], ['Apr 2026', 9.1],
@@ -1034,11 +1237,291 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
     document.addEventListener('click', (e) => { if (!pd.contains(e.target)) set(false); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && pd.classList.contains('open')) { set(false); b.focus(); } });
   })();
+  // Behavior model: headline words, example tabs with a typed reply, a pinned three-step field driven by scroll, a dot field beside the questions
+  (() => {
+    const root = document.getElementById('model'); if (!root) return;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const dpr = () => Math.min(devicePixelRatio || 1, 2);
+    const seeded = (s) => () => (s = (s * 16807) % 2147483647) / 2147483647;
+    const inView = (el, fn, opts) => new IntersectionObserver(([e]) => fn(e.isIntersecting), opts).observe(el);
+
+    // headline words rise into place
+    root.querySelectorAll('.m-h').forEach((h) => {
+      let i = 0;
+      const walk = (n) => [...n.childNodes].forEach((c) => {
+        if (c.nodeType === 3) {
+          const f = document.createDocumentFragment();
+          c.textContent.split(/(\s+)/).forEach((w) => {
+            if (!w.trim()) { f.append(w); return; }
+            const s = document.createElement('i'); s.className = 'mw'; s.style.fontStyle = 'normal';
+            s.style.transitionDelay = `${i++ * 45}ms`; s.textContent = w; f.append(s);
+          });
+          c.replaceWith(f);
+        } else walk(c);
+      });
+      walk(h);
+      inView(h, (v) => { if (v) h.classList.add('on'); }, { threshold: 0.4 });
+    });
+
+    // nav turns dark over the black band
+    const nav = document.getElementById('nav');
+    const band = () => { const r = root.getBoundingClientRect(); nav.classList.toggle('on-band', r.top <= 68 && r.bottom > 68); };
+    addEventListener('scroll', band, { passive: true }); band();
+
+    // examples: three scenarios; while the panel is pinned, scrolling moves through them, and each plays the person's reply
+    const S = [
+      { av: 'CC', from: 'Compute center', msg: 'We can renew your GPU lease at the current rate. Shall I send the contract?',
+        p: 'We’re quoted less elsewhere. Twelve months if you come down; otherwise month to month at your price.',
+        why: ['Own interests', 'Anchors low', 'Trades term for price'] },
+      { av: 'SA', from: 'Support agent', msg: 'Before I process your refund, could you verify your identity again?',
+        p: 'I did this yesterday. Send the refund or I’m disputing the charge.',
+        why: ['Impatient', 'Short', 'Ready to leave'] },
+      { av: 'AN', from: 'Credit analyst', msg: 'Two loans, same terms, same record. One borrower had an outage in the news last week. Which do you fund?',
+        p: 'The first one. The other feels like trouble right now.',
+        why: ['Overweights recent news', 'A real bias, kept on purpose'] },
+    ];
+    const cpin = document.getElementById('m-cmp-pin'), cbox = cpin.querySelector('.mp-cmp'), chat = document.getElementById('m-chat');
+    const list = document.getElementById('m-scn'), scn = [...list.querySelectorAll('[role="tab"]')];
+    const out = document.getElementById('m-out'), why = document.getElementById('m-why');
+    let cur = -1, token = 0;
+    const play = (i) => {
+      if (i === cur) return;
+      const my = ++token; cur = i;
+      scn.forEach((b, k) => { b.setAttribute('aria-selected', k === i); b.tabIndex = k === i ? 0 : -1; });
+      const s = S[i];
+      document.getElementById('m-av').textContent = s.av; document.getElementById('m-from').textContent = s.from;
+      document.getElementById('m-in').textContent = s.msg; document.getElementById('m-cnt').textContent = `${i + 1} / 3`;
+      why.innerHTML = s.why.map((w) => `<span>${w}</span>`).join(''); why.classList.remove('on');
+      if (reduce) { out.textContent = s.p; why.classList.add('on'); return; }
+      out.innerHTML = '<span class="m-dots3"><i></i><i></i><i></i></span>';
+      setTimeout(() => {
+        if (my !== token) return;
+        out.classList.add('typing'); let k = 0;
+        const go = () => { if (my !== token) return; k = Math.min(s.p.length, k + 2); out.textContent = s.p.slice(0, k);
+          if (k < s.p.length) setTimeout(go, 20); else { out.classList.remove('typing'); why.classList.add('on'); } };
+        go();
+      }, 600);
+    };
+    const pinned = () => getComputedStyle(cbox).position === 'sticky';
+    const cspan = () => cpin.offsetHeight - cbox.offsetHeight;
+    const cscroll = () => {
+      if (!pinned()) { scn.forEach((b) => b.style.setProperty('--fill', 1)); return; }
+      const p = Math.min(0.9999, Math.max(0, -(cpin.getBoundingClientRect().top - 80) / cspan())), i = Math.floor(p * 3);
+      scn.forEach((b, k) => b.style.setProperty('--fill', k === i ? p * 3 - i : 0));
+      if (cpin.getBoundingClientRect().top < innerHeight * 0.6) play(i);
+    };
+    addEventListener('scroll', cscroll, { passive: true }); addEventListener('resize', cscroll); cscroll();
+    const goTo = (k) => {
+      if (pinned()) scrollTo({ top: cpin.getBoundingClientRect().top + scrollY - 80 + cspan() * (k / 3 + 0.02), behavior: reduce ? 'auto' : 'smooth' });
+      else play(k);
+    };
+    scn.forEach((b, k) => {
+      b.addEventListener('click', () => goTo(k));
+      b.addEventListener('keydown', (e) => {
+        const dd = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key]; if (!dd) return;
+        e.preventDefault(); const n = (k + dd + scn.length) % scn.length; goTo(n); scn[n].focus();
+      });
+    });
+    inView(chat, (v) => { if (v && cur < 0) play(0); }, { threshold: 0.4 });
+
+    // three steps, pinned: scroll moves the field from a cloud of people, to one shared core, to four groups around it
+    const pin = document.getElementById('m-steps'), box = pin.querySelector('.mp-steps'), cv = document.getElementById('m-field'), ctx = cv.getContext('2d');
+    const T = [
+      ['Start from a base model', 'Training a model to be helpful is what makes it stop acting like a person, so we start before that step, from the full range of how people talk.'],
+      ['Learn what every conversation shares', 'Taking turns, reading intent, politeness and memory are learned once, in one shared core.'],
+      ['Train conflicting behaviors apart', 'Bargaining and warmth, sound reasoning and real biases, different populations: each in its own part around the core, so they don’t average into a bland middle.'],
+    ];
+    const LABELS = ['Settings', 'Populations', 'Judgment', 'Roles'];
+    const bars = [...pin.querySelectorAll('.m-bars button')], fills = bars.map((b) => b.querySelector('i'));
+    const hint = pin.querySelector('.m-hint');
+    let W = 0, H = 0, P = [], u = 0, shown = -1, live = false, raf;
+    const rnd = seeded(11), N = innerWidth < 640 ? 700 : 1400;
+    for (let i = 0; i < N; i++) P.push({ x: 0, y: 0, g: i % 5, a: rnd(), b: rnd(), c: rnd(), s: 0.7 + rnd() * 1.3 });
+    const geo = () => ({ cx: W / 2, cy: H * (W < 640 ? 0.4 : 0.5), R: Math.min(W, H) });
+    const spot = (g, cx, cy, R) => [cx + (g % 2 ? 1 : -1) * Math.min(R * 0.55, W * 0.3), cy + (g < 2 ? -1 : 1) * R * (W < 640 ? 0.2 : 0.17)];
+    const at = (p, st) => {
+      const { cx, cy, R } = geo();
+      if (st === 0) return [p.a * W, p.b * H];
+      if (st === 1) { const t = p.a * 6.283, r = Math.sqrt(p.b) * R * 0.21; return [cx + Math.cos(t) * r, cy + Math.sin(t) * r * 0.92]; }
+      if (p.g === 4) { const t = p.a * 6.283, r = Math.sqrt(p.b) * R * 0.09; return [cx + Math.cos(t) * r, cy + Math.sin(t) * r]; }
+      const [gx, gy] = spot(p.g, cx, cy, R), t = p.c * 6.283, r = Math.sqrt(p.b) * R * 0.08;
+      return [gx + Math.cos(t) * r, gy + Math.sin(t) * r];
+    };
+    // scroll only picks the step; once it changes, the field plays the whole move to the new shape on its own
+    const stepAt = (p) => (p < 1 / 3 ? 0 : p < 2 / 3 ? 1 : 2);
+    const ease = (t) => t * t * (3 - 2 * t);
+    const size = () => { const r = cv.getBoundingClientRect(), k = dpr(); W = r.width; H = r.height; cv.width = W * k; cv.height = H * k; ctx.setTransform(k, 0, 0, k, 0, 0); };
+    const progress = () => { const r = pin.getBoundingClientRect(), span = pin.offsetHeight - box.offsetHeight; return Math.min(1, Math.max(0, -(r.top - 80) / span)); };
+    const frame = () => {
+      const p = progress(), now = stepAt(p);
+      u = reduce ? now : u + (now - u) * 0.07;
+      if (Math.abs(now - u) < 0.002) u = now;
+      if (now !== shown) {
+        shown = now;
+        const top = pin.querySelector('.m-step .top'), para = document.getElementById('m-step-p');
+        document.getElementById('m-step-t').textContent = T[now][0];
+        document.getElementById('m-step-n').textContent = `${now + 1} / 3`;
+        para.textContent = T[now][1];
+        [top, para].forEach((n) => { n.classList.remove('swap'); void n.offsetWidth; n.classList.add('swap'); });
+      }
+      fills.forEach((el, k) => { el.style.width = k <= now ? '100%' : '0%'; });
+      hint.style.opacity = p > 0.04 ? 0 : 1;
+      ctx.clearRect(0, 0, W, H);
+      const core = (p2) => (u <= 1 ? ease(Math.min(1, u)) : (p2.g === 4 ? 1 : 1 - ease(u - 1)));
+      for (const q of P) {
+        const [tx, ty] = at(q, now);
+        if (reduce) { q.x = tx; q.y = ty; } else { const k = 0.045 + q.c * 0.03; q.x += (tx - q.x) * k; q.y += (ty - q.y) * k; }
+        const w = core(q);
+        ctx.fillStyle = `rgba(255,255,255,${0.22 + q.c * 0.35 + w * 0.35})`;
+        ctx.beginPath(); ctx.arc(q.x, q.y, q.s * (1 + w * 0.25), 0, 6.283); ctx.fill();
+      }
+      const lab = u > 1 ? ease(u - 1) : 0;
+      if (lab > 0.01) {
+        const { cx, cy, R } = geo();
+        ctx.globalAlpha = lab; ctx.fillStyle = 'rgba(255,255,255,.8)';
+        ctx.font = '400 12px "Geist Mono", ui-monospace, monospace'; ctx.textBaseline = 'middle';
+        // labels sit on the outer side of each group on wide screens, over or under it on narrow ones
+        LABELS.forEach((l, k) => {
+          const [gx, gy] = spot(k, cx, cy, R), off = R * 0.085 + 18;
+          if (W < 640) { ctx.textAlign = 'center'; ctx.fillText(l, gx, gy + (k < 2 ? -off : off)); }
+          else { ctx.textAlign = k % 2 ? 'left' : 'right'; ctx.fillText(l, gx + (k % 2 ? off : -off), gy); }
+        });
+        ctx.textBaseline = 'alphabetic';
+        ctx.globalAlpha = 1;
+      }
+      if (live) raf = requestAnimationFrame(frame);
+    };
+    bars.forEach((b, k) => b.addEventListener('click', () => {
+      const span = pin.offsetHeight - box.offsetHeight, hold = [0.08, 0.5, 0.92][k];
+      scrollTo({ top: pin.getBoundingClientRect().top + scrollY - 80 + span * hold, behavior: reduce ? 'auto' : 'smooth' });
+    }));
+    size(); P.forEach((q) => { q.x = q.a * W; q.y = q.b * H; });
+    addEventListener('resize', () => { size(); frame(); });
+    inView(pin, (v) => { live = v; cancelAnimationFrame(raf); if (v) frame(); });
+    frame();
+
+    // a dot field beside the questions: it swells under the pointer, and a ripple runs out when a group opens
+    const dc = document.getElementById('m-dots');
+    if (dc) {
+      const dx = dc.getContext('2d'); let DW = 0, DH = 0, mx = -999, my = -999, ripple = -1, dlive = false, draf;
+      const dsize = () => { const r = dc.getBoundingClientRect(), k = dpr(); DW = r.width; DH = r.height; dc.width = DW * k; dc.height = DH * k; dx.setTransform(k, 0, 0, k, 0, 0); };
+      const dframe = (t) => {
+        dx.clearRect(0, 0, DW, DH);
+        const gap = 16, sec = (t || 0) / 1000;
+        if (ripple >= 0) ripple += 6;
+        for (let y = gap / 2; y < DH; y += gap) for (let x = gap / 2; x < DW; x += gap) {
+          const d = Math.hypot(x - mx, y - my), near = Math.max(0, 1 - d / 130);
+          const wave = reduce ? 0 : 0.06 * Math.sin(sec * 1.4 + x * 0.025 + y * 0.035);
+          const rip = ripple >= 0 ? Math.max(0, 1 - Math.abs(Math.hypot(x - DW * 0.3, y - DH * 0.5) - ripple) / 26) : 0;
+          const a = Math.min(1, 0.13 + wave + near * 0.75 + rip * 0.6), r = 0.9 + near * 1.6 + rip * 1;
+          dx.fillStyle = `rgba(255,255,255,${a})`; dx.beginPath(); dx.arc(x, y, r, 0, 6.283); dx.fill();
+        }
+        if (ripple > Math.hypot(DW, DH)) ripple = -1;
+        if (dlive && !reduce) draf = requestAnimationFrame(dframe);
+      };
+      const panel = dc.closest('.mp-q');
+      panel.addEventListener('pointermove', (e) => { const r = dc.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; });
+      panel.addEventListener('pointerleave', () => { mx = my = -999; });
+      dsize(); addEventListener('resize', () => { dsize(); dframe(); });
+      inView(dc, (v) => { dlive = v; cancelAnimationFrame(draf); if (v) dframe(); });
+      dframe();
+      root.ripple = () => { ripple = 0; if (reduce) dframe(); };
+    }
+
+    // Loka World: a planet of a few thousand points; land is bright, sea is faint, and arcs of light run between cities.
+    // It turns on its own, can be dragged, and grows a little as the panel scrolls into view.
+    const wc = document.getElementById('m-world');
+    if (wc) {
+      const wx = wc.getContext('2d'), wr = seeded(23), wp = wc.closest('.mp-world');
+      let WW = 0, WH = 0, rot = 0.6, tilt = 0.32, vel = 0.0016, drag = null, wlive = false, wraf, grow = 0.9;
+      const N = innerWidth < 640 ? 1600 : 3200, GA = Math.PI * (3 - Math.sqrt(5)), PTS = [], CITIES = [];
+      const landAt = (x, y, z) => Math.sin(3.1 * x + 1.3) * Math.cos(2.6 * y - 0.4) + 0.6 * Math.sin(4.2 * z + 2.1) + 0.35 * Math.sin(6 * x * y + 5 * z);
+      for (let i = 0; i < N; i++) {
+        const y = 1 - (2 * (i + 0.5)) / N, r = Math.sqrt(1 - y * y), ph = i * GA, x = Math.cos(ph) * r, z = Math.sin(ph) * r;
+        PTS.push({ x, y, z, land: landAt(x, y, z) > 0.18 });
+      }
+      const land = PTS.filter((q) => q.land);
+      for (let k = 0; CITIES.length < 24 && k < 4000; k++) { const c = land[Math.floor(wr() * land.length)]; if (CITIES.every((d) => d.x * c.x + d.y * c.y + d.z * c.z < 0.95)) CITIES.push({ ...c, ph: wr() * 6.28 }); }
+      let arcs = [];
+      const geo = () => (WW < 760 ? { cx: WW * 0.5, cy: WH * 0.3, R: WW * 0.5 } : { cx: WW * 0.7, cy: WH * 0.54, R: Math.min(WH * 0.66, WW * 0.36) });
+      const proj = (x, y, z, g, k = 1) => {
+        const ca = Math.cos(rot), sa = Math.sin(rot), ct = Math.cos(tilt), st = Math.sin(tilt);
+        const x1 = x * ca + z * sa, z1 = -x * sa + z * ca, y2 = y * ct - z1 * st, z2 = y * st + z1 * ct;
+        const R = g.R * grow * k; return [g.cx + x1 * R, g.cy - y2 * R, z2];
+      };
+      const wsize = () => { const r = wc.getBoundingClientRect(), k = dpr(); WW = r.width; WH = r.height; wc.width = WW * k; wc.height = WH * k; wx.setTransform(k, 0, 0, k, 0, 0); };
+      const wframe = () => {
+        const g = geo();
+        if (!drag && !reduce) rot += vel;
+        const pr = wp.getBoundingClientRect(); grow = 0.86 + 0.18 * Math.min(1, Math.max(0, 1 - pr.top / innerHeight));
+        wx.clearRect(0, 0, WW, WH);
+        // glow behind the planet
+        const gr = wx.createRadialGradient(g.cx, g.cy, g.R * grow * 0.2, g.cx, g.cy, g.R * grow * 1.35);
+        gr.addColorStop(0, 'rgba(255,255,255,.07)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+        wx.fillStyle = gr; wx.fillRect(0, 0, WW, WH);
+        for (const q of PTS) {
+          const [x, y, z] = proj(q.x, q.y, q.z, g); if (z < -0.05) continue;
+          const lit = 0.25 + 0.75 * z;
+          wx.fillStyle = q.land ? `rgba(255,255,255,${0.75 * lit})` : `rgba(255,255,255,${0.12 * lit})`;
+          const s = q.land ? 1.25 : 0.8; wx.fillRect(x - s / 2, y - s / 2, s, s);
+        }
+        // arcs between cities: a light runs along a raised great circle
+        if (!reduce && wr() < 0.07 && arcs.length < 14) {
+          const a = CITIES[Math.floor(wr() * CITIES.length)], b = CITIES[Math.floor(wr() * CITIES.length)];
+          const d = a.x * b.x + a.y * b.y + a.z * b.z; if (a !== b && d > -0.2) arcs.push({ a, b, t: 0, om: Math.acos(Math.min(1, d)) });
+        }
+        arcs = arcs.filter((c) => (c.t += 0.008) < 1.4);
+        wx.lineWidth = 1.2;
+        for (const c of arcs) {
+          const head = Math.min(1, c.t), tail = Math.max(0, c.t - 0.4), so = Math.sin(c.om) || 1;
+          let prev = null;
+          for (let k = 0; k <= 24; k++) {
+            const t = tail + (head - tail) * (k / 24), f1 = Math.sin((1 - t) * c.om) / so, f2 = Math.sin(t * c.om) / so;
+            const h = 1 + Math.sin(Math.PI * t) * 0.12 * c.om;
+            const pt = proj((f1 * c.a.x + f2 * c.b.x), (f1 * c.a.y + f2 * c.b.y), (f1 * c.a.z + f2 * c.b.z), g, h);
+            if (prev && pt[2] > -0.1 && prev[2] > -0.1) {
+              wx.strokeStyle = `rgba(255,255,255,${0.75 * (k / 24) * Math.min(1, 1.4 - c.t)})`;
+              wx.beginPath(); wx.moveTo(prev[0], prev[1]); wx.lineTo(pt[0], pt[1]); wx.stroke();
+            }
+            prev = pt;
+          }
+        }
+        // cities pulse
+        const sec = performance.now() / 1000;
+        for (const c of CITIES) {
+          const [x, y, z] = proj(c.x, c.y, c.z, g); if (z < 0.05) continue;
+          const pulse = (sec * 0.6 + c.ph) % 1;
+          wx.fillStyle = `rgba(255,255,255,${0.9 * z})`; wx.beginPath(); wx.arc(x, y, 2.2, 0, 6.283); wx.fill();
+          if (!reduce) { wx.strokeStyle = `rgba(255,255,255,${0.35 * (1 - pulse) * z})`; wx.beginPath(); wx.arc(x, y, 2 + pulse * 12, 0, 6.283); wx.stroke(); }
+        }
+        if (wlive && !reduce) wraf = requestAnimationFrame(wframe);
+      };
+      wp.addEventListener('pointerdown', (e) => { drag = { x: e.clientX, y: e.clientY, r: rot, t: tilt }; wp.setPointerCapture(e.pointerId); wp.classList.add('grab'); });
+      wp.addEventListener('pointermove', (e) => {
+        if (!drag) return;
+        rot = drag.r + (e.clientX - drag.x) * 0.006; tilt = Math.max(-0.9, Math.min(0.9, drag.t + (e.clientY - drag.y) * 0.004));
+        if (reduce) wframe();
+      });
+      const end = () => { drag = null; wp.classList.remove('grab'); };
+      wp.addEventListener('pointerup', end); wp.addEventListener('pointercancel', end);
+      wsize(); addEventListener('resize', () => { wsize(); wframe(); });
+      inView(wc, (v) => { wlive = v; cancelAnimationFrame(wraf); if (v) wframe(); });
+      wframe();
+    }
+
+    // questions: one open at a time
+    const items = [...document.querySelectorAll('#m-q > li')];
+    items.forEach((li) => li.querySelector('button').addEventListener('click', () => {
+      const opening = !li.classList.contains('open');
+      items.forEach((x) => { const on = x === li && opening; x.classList.toggle('open', on); x.querySelector('button').setAttribute('aria-expanded', on); });
+      if (opening && root.ripple) root.ripple();
+    }));
+  })();
   // Contact dialog: every "Contact us" opens it; Send composes an email to window.LOKA_CONTACT_EMAIL (set in /config.js)
   (() => {
     const dlg = document.getElementById('contact'); if (!dlg || !dlg.showModal) return;
     const form = dlg.querySelector('form'), done = dlg.querySelector('.ct-done');
-    const open = (e) => { e.preventDefault(); form.hidden = false; done.hidden = true; dlg.showModal(); dlg.querySelector('#ct-name').focus(); };
+    const open = (e) => { e.preventDefault(); form.hidden = false; done.hidden = true; if (e.currentTarget.dataset.topic) form.elements.topic.value = e.currentTarget.dataset.topic; dlg.showModal(); dlg.querySelector('#ct-name').focus(); };
     document.querySelectorAll('a[data-contact]').forEach((a) => a.addEventListener('click', open));
     dlg.querySelectorAll('[data-close]').forEach((b) => b.addEventListener('click', () => dlg.close()));
     dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
