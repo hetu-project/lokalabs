@@ -160,28 +160,28 @@ img,svg{display:block;max-width:100%}
 .m-scn button[aria-selected="true"]{color:var(--m-1)}
 .m-scn button:hover{color:var(--m-1)}
 .m-scn button:focus-visible{outline:2px solid #fff;outline-offset:2px}
-/* the conversation window: light, like the rest of the site */
-.m-chat{position:relative;border-radius:26px;background:var(--paper);color:var(--ink);box-shadow:0 30px 80px -40px rgba(0,0,0,.8);overflow:hidden}
-.m-chat-top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px 16px 22px;border-bottom:1px solid var(--line)}
-.m-chat-top .who{display:flex;align-items:center;gap:10px;min-width:0;font-size:14.5px;font-weight:500}
-.m-chat-top .who em{font-style:normal;font-weight:400;color:var(--ink-3)}
-.m-cnt{flex:none;font-family:var(--mono);font-size:12px;color:var(--ink-3)}
-.m-av{display:grid;place-items:center;flex:none;width:30px;height:30px;border-radius:50%;background:var(--mist);font-family:var(--mono);font-size:11px;color:var(--ink-2)}
-.m-thread{display:flex;flex-direction:column;gap:14px;min-height:330px;padding:24px 22px 26px}
-.m-msg{max-width:84%;padding:13px 16px;border-radius:18px;font-size:16px;line-height:1.45}
-.m-in{align-self:flex-start;background:var(--mist);border-bottom-left-radius:6px;color:var(--ink)}
-.m-meta{align-self:flex-end;font-family:var(--mono);font-size:11.5px;letter-spacing:0;color:var(--ink-3);margin-top:6px}
-.m-out{align-self:flex-end;min-height:48px;border-bottom-right-radius:6px;transition:background-color .4s var(--ease),color .4s var(--ease)}
-.m-out{background:var(--ink);color:var(--paper)}
-.m-out.typing::after{content:"";display:inline-block;width:2px;height:1em;margin-left:3px;vertical-align:-.12em;background:currentColor;animation:mcaret .9s steps(2) infinite}
-@keyframes mcaret{50%{opacity:0}}
-.m-dots3{display:inline-flex;gap:4px;padding:4px 0}
-.m-dots3 i{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.4;animation:mdot 1s ease-in-out infinite}
-.m-dots3 i:nth-child(2){animation-delay:.15s}.m-dots3 i:nth-child(3){animation-delay:.3s}
-@keyframes mdot{50%{opacity:1;transform:translateY(-2px)}}
-.m-why{align-self:flex-end;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;max-width:84%;opacity:0;transform:translateY(6px);transition:opacity .45s var(--ease),transform .5s var(--ease)}
-.m-why.on{opacity:1;transform:none}
-.m-why span{padding:4px 10px;border:1px solid var(--line-2);border-radius:999px;font-size:12.5px;color:var(--ink-2)}
+/* the example card: the question, then the same assistant answer repeated beside the many different answers people give */
+.m-field{position:relative;display:flex;flex-direction:column;border-radius:26px;background:#161616;border:1px solid var(--m-line);overflow:hidden}
+.mf-q{margin:0;padding:24px 26px 0;font-size:clamp(17px,1.35vw,20px);line-height:1.4;color:var(--m-1);max-width:46ch}
+.mf-body{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.5fr);margin-top:24px;border-top:1px solid var(--m-line)}
+.mf-body>div{display:flex;flex-direction:column;gap:14px;padding:20px 26px 24px}
+.mf-body>div+div{border-left:1px solid var(--m-line)}
+.mf-lab{font-family:var(--mono);font-size:12px;color:var(--m-3)}
+.mf-cap{margin:auto 0 0;font-size:13.5px;line-height:1.45;color:var(--m-3)}
+.mf-echo{display:grid;padding-bottom:24px}
+/* the same reply stacked like a deck: one on top, copies fanned out behind it */
+.mf-echo span{grid-area:1/1;display:block;padding:11px 13px;border-radius:12px;background:#222;border:1px solid var(--m-line);font-size:14.5px;line-height:1.4;color:var(--m-1);opacity:0;transform:translateY(0);transition:opacity .5s var(--ease),transform .6s var(--ease)}
+.mf-echo span.on{opacity:var(--o,1);transform:translateY(var(--y,0)) scale(var(--sc,1))}
+.mf-echo span+span{color:transparent}
+.mf-cloud{display:flex;flex-wrap:wrap;align-content:flex-start;gap:8px;min-height:190px}
+.mf-cloud span{display:inline-block;padding:7px 13px;border-radius:999px;border:1px solid var(--m-line);color:var(--m-1);line-height:1.3;opacity:0;transform:translateY(10px) scale(.96);transition:opacity .55s var(--ease),transform .6s var(--ease)}
+.mf-cloud span.on{opacity:var(--o,1);transform:none;animation:mfloat 5s ease-in-out infinite;animation-delay:var(--d,0s)}
+.mf-cloud .l{font-size:17px;background:#232323}
+.mf-cloud .m{font-size:15px}
+.mf-cloud .s{font-size:13.5px;--o:.6}
+@keyframes mfloat{50%{transform:translateY(-3px)}}
+@media (max-width:640px){.mf-body{grid-template-columns:1fr}.mf-body>div+div{border-left:0;border-top:1px solid var(--m-line)}}
+@media (prefers-reduced-motion:reduce){.mf-echo span,.mf-cloud span{opacity:var(--o,1);transform:none;transition:none;animation:none}}
 .m-note{margin:14px 0 0;font-size:13px;color:var(--m-3)}
 /* panel 2: pinned while you scroll; the field moves through three steps */
 .m-pin{height:300vh;position:relative}
@@ -270,8 +270,6 @@ img,svg{display:block;max-width:100%}
 @media (max-width:1100px){.mp-test{grid-template-columns:1fr}}
 @media (max-width:960px){.mp-q,.mp-cmp{grid-template-columns:1fr}.m-dots{display:none}}
 @media (max-width:640px){
-  .m-chat-top{flex-wrap:wrap}
-  .m-msg,.m-why{max-width:92%}
   .m-hint{display:none}
   .m-q button{grid-template-columns:40px minmax(0,1fr) auto}
   .m-q .qs>div{padding-left:0}
@@ -279,7 +277,7 @@ img,svg{display:block;max-width:100%}
 }
 @media (prefers-reduced-motion:reduce){
   .mp-cmp .m-cap i,.m-hint i{animation:none}
-  .m-h .mw,.m-why,.m-q .qs span{opacity:1;transform:none;filter:none;transition:none}
+  .m-h .mw,.m-q .qs span{opacity:1;transform:none;filter:none;transition:none}
   .m-q .qs{transition:none}.m-dots3 i{animation:none}
 }
 /* ---------- product cards: each sticks under the nav and the next one slides over it ---------- */
@@ -634,7 +632,7 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
   </section>
   <section class="overview" id="thesis">
     <div class="w">
-      <h2 class="statement scrub" id="scrub">From one person, to a whole society, to the <em>money it runs on</em>.</h2>
+      <h2 class="statement scrub" id="scrub">From how people decide to how <em>money moves</em>.</h2>
       <div class="ov-grid rise" id="products">
         <a class="ov ov-lg" href="#model">
           <b>Behavior</b>
@@ -682,19 +680,13 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
           </div>
         </div>
         <div>
-          <div class="m-chat" id="m-chat" role="tabpanel" aria-live="polite">
-            <div class="m-chat-top">
-              <span class="who"><span class="m-av" id="m-av">CC</span><span id="m-from">Compute center</span></span>
-              <span class="m-cnt" id="m-cnt">1 / 3</span>
-            </div>
-            <div class="m-thread">
-              <p class="m-msg m-in" id="m-in">We can renew your GPU lease at the current rate. Shall I send the contract?</p>
-              <span class="m-meta">A person, as we train it</span>
-              <p class="m-msg m-out" id="m-out">We’re quoted less elsewhere. Twelve months if you come down; otherwise month to month at your price.</p>
-              <p class="m-why" id="m-why"></p>
+          <div class="m-field" id="m-chat" role="tabpanel" aria-live="polite">
+            <p class="mf-q" id="m-in">“We can renew your GPU lease at the current rate. Shall I send the contract?”</p>
+            <div class="mf-body">
+              <div><span class="mf-lab">Assistants</span><div class="mf-echo" id="m-ai"></div><p class="mf-cap">The same answer, every time.</p></div>
+              <div><span class="mf-lab">People</span><div class="mf-cloud" id="m-cloud"></div><p class="mf-cap">Many answers. Larger ones are more common. Examples are illustrative.</p></div>
             </div>
           </div>
-          <p class="m-note">Illustrations of the behavior we train for, written by our team. Not model output.</p>
         </div>
       </div>
       </div>
@@ -1268,39 +1260,36 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
     const band = () => { const r = root.getBoundingClientRect(); nav.classList.toggle('on-band', r.top <= 68 && r.bottom > 68); };
     addEventListener('scroll', band, { passive: true }); band();
 
-    // examples: three scenarios; while the panel is pinned, scrolling moves through them, and each plays the person's reply
+    // examples: three scenarios; while the panel is pinned, scrolling moves through them.
+    // Each shows the question, the one answer assistants give, and the many answers people give, larger when more common.
     const S = [
-      { av: 'CC', from: 'Compute center', msg: 'We can renew your GPU lease at the current rate. Shall I send the contract?',
-        p: 'We’re quoted less elsewhere. Twelve months if you come down; otherwise month to month at your price.',
-        why: ['Own interests', 'Anchors low', 'Trades term for price'] },
-      { av: 'SA', from: 'Support agent', msg: 'Before I process your refund, could you verify your identity again?',
-        p: 'I did this yesterday. Send the refund or I’m disputing the charge.',
-        why: ['Impatient', 'Short', 'Ready to leave'] },
-      { av: 'AN', from: 'Credit analyst', msg: 'Two loans, same terms, same record. One borrower had an outage in the news last week. Which do you fund?',
-        p: 'The first one. The other feels like trouble right now.',
-        why: ['Overweights recent news', 'A real bias, kept on purpose'] },
+      { msg: '“We can renew your GPU lease at the current rate. Shall I send the contract?”',
+        a: 'That sounds reasonable. Please send it over.',
+        p: [['We’re quoted less elsewhere.', 'l'], ['Twelve months if you come down.', 'l'], ['Month to month, then.', 'm'], ['That’s more than last year.', 'm'], ['I need to check with finance.', 'm'], ['Put the old rate in writing.', 's'], ['Fine, renew it.', 's'], ['We’re moving some of it in-house.', 's']], },
+      { msg: '“Before I process your refund, could you verify your identity again?”',
+        a: 'Of course! What information do you need?',
+        p: [['I did this yesterday.', 'l'], ['Just send the refund.', 'l'], ['I’m disputing the charge.', 'm'], ['Why again?', 'm'], ['Can I talk to a person?', 'm'], ['Fine. What do you need?', 's'], ['Forget it.', 's']], },
+      { msg: '“Two loans, same terms, same record. One borrower had an outage in the news. Which do you fund?”',
+        a: 'On the facts given, they carry the same risk.',
+        p: [['The first one.', 'l'], ['The other feels like trouble.', 'l'], ['Not the one in the news.', 'm'], ['Wait a month on the second.', 'm'], ['Both, but less to the second.', 's'], ['Same record, same risk. Either.', 's']], },
     ];
     const cpin = document.getElementById('m-cmp-pin'), cbox = cpin.querySelector('.mp-cmp'), chat = document.getElementById('m-chat');
     const list = document.getElementById('m-scn'), scn = [...list.querySelectorAll('[role="tab"]')];
-    const out = document.getElementById('m-out'), why = document.getElementById('m-why');
+    const ai = document.getElementById('m-ai'), cloud = document.getElementById('m-cloud');
     let cur = -1, token = 0;
     const play = (i) => {
       if (i === cur) return;
       const my = ++token; cur = i;
       scn.forEach((b, k) => { b.setAttribute('aria-selected', k === i); b.tabIndex = k === i ? 0 : -1; });
       const s = S[i];
-      document.getElementById('m-av').textContent = s.av; document.getElementById('m-from').textContent = s.from;
-      document.getElementById('m-in').textContent = s.msg; document.getElementById('m-cnt').textContent = `${i + 1} / 3`;
-      why.innerHTML = s.why.map((w) => `<span>${w}</span>`).join(''); why.classList.remove('on');
-      if (reduce) { out.textContent = s.p; why.classList.add('on'); return; }
-      out.innerHTML = '<span class="m-dots3"><i></i><i></i><i></i></span>';
-      setTimeout(() => {
-        if (my !== token) return;
-        out.classList.add('typing'); let k = 0;
-        const go = () => { if (my !== token) return; k = Math.min(s.p.length, k + 2); out.textContent = s.p.slice(0, k);
-          if (k < s.p.length) setTimeout(go, 20); else { out.classList.remove('typing'); why.classList.add('on'); } };
-        go();
-      }, 600);
+      document.getElementById('m-in').textContent = s.msg;
+      ai.innerHTML = [[1, 0, 1], [0.55, 8, 0.96], [0.32, 16, 0.92], [0.16, 24, 0.88]].map(([o, y, sc], k) => `<span style="--o:${o};--y:${y}px;--sc:${sc};z-index:${4 - k}">${s.a}</span>`).join('');
+      cloud.innerHTML = s.p.map(([t, c], k) => `<span class="${c}" style="--d:${(k * 0.37).toFixed(2)}s">${t}</span>`).join('');
+      const all = [...ai.children, ...cloud.children];
+      const later = (ms, fn) => setTimeout(() => { if (my === token) fn(); }, reduce ? 0 : ms);
+      [...ai.children].forEach((n, k) => later(80 + k * 90, () => n.classList.add('on')));
+      [...cloud.children].forEach((n, k) => later(420 + k * 110, () => n.classList.add('on')));
+      if (reduce) all.forEach((n) => n.classList.add('on'));
     };
     const pinned = () => getComputedStyle(cbox).position === 'sticky';
     const cspan = () => cpin.offsetHeight - cbox.offsetHeight;
@@ -1310,7 +1299,7 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
       scn.forEach((b, k) => b.style.setProperty('--fill', k === i ? p * 3 - i : 0));
       if (cpin.getBoundingClientRect().top < innerHeight * 0.6) play(i);
     };
-    addEventListener('scroll', cscroll, { passive: true }); addEventListener('resize', cscroll); cscroll();
+    addEventListener('scroll', cscroll, { passive: true }); addEventListener('resize', cscroll);
     const goTo = (k) => {
       if (pinned()) scrollTo({ top: cpin.getBoundingClientRect().top + scrollY - 80 + cspan() * (k / 3 + 0.02), behavior: reduce ? 'auto' : 'smooth' });
       else play(k);
@@ -1322,9 +1311,11 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
         e.preventDefault(); const n = (k + dd + scn.length) % scn.length; goTo(n); scn[n].focus();
       });
     });
-    inView(chat, (v) => { if (v && cur < 0) play(0); }, { threshold: 0.4 });
+    inView(chat, (v) => { if (v && cur < 0) play(0); }, { threshold: 0.3 });
+    cscroll();
 
-    // three steps, pinned: scroll moves the field from a cloud of people, to one shared core, to four groups around it
+    // three steps, pinned: a spiral of many voices, then one turning shell for the shared core, then the core with four
+    // satellites fed by streams. Scroll picks the step; the field then plays the whole move in 3D on its own.
     const pin = document.getElementById('m-steps'), box = pin.querySelector('.mp-steps'), cv = document.getElementById('m-field'), ctx = cv.getContext('2d');
     const T = [
       ['Start from a base model', 'Training a model to be helpful is what makes it stop acting like a person, so we start before that step, from the full range of how people talk.'],
@@ -1334,28 +1325,39 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
     const LABELS = ['Settings', 'Populations', 'Judgment', 'Roles'];
     const bars = [...pin.querySelectorAll('.m-bars button')], fills = bars.map((b) => b.querySelector('i'));
     const hint = pin.querySelector('.m-hint');
-    let W = 0, H = 0, P = [], u = 0, shown = -1, live = false, raf;
-    const rnd = seeded(11), N = innerWidth < 640 ? 700 : 1400;
-    for (let i = 0; i < N; i++) P.push({ x: 0, y: 0, g: i % 5, a: rnd(), b: rnd(), c: rnd(), s: 0.7 + rnd() * 1.3 });
-    const geo = () => ({ cx: W / 2, cy: H * (W < 640 ? 0.4 : 0.5), R: Math.min(W, H) });
-    const spot = (g, cx, cy, R) => [cx + (g % 2 ? 1 : -1) * Math.min(R * 0.55, W * 0.3), cy + (g < 2 ? -1 : 1) * R * (W < 640 ? 0.2 : 0.17)];
-    const at = (p, st) => {
-      const { cx, cy, R } = geo();
-      if (st === 0) return [p.a * W, p.b * H];
-      if (st === 1) { const t = p.a * 6.283, r = Math.sqrt(p.b) * R * 0.21; return [cx + Math.cos(t) * r, cy + Math.sin(t) * r * 0.92]; }
-      if (p.g === 4) { const t = p.a * 6.283, r = Math.sqrt(p.b) * R * 0.09; return [cx + Math.cos(t) * r, cy + Math.sin(t) * r]; }
-      const [gx, gy] = spot(p.g, cx, cy, R), t = p.c * 6.283, r = Math.sqrt(p.b) * R * 0.08;
-      return [gx + Math.cos(t) * r, gy + Math.sin(t) * r];
-    };
-    // scroll only picks the step; once it changes, the field plays the whole move to the new shape on its own
+    let W = 0, H = 0, u = 0, shown = -1, live = false, raf, spin = 0;
+    const rnd = seeded(11), N = innerWidth < 640 ? 1300 : 2600, GA = Math.PI * (3 - Math.sqrt(5));
+    const SAT = [[1.05, 0.38, 0.2], [-1.05, 0.38, -0.2], [0.45, -0.5, -0.95], [-0.45, -0.5, 0.95]];
+    const P = Array.from({ length: N }, (_, i) => {
+      // step 0: a three-armed spiral with some thickness
+      const arm = i % 3, r = Math.pow(rnd(), 0.6) * 1.35, th = arm * 2.094 + r * 2.6 + (rnd() - 0.5) * 0.5;
+      const s0 = [Math.cos(th) * r, (rnd() - 0.5) * 0.12 * (1.4 - r), Math.sin(th) * r];
+      // step 1: a shell, with a few points inside it
+      const y = 1 - (2 * (i + 0.5)) / N, rr = Math.sqrt(1 - y * y), ph = i * GA, k = i % 6 ? 0.62 : 0.25 + rnd() * 0.3;
+      const s1 = [Math.cos(ph) * rr * k, y * k, Math.sin(ph) * rr * k];
+      // step 2: a smaller core, four satellites, and streams running out to them
+      const role = i % 10, g = i % 4;
+      let s2;
+      if (role < 4) s2 = s1.map((v) => v * 0.55);
+      else if (role < 8) { const a = rnd() * 6.283, b = Math.acos(2 * rnd() - 1), rs = 0.17; s2 = SAT[g].map((c, j) => c + [Math.sin(b) * Math.cos(a), Math.cos(b), Math.sin(b) * Math.sin(a)][j] * rs); }
+      else s2 = null;
+      return { s: [s0, s1, s2], g, f: rnd(), a: rnd(), b: rnd(), sx: 0, sy: 0, d: 0, k: 1, sz: 0.6 + rnd() * 1.1, c: rnd() };
+    });
+    const stream = (q, t) => { const f = (q.f + t * 0.18) % 1, c = SAT[q.g], w = Math.sin(f * Math.PI) * 0.05; return [c[0] * (0.35 + f * 0.62) + w, c[1] * (0.35 + f * 0.62), c[2] * (0.35 + f * 0.62) - w]; };
     const stepAt = (p) => (p < 1 / 3 ? 0 : p < 2 / 3 ? 1 : 2);
     const ease = (t) => t * t * (3 - 2 * t);
     const size = () => { const r = cv.getBoundingClientRect(), k = dpr(); W = r.width; H = r.height; cv.width = W * k; cv.height = H * k; ctx.setTransform(k, 0, 0, k, 0, 0); };
     const progress = () => { const r = pin.getBoundingClientRect(), span = pin.offsetHeight - box.offsetHeight; return Math.min(1, Math.max(0, -(r.top - 80) / span)); };
+    const project = (x, y, z, tilt) => {
+      const ca = Math.cos(spin), sa = Math.sin(spin), x1 = x * ca + z * sa, z1 = -x * sa + z * ca;
+      const ct = Math.cos(tilt), st = Math.sin(tilt), y2 = y * ct - z1 * st, z2 = y * st + z1 * ct;
+      const R = Math.min(W * 0.32, H * 0.3), d = 3.2, k = d / (d + z2);
+      return [W / 2 + x1 * R * k, H * (W < 640 ? 0.42 : 0.45) - y2 * R * k, z2, k];
+    };
     const frame = () => {
-      const p = progress(), now = stepAt(p);
-      u = reduce ? now : u + (now - u) * 0.07;
-      if (Math.abs(now - u) < 0.002) u = now;
+      const p = progress(), now = stepAt(p), t = performance.now() / 1000;
+      u = reduce ? now : u + (now - u) * 0.06; if (Math.abs(now - u) < 0.002) u = now;
+      if (!reduce && now > 0) spin += 0.0035;
       if (now !== shown) {
         shown = now;
         const top = pin.querySelector('.m-step .top'), para = document.getElementById('m-step-p');
@@ -1367,35 +1369,44 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
       fills.forEach((el, k) => { el.style.width = k <= now ? '100%' : '0%'; });
       hint.style.opacity = p > 0.04 ? 0 : 1;
       ctx.clearRect(0, 0, W, H);
-      const core = (p2) => (u <= 1 ? ease(Math.min(1, u)) : (p2.g === 4 ? 1 : 1 - ease(u - 1)));
+      const tilt = 0.42 - 0.12 * Math.min(1, u), sp = 0.05;
+      // step 1 is a still field of points across the whole panel; steps 2 and 3 are shapes turning in 3D.
+      // Points move on screen toward wherever their target projects, so the change between the two reads as one motion.
+      const pts = [];
       for (const q of P) {
-        const [tx, ty] = at(q, now);
-        if (reduce) { q.x = tx; q.y = ty; } else { const k = 0.045 + q.c * 0.03; q.x += (tx - q.x) * k; q.y += (ty - q.y) * k; }
-        const w = core(q);
-        ctx.fillStyle = `rgba(255,255,255,${0.22 + q.c * 0.35 + w * 0.35})`;
-        ctx.beginPath(); ctx.arc(q.x, q.y, q.s * (1 + w * 0.25), 0, 6.283); ctx.fill();
+        let tx, ty, tz, tk = 1;
+        if (now === 0) { tx = q.a * W; ty = q.b * H; tz = q.c * 1.2 - 0.6; }
+        else { const tgt = now === 2 && !q.s[2] ? stream(q, t) : q.s[now] || q.s[1]; [tx, ty, tz, tk] = project(tgt[0], tgt[1], tgt[2], tilt); }
+        const m = reduce ? 1 : sp + q.c * 0.03;
+        q.sx += (tx - q.sx) * m; q.sy += (ty - q.sy) * m; q.d += (tz - q.d) * m; q.k += (tk - q.k) * m;
+        pts.push(q);
       }
+      pts.sort((a, b) => b.d - a.d);
+      for (const q of pts) {
+        const al = Math.max(0.08, Math.min(1, 0.55 - q.d * 0.45)) * (0.55 + q.c * 0.45);
+        ctx.fillStyle = `rgba(255,255,255,${al})`;
+        ctx.beginPath(); ctx.arc(q.sx, q.sy, q.sz * q.k, 0, 6.283); ctx.fill();
+      }
+      // faint lines from the core to each satellite in the last step
       const lab = u > 1 ? ease(u - 1) : 0;
       if (lab > 0.01) {
-        const { cx, cy, R } = geo();
-        ctx.globalAlpha = lab; ctx.fillStyle = 'rgba(255,255,255,.8)';
-        ctx.font = '400 12px "Geist Mono", ui-monospace, monospace'; ctx.textBaseline = 'middle';
-        // labels sit on the outer side of each group on wide screens, over or under it on narrow ones
-        LABELS.forEach((l, k) => {
-          const [gx, gy] = spot(k, cx, cy, R), off = R * 0.085 + 18;
-          if (W < 640) { ctx.textAlign = 'center'; ctx.fillText(l, gx, gy + (k < 2 ? -off : off)); }
-          else { ctx.textAlign = k % 2 ? 'left' : 'right'; ctx.fillText(l, gx + (k % 2 ? off : -off), gy); }
+        ctx.globalAlpha = lab;
+        ctx.font = '400 12px "Geist Mono", ui-monospace, monospace'; ctx.textBaseline = 'middle'; ctx.fillStyle = 'rgba(255,255,255,.82)';
+        SAT.forEach((c, k) => {
+          const [x, y, z] = project(c[0], c[1], c[2], tilt), [ox, oy] = project(0, 0, 0, tilt);
+          ctx.strokeStyle = 'rgba(255,255,255,.08)'; ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(x, y); ctx.stroke();
+          ctx.textAlign = x > W / 2 ? 'left' : 'right';
+          ctx.fillText(LABELS[k], x + (x > W / 2 ? 1 : -1) * Math.min(W, H) * 0.09, y);
         });
-        ctx.textBaseline = 'alphabetic';
         ctx.globalAlpha = 1;
       }
       if (live) raf = requestAnimationFrame(frame);
     };
     bars.forEach((b, k) => b.addEventListener('click', () => {
-      const span = pin.offsetHeight - box.offsetHeight, hold = [0.08, 0.5, 0.92][k];
+      const span = pin.offsetHeight - box.offsetHeight, hold = [0.1, 0.5, 0.9][k];
       scrollTo({ top: pin.getBoundingClientRect().top + scrollY - 80 + span * hold, behavior: reduce ? 'auto' : 'smooth' });
     }));
-    size(); P.forEach((q) => { q.x = q.a * W; q.y = q.b * H; });
+    size(); P.forEach((q) => { q.sx = q.a * W; q.sy = q.b * H; q.d = q.c * 1.2 - 0.6; });
     addEventListener('resize', () => { size(); frame(); });
     inView(pin, (v) => { live = v; cancelAnimationFrame(raf); if (v) frame(); });
     frame();
