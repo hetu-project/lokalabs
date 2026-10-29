@@ -162,26 +162,20 @@ img,svg{display:block;max-width:100%}
 .m-scn button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 /* the example card: the question, then the same assistant answer repeated beside the many different answers people give */
 .m-field{position:relative;display:flex;flex-direction:column;border-radius:26px;background:#161616;border:1px solid var(--m-line);overflow:hidden}
-.mf-q{margin:0;padding:24px 26px 0;font-size:clamp(17px,1.35vw,20px);line-height:1.4;color:var(--m-1);max-width:46ch}
-.mf-body{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.5fr);margin-top:24px;border-top:1px solid var(--m-line)}
-.mf-body>div{display:flex;flex-direction:column;gap:14px;padding:20px 26px 24px}
+.mf-q{margin:0;padding:8px 26px 0;font-size:clamp(17px,1.35vw,20px);line-height:1.4;color:var(--m-1);max-width:46ch}
+.mf-body{display:grid;grid-template-columns:1fr 1fr;margin-top:24px;border-top:1px solid var(--m-line)}
+.mf-body>div{display:flex;flex-direction:column;gap:14px;padding:22px 26px 24px}
 .mf-body>div+div{border-left:1px solid var(--m-line)}
 .mf-lab{font-family:var(--mono);font-size:12px;color:var(--m-3)}
+.mf-body .ours .mf-lab{color:var(--m-1)}
 .mf-cap{margin:auto 0 0;font-size:13.5px;line-height:1.45;color:var(--m-3)}
-.mf-echo{display:grid;padding-bottom:24px}
-/* the same reply stacked like a deck: one on top, copies fanned out behind it */
-.mf-echo span{grid-area:1/1;display:block;padding:11px 13px;border-radius:12px;background:#222;border:1px solid var(--m-line);font-size:14.5px;line-height:1.4;color:var(--m-1);opacity:0;transform:translateY(0);transition:opacity .5s var(--ease),transform .6s var(--ease)}
-.mf-echo span.on{opacity:var(--o,1);transform:translateY(var(--y,0)) scale(var(--sc,1))}
-.mf-echo span+span{color:transparent}
-.mf-cloud{display:flex;flex-wrap:wrap;align-content:flex-start;gap:8px;min-height:190px}
-.mf-cloud span{display:inline-block;padding:7px 13px;border-radius:999px;border:1px solid var(--m-line);color:var(--m-1);line-height:1.3;opacity:0;transform:translateY(10px) scale(.96);transition:opacity .55s var(--ease),transform .6s var(--ease)}
-.mf-cloud span.on{opacity:var(--o,1);transform:none;animation:mfloat 5s ease-in-out infinite;animation-delay:var(--d,0s)}
-.mf-cloud .l{font-size:17px;background:#232323}
-.mf-cloud .m{font-size:15px}
-.mf-cloud .s{font-size:13.5px;--o:.6}
-@keyframes mfloat{50%{transform:translateY(-3px)}}
+.mf-ans{margin:0;min-height:5.4em;padding:16px 18px;border-radius:16px;background:#1f1f1f;border:1px solid var(--m-line);font-size:clamp(17px,1.4vw,20px);line-height:1.4;color:var(--m-2);opacity:0;transform:translateY(8px);transition:opacity .5s var(--ease),transform .6s var(--ease)}
+.mf-ans.on{opacity:1;transform:none}
+.ours .mf-ans{background:#f4f4f4;border-color:#f4f4f4;color:#0e0f0f}
+.mf-who{margin:0;padding:22px 26px 0;font-family:var(--mono);font-size:12px;color:var(--m-3)}
+.mf-end{margin:0;padding:16px 26px 20px;border-top:1px solid var(--m-line);font-size:15px;color:var(--m-1)}
 @media (max-width:640px){.mf-body{grid-template-columns:1fr}.mf-body>div+div{border-left:0;border-top:1px solid var(--m-line)}}
-@media (prefers-reduced-motion:reduce){.mf-echo span,.mf-cloud span{opacity:var(--o,1);transform:none;transition:none;animation:none}}
+@media (prefers-reduced-motion:reduce){.mf-ans{opacity:1;transform:none;transition:none}}
 .m-note{margin:14px 0 0;font-size:13px;color:var(--m-3)}
 /* panel 2: pinned while you scroll; the field moves through three steps */
 .m-pin{height:300vh;position:relative}
@@ -672,20 +666,22 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
         <div>
           <p class="m-cap"><i aria-hidden="true"></i>Behavior model · In training</p>
           <h2 class="m-h"><span class="lo">Not an assistant.</span><span class="hi">A person.</span></h2>
-          <p class="m-lede">A model that bargains, loses patience and misjudges, the way people do.</p>
+          <p class="m-lede">A model that negotiates, values its time and trusts its gut, the way people do.</p>
           <div class="m-scn" role="tablist" aria-label="Examples" id="m-scn">
-            <button type="button" role="tab" aria-selected="true" data-i="0"><span class="k">01</span><b>Negotiation</b><small>A lease renewal</small></button>
-            <button type="button" role="tab" aria-selected="false" tabindex="-1" data-i="1"><span class="k">02</span><b>A user in a hurry</b><small>A refund that stalls</small></button>
-            <button type="button" role="tab" aria-selected="false" tabindex="-1" data-i="2"><span class="k">03</span><b>A judgment call</b><small>Two loans, one headline</small></button>
+            <button type="button" role="tab" aria-selected="true" data-i="0"><span class="k">01</span><b>It negotiates</b><small>When offered a renewal at the current price</small></button>
+            <button type="button" role="tab" aria-selected="false" tabindex="-1" data-i="1"><span class="k">02</span><b>It values its time</b><small>When asked to verify its identity again</small></button>
+            <button type="button" role="tab" aria-selected="false" tabindex="-1" data-i="2"><span class="k">03</span><b>It trusts its gut</b><small>When one of two equal loans was in the news</small></button>
           </div>
         </div>
         <div>
           <div class="m-field" id="m-chat" role="tabpanel" aria-live="polite">
-            <p class="mf-q" id="m-in">“We can renew your GPU lease at the current rate. Shall I send the contract?”</p>
+            <p class="mf-who">Same question</p>
+            <p class="mf-q" id="m-in">“Before I process your refund, could you verify your identity again?”</p>
             <div class="mf-body">
-              <div><span class="mf-lab">Assistants</span><div class="mf-echo" id="m-ai"></div><p class="mf-cap">The same answer, every time.</p></div>
-              <div><span class="mf-lab">People</span><div class="mf-cloud" id="m-cloud"></div><p class="mf-cap">Many answers. Larger ones are more common. Examples are illustrative.</p></div>
+              <div><span class="mf-lab">A typical AI</span><p class="mf-ans" id="m-ai"></p><p class="mf-cap">Trained to agree.</p></div>
+              <div class="ours"><span class="mf-lab">Behavior Model</span><p class="mf-ans" id="m-cloud"></p><p class="mf-cap">Trained to answer like a person. Example is illustrative.</p></div>
             </div>
+            <p class="mf-end">Use it to test your agents on people who push back, before real ones do.</p>
           </div>
         </div>
       </div>
@@ -1261,17 +1257,17 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
     addEventListener('scroll', band, { passive: true }); band();
 
     // examples: three scenarios; while the panel is pinned, scrolling moves through them.
-    // Each shows the question, the one answer assistants give, and the many answers people give, larger when more common.
+    // Each puts one question to a typical AI and to the behavior model, side by side.
     const S = [
       { msg: '“We can renew your GPU lease at the current rate. Shall I send the contract?”',
-        a: 'That sounds reasonable. Please send it over.',
-        p: [['We’re quoted less elsewhere.', 'l'], ['Twelve months if you come down.', 'l'], ['Month to month, then.', 'm'], ['That’s more than last year.', 'm'], ['I need to check with finance.', 'm'], ['Put the old rate in writing.', 's'], ['Fine, renew it.', 's'], ['We’re moving some of it in-house.', 's']], },
+        a: 'That sounds reasonable. Please send the contract.',
+        p: 'We’re quoted less elsewhere. Twelve months if you come down, otherwise month to month.' },
       { msg: '“Before I process your refund, could you verify your identity again?”',
         a: 'Of course! What information do you need?',
-        p: [['I did this yesterday.', 'l'], ['Just send the refund.', 'l'], ['I’m disputing the charge.', 'm'], ['Why again?', 'm'], ['Can I talk to a person?', 'm'], ['Fine. What do you need?', 's'], ['Forget it.', 's']], },
-      { msg: '“Two loans, same terms, same record. One borrower had an outage in the news. Which do you fund?”',
+        p: 'I did this yesterday. Send the refund or I’m disputing the charge.' },
+      { msg: '“Two loans, same terms, same record. One borrower was in the news last week for an outage. Which would you fund?”',
         a: 'On the facts given, they carry the same risk.',
-        p: [['The first one.', 'l'], ['The other feels like trouble.', 'l'], ['Not the one in the news.', 'm'], ['Wait a month on the second.', 'm'], ['Both, but less to the second.', 's'], ['Same record, same risk. Either.', 's']], },
+        p: 'The first one. The other feels like trouble right now.' },
     ];
     const cpin = document.getElementById('m-cmp-pin'), cbox = cpin.querySelector('.mp-cmp'), chat = document.getElementById('m-chat');
     const list = document.getElementById('m-scn'), scn = [...list.querySelectorAll('[role="tab"]')];
@@ -1283,13 +1279,11 @@ dialog.ct::backdrop{background:rgba(7,11,10,.42);backdrop-filter:blur(3px);-webk
       scn.forEach((b, k) => { b.setAttribute('aria-selected', k === i); b.tabIndex = k === i ? 0 : -1; });
       const s = S[i];
       document.getElementById('m-in').textContent = s.msg;
-      ai.innerHTML = [[1, 0, 1], [0.55, 8, 0.96], [0.32, 16, 0.92], [0.16, 24, 0.88]].map(([o, y, sc], k) => `<span style="--o:${o};--y:${y}px;--sc:${sc};z-index:${4 - k}">${s.a}</span>`).join('');
-      cloud.innerHTML = s.p.map(([t, c], k) => `<span class="${c}" style="--d:${(k * 0.37).toFixed(2)}s">${t}</span>`).join('');
-      const all = [...ai.children, ...cloud.children];
+      ai.textContent = s.a; cloud.textContent = s.p;
+      ai.classList.remove('on'); cloud.classList.remove('on');
       const later = (ms, fn) => setTimeout(() => { if (my === token) fn(); }, reduce ? 0 : ms);
-      [...ai.children].forEach((n, k) => later(80 + k * 90, () => n.classList.add('on')));
-      [...cloud.children].forEach((n, k) => later(420 + k * 110, () => n.classList.add('on')));
-      if (reduce) all.forEach((n) => n.classList.add('on'));
+      later(80, () => ai.classList.add('on'));
+      later(500, () => cloud.classList.add('on'));
     };
     const pinned = () => getComputedStyle(cbox).position === 'sticky';
     const cspan = () => cpin.offsetHeight - cbox.offsetHeight;
