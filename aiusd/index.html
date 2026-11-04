@@ -31,22 +31,69 @@ img,svg{display:block;max-width:100%}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-/* nav (same as Loka Labs) */
-.nav{position:sticky;top:0;z-index:20;background:color-mix(in oklab,var(--bg) 88%,transparent);backdrop-filter:saturate(1.2) blur(10px);-webkit-backdrop-filter:saturate(1.2) blur(10px);border-bottom:1px solid transparent;transition:border-color .3s var(--ease)}
-.nav.scrolled{border-bottom-color:var(--line)}
-.nav .w{display:flex;align-items:center;gap:32px;height:68px}
-.brand{display:flex;align-items:center;gap:10px;white-space:nowrap;text-decoration:none;font-weight:600;font-size:17px;letter-spacing:-.01em}
-.brand i{display:grid;place-items:center;width:26px;height:26px;border:1.5px solid currentColor;border-radius:7px}
-.brand i::before{content:"";width:10px;height:10px;background:currentColor;border-radius:2px}
-.nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font-size:14.5px}
-.nav ul a{text-decoration:none;color:var(--ink-2);transition:color .2s}
-.nav ul a:hover,.nav ul a[aria-current]{color:var(--ink)}
-.nav .sp{flex:1}
-/* Links sit in the centre of the bar: brand left, links centre, button right */
-.nav .w{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
-.nav .w>.brand{justify-self:start}
-.nav .sp{display:none}
-.nav .w>:last-child{grid-column:3;justify-self:end}
+/* nav: the same floating bar and menus as the Loka Labs home page */
+.nav{--signal:#2547f4;--display:var(--sans);--ink-2:rgba(18,18,20,.66);--ink-3:rgba(18,18,20,.42)}
+.nav a{text-decoration:none}
+.nav ul a[aria-current]{color:var(--ink)}
+/* the nav: a slim bar that floats over the page and stays at the top of the screen */
+.nav{position:fixed;top:10px;left:50%;z-index:60;width:calc(100% - 20px);height:86px;transform:translateX(-50%);display:flex;align-items:center;justify-content:space-between;padding:0 var(--gutter);border-radius:20px;color:var(--ink);background:rgba(246,243,236,0);box-shadow:inset 0 0 0 1px rgba(18,18,20,0),0 18px 40px -24px rgba(14,15,15,0);transition:width .55s var(--ease),height .55s var(--ease),padding .55s var(--ease),top .55s var(--ease),background-color .4s,box-shadow .4s,transform .5s var(--ease)}
+/* at the very top it sits flush with the hero, like part of it; once the page scrolls it gathers into a floating bar */
+/* scrolling down tucks it away above the screen; scrolling up brings it back */
+.nav.tuck{transform:translate(-50%,calc(-100% - 24px))}
+.nav.scrolled{top:12px;width:min(1180px,calc(100% - 36px));height:68px;padding:0 12px 0 24px;background:rgba(246,243,236,.84);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);box-shadow:inset 0 0 0 1px rgba(18,18,20,.08),0 18px 40px -24px rgba(14,15,15,.3)}
+.nav .brand{font-size:17px}
+.nav .brand i{width:22px;height:22px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px;letter-spacing:-.01em}
+.brand i{display:grid;place-items:center;width:24px;height:24px;border:1.5px solid currentColor;border-radius:7px}
+.brand i::before{content:"";width:9px;height:9px;background:currentColor;border-radius:2px}
+.nav ul{display:flex;align-items:center;gap:28px;list-style:none;margin:0;padding:0;font-size:14.5px}
+.nav ul a{color:var(--ink-2);transition:color .2s}
+.nav ul a:hover{color:var(--ink)}
+/* nav dropdowns: Product and Model open on hover, or on tap */
+.dd{position:relative}
+.dd>button{display:inline-flex;align-items:center;gap:6px;padding:0;border:0;background:none;font:inherit;color:var(--ink-2);cursor:pointer;transition:color .2s}
+.dd>button svg{width:10px;height:10px;transition:transform .3s var(--ease)}
+.dd:hover>button,.dd.open>button{color:var(--ink)}
+.dd:hover>button svg,.dd.open>button svg{transform:rotate(180deg)}
+.nav .dd{position:static}
+/* each menu is a card under the bar: the links on the left, one featured item on the right */
+.ddm{position:absolute;left:50%;top:calc(100% + 10px);width:min(1040px,calc(100vw - 36px));display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(300px,33%);border-radius:24px;overflow:hidden;background:#faf8f3;box-shadow:0 0 0 1px rgba(18,18,20,.07),0 40px 80px -30px rgba(14,15,15,.38);opacity:0;transform:translate(-50%,-6px);pointer-events:none;transition:opacity .2s var(--ease),transform .3s var(--ease)}
+.ddm::before{content:"";position:absolute;left:0;right:0;top:-14px;height:14px}
+.dd:hover .ddm,.dd:focus-within .ddm,.dd.open .ddm{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.dd-col{padding:28px 8px 30px 26px;display:flex;flex-direction:column;gap:8px}
+.dd-col+.dd-col{padding-left:8px}
+.nav .ddm .dd-col a{display:grid;grid-template-columns:50px 1fr;gap:16px;align-items:center;padding:12px;border-radius:16px;color:var(--ink);transition:background-color .25s}
+.nav .ddm .dd-col a:hover,.nav .ddm .dd-col a:focus-visible{background:rgba(18,18,20,.045);color:var(--ink)}
+.ddm .ic{display:grid;place-items:center;width:50px;height:50px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 1px rgba(18,18,20,.09);transition:box-shadow .25s,transform .35s var(--ease)}
+.ddm .ic svg{width:26px;height:26px;overflow:visible}
+.ddm .ic .d{fill:rgba(18,18,20,.55)}
+.ddm .ic .b{fill:var(--signal)}
+.ddm .ic .l{fill:none;stroke:rgba(18,18,20,.2);stroke-width:.8}
+.ddm .ic .s{fill:none;stroke:rgba(18,18,20,.62);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;transition:stroke .25s}
+.ddm .dd-col a:hover .ic{box-shadow:inset 0 0 0 1px rgba(37,71,244,.4);transform:scale(1.04)}
+.ddm .dd-col a:hover .ic .s{stroke:var(--signal)}
+.ddm b{display:flex;align-items:center;gap:8px;font-weight:500;font-size:16.5px;letter-spacing:-.01em}
+.ddm b .x{width:10px;height:10px;color:var(--ink-3)}
+.ddm small{display:block;margin-top:3px;font-size:14px;line-height:1.4;color:var(--ink-3)}
+.nav .ddm a.later{cursor:default}
+.nav .ddm a.later:hover{background:none}
+.nav .ddm a.later:hover .ic{box-shadow:inset 0 0 0 1px rgba(18,18,20,.09);transform:none}
+.nav .ddm a.later:hover .ic .s{stroke:rgba(18,18,20,.62)}
+.nav .ddm .dd-ft{display:flex;flex-direction:column;align-items:flex-start;margin:10px;padding:28px 28px 26px;border-radius:18px;color:var(--ink);background:radial-gradient(80% 90% at 0% 0%,#d6def9 0%,rgba(214,222,249,0) 65%),radial-gradient(70% 90% at 100% 100%,#eef0d6 0%,rgba(238,240,214,0) 70%),linear-gradient(120deg,#dce3f6 0%,#e4ebec 55%,#eef0dc 100%)}
+.dd-ft .k{font-size:13.5px;color:var(--ink-2)}
+.dd-ft b{display:block;margin-top:10px;font-family:var(--display);font-weight:500;font-size:25px;line-height:1.15;letter-spacing:-.02em}
+.dd-ft p{margin:10px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-2)}
+.dd-ft em{margin-top:auto;padding-top:22px;display:inline-flex;align-items:center;gap:10px;font-style:normal;font-size:15px;font-weight:500}
+.dd-ft em i{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;transition:transform .3s var(--ease)}
+.dd-ft em i svg{width:10px;height:10px}
+.dd-ft:hover em i{transform:translateX(3px)}
+@media (max-width:960px){.ddm{display:none}}
+.pill{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 20px;border-radius:999px;font:500 15px/1 var(--sans);background:var(--ink);color:#fff;border:0;cursor:pointer;transition:transform .3s var(--ease),background-color .2s}
+.pill:hover{background:#2a2a2e}
+.pill svg{width:14px;height:14px;transition:transform .3s var(--ease)}
+.pill:hover svg{transform:translateX(3px)}
+.nav .pill,.nav .pill:hover{height:44px;padding:0 20px;font-size:14.5px;color:#fff}
+@media (max-width:760px){.nav ul li.l{display:none}}
 .btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;font-size:14.5px;font-weight:500;text-decoration:none;white-space:nowrap;transition:background-color .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease)}
 .btn-ink{background:var(--ink);color:var(--paper)}
 .btn-ink:hover{background:var(--accent-deep)}
@@ -56,7 +103,7 @@ img,svg{display:block;max-width:100%}
 .btn:hover i{transform:translateX(2px)}
 
 /* hero */
-.hero{position:relative;margin-top:-69px;padding-top:69px;background:radial-gradient(60% 80% at 74% 46%,#fbfcfb 0%,#eceeed 50%,#dfe3e1 100%);overflow:hidden}
+.hero{position:relative;padding-top:69px;background:radial-gradient(60% 80% at 74% 46%,#fbfcfb 0%,#eceeed 50%,#dfe3e1 100%);overflow:hidden}
 .hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:center;min-height:min(calc(100svh - 69px),780px);padding-block:clamp(28px,3.5vw,48px)}
 .hero h1{margin:0;font-weight:500;font-size:clamp(44px,5vw,76px);line-height:.98;letter-spacing:-.045em;max-width:10ch}
 .hero .lede{margin:24px 0 0;font-size:clamp(17px,1.35vw,19px);color:var(--ink-2);max-width:44ch}
@@ -255,46 +302,13 @@ footer a:hover{color:var(--on-night)}
   .steps::before,.steps::after{display:none}
 }
 @media (max-width:640px){
-  .nav ul{display:none}
   .peg{grid-template-columns:1fr}
   .peg div+div{padding-left:0;border-left:0;border-top:1px solid var(--line)}
   .steps{grid-template-columns:1fr}
   .rr{grid-template-columns:1fr;gap:4px}
   .rr .st{justify-self:start}
 }
-/* Products menu: every product's entry point */
-.pd{position:relative}
-.pd>button{display:inline-flex;align-items:center;gap:6px;padding:0;border:0;background:none;font:inherit;font-size:14.5px;color:var(--ink-2);cursor:pointer;transition:color .2s}
-.pd>button:hover,.pd.open>button{color:var(--ink)}
-.pd>button i{font-size:11px;transition:transform .25s var(--ease)}
-.pd.open>button i{transform:rotate(180deg)}
-.pmenu{position:fixed;top:68px;left:0;right:0;z-index:31;background:var(--paper);color:var(--ink);border-top:1px solid var(--line);box-shadow:0 30px 60px -30px rgba(14,15,15,.28);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .2s var(--ease),transform .25s var(--ease)}
-.pd.open .pmenu{opacity:1;transform:none;pointer-events:auto}
-.pmenu::before{content:"";position:absolute;left:0;right:0;top:-30px;height:30px}
-.pm-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(360px,38%);min-height:330px}
-.pm-col{padding:40px 0 44px clamp(20px,4vw,56px);display:flex;flex-direction:column;gap:6px}
-.pm-col a{display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:center;max-width:380px;padding:10px 12px;margin-left:-12px;border-radius:14px;text-decoration:none;color:var(--ink);transition:background-color .2s}
-.pm-col a:hover,.pm-col a:focus-visible{background:var(--bg)}
-.pm-col .ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;border:1px solid var(--line-2);font-size:18px;color:var(--ink-2)}
-.pm-col b{display:flex;align-items:center;gap:6px;font-weight:500;font-size:16.5px}
-.pm-col b i{font-size:13px;color:var(--ink-3)}
-.pm-col small{display:block;margin-top:2px;font-size:13.5px;color:var(--ink-3)}
-.pm-feature{display:flex;flex-direction:column;align-items:flex-start;padding:40px clamp(24px,4vw,56px);text-decoration:none;color:var(--ink);background:radial-gradient(70% 120% at 0% 0%,#cfe8f3 0%,rgba(207,232,243,0) 60%),radial-gradient(60% 120% at 100% 100%,#eaf7cf 0%,rgba(234,247,207,0) 65%),linear-gradient(110deg,#d7eef0 0%,#dcf1e4 50%,#e8f5d6 100%)}
-.pm-feature span.k{font-size:14px;color:var(--ink-2)}
-.pm-feature b{margin-top:12px;font-weight:500;font-size:clamp(26px,2.4vw,34px);line-height:1.1;letter-spacing:-.025em;max-width:13em}
-.pm-feature p{margin:12px 0 0;font-size:15.5px;line-height:1.55;color:var(--ink-2);max-width:30em}
-.pm-feature em{margin-top:auto;padding-top:26px;display:inline-flex;align-items:center;gap:10px;font-style:normal;font-size:15.5px;font-weight:500}
-.pm-feature em i{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;transition:transform .25s var(--ease)}
-.pm-feature:hover em i{transform:translateX(3px)}
-.nav.mega,.nav.mega.on-dark{background:var(--paper);color:var(--ink);border-bottom-color:var(--line);backdrop-filter:none}
-.nav.mega ul a{color:var(--ink-2)}
-.nav.mega .btn-line{border-color:var(--line-2)}
-.nav.on-dark .pd>button{color:var(--on-night-2)}
-.nav.on-dark .pd>button:hover{color:var(--on-night)}
-.nav.mega .pd>button,.nav.mega .pd>button:hover,.nav.mega ul a:hover{color:var(--ink)}
-.nav .pmenu a,.nav .pmenu a:hover{color:var(--ink)}
-@media (max-width:960px){.pmenu{display:none}}
-/* Loka World is not open yet: its entries show "Coming soon" and do not link anywhere */
+/* LokaChat is not open yet: its entries show "Coming soon" and do not link anywhere */
 a.is-soon{cursor:default}
 .pm-col a.is-soon:hover{background:none}
 .soon{display:inline-block;margin-left:8px;padding:2px 8px;border:1px solid var(--line-2);border-radius:999px;font-size:11.5px;font-weight:400;line-height:1.4;color:var(--ink-3);vertical-align:1px;white-space:nowrap}
@@ -304,33 +318,45 @@ a.is-soon{cursor:default}
 <body>
 
 <header class="nav" id="nav">
-  <div class="w">
-    <a class="brand" href="/"><i aria-hidden="true"></i>Loka Labs</a>
-    <ul>
-      <li class="pd" id="pd"><button type="button" aria-expanded="false" aria-controls="pmenu">Products<i class="ph ph-caret-down" aria-hidden="true"></i></button>
-        <div class="pmenu" id="pmenu">
-          <div class="pm-in">
-            <div class="pm-col">
-              <a href="/" data-capital target="_blank" rel="noopener"><span class="ic"><i class="ph ph-buildings" aria-hidden="true"></i></span><span><b>Loka Capital<i class="ph ph-arrow-up-right" aria-hidden="true"></i></b><small>Secured loans to compute centers</small></span></a>
-              <a href="/aiusd/"><span class="ic"><i class="ph ph-coin" aria-hidden="true"></i></span><span><b>AIUSD</b><small>The dollar Loka Capital settles in</small></span></a>
-            </div>
-            <div class="pm-col">
-              <a href="https://www.loka.cash/" target="_blank" rel="noopener"><span class="ic"><i class="ph ph-handshake" aria-hidden="true"></i></span><span><b>Atara<i class="ph ph-arrow-up-right" aria-hidden="true"></i></b><small>Conditional payments</small></span></a>
-              <a class="is-soon" aria-disabled="true"><span class="ic"><i class="ph ph-globe-hemisphere-west" aria-hidden="true"></i></span><span><b>Loka World<span class="soon">Coming soon</span></b><small>Economic simulation</small></span></a>
-            </div>
-            <a class="pm-feature" href="/" data-capital target="_blank" rel="noopener">
-              <span class="k">Loka Capital</span>
-              <b>Senior secured loans to compute centers</b>
-              <p>For verified institutions. Rent from AI companies repays lenders first.</p>
-              <em>Visit Loka Capital<i class="ph ph-arrow-up-right" aria-hidden="true"></i></em>
-            </a>
-          </div>
-        </div></li>
-      <li><a href="/#company">Company</a></li>
-    </ul>
-    <span class="sp"></span>
-    <a class="btn btn-line" href="/app/index.html#/v7/swap" data-capital>Get AIUSD<i class="ph ph-arrow-right" aria-hidden="true"></i></a>
-  </div>
+  <a class="brand" href="/"><i aria-hidden="true"></i>Loka Labs</a>
+  <ul>
+    <li class="l dd"><button type="button" aria-expanded="false">Model<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="ddm">
+        <div class="dd-col">
+          <a href="/#research"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><g class="d"><circle cx="19.00" cy="12.00" r="1.05"/><circle cx="17.66" cy="16.11" r="1.05"/><circle cx="14.16" cy="18.66" r="1.05"/><circle cx="9.84" cy="18.66" r="1.05"/><circle cx="6.34" cy="16.11" r="1.05"/><circle cx="5.00" cy="12.00" r="1.05"/><circle cx="6.34" cy="7.89" r="1.05"/><circle cx="9.84" cy="5.34" r="1.05"/><circle cx="14.16" cy="5.34" r="1.05"/><circle cx="17.66" cy="7.88" r="1.05"/></g><circle class="b" cx="12" cy="12" r="2.4"/></svg></span><span><b>Loka model</b><small>Judges and behaves like a real person</small></span></a>
+          <a href="/#models"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><g class="l"><path d="M6 5.5L18.5 12M6 12h12.5M6 18.5L18.5 12M11 8.5l7.5 3.5M11 15.5l7.5-3.5"/></g><g class="d"><circle cx="5" cy="5.5" r="1.3"/><circle cx="5" cy="12" r="1.3"/><circle cx="5" cy="18.5" r="1.3"/><circle cx="10.5" cy="8.5" r="1.3"/><circle cx="10.5" cy="15.5" r="1.3"/></g><circle class="b" cx="19" cy="12" r="2.4"/></svg></span><span><b>Prediction model</b><small>Simulates a whole population to forecast economic outcomes</small></span></a>
+        </div>
+        <div class="dd-col">
+          <a href="/#adjudication"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><g class="l"><path d="M12.00 4.00L12 12M19.61 9.53L12 12M16.70 18.47L12 12M7.30 18.47L12 12M4.39 9.53L12 12"/></g><g class="d"><circle cx="12.00" cy="4.00" r="1.6"/><circle cx="19.61" cy="9.53" r="1.6"/><circle cx="16.70" cy="18.47" r="1.6"/><circle cx="7.30" cy="18.47" r="1.6"/><circle cx="4.39" cy="9.53" r="1.6"/></g><circle class="b" cx="12" cy="12" r="2.4"/></svg></span><span><b>Adjudication model</b><small>Several agents debate a case and reach a ruling</small></span></a>
+        </div>
+        <a class="dd-ft" href="/#s2">
+          <span class="k">Loka model</span>
+          <b>Answers the way a specific person would</b>
+          <p>Trained from a base model rather than an assistant, so it keeps people’s opinions and habits.</p>
+          <em>Try a simulation<i aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.5 6h7M6.5 3l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></i></em>
+        </a>
+      </div></li>
+    <li class="l dd"><button type="button" aria-expanded="false">Product<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="ddm">
+        <div class="dd-col">
+          <a href="/" data-capital target="_blank" rel="noopener"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><g class="s"><path d="M4 20h16M6 20V9l6-4 6 4v11M9.5 20v-5h5v5M9.5 11.5h.01M14.5 11.5h.01"/></g></svg></span><span><b>Loka Capital<svg class="x" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2.5h5.5V8M9.5 2.5L3 9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></b><small>Secured loans to compute centers</small></span></a>
+          <a href="https://www.loka.cash/" target="_blank" rel="noopener"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><g class="s"><circle cx="9.5" cy="12" r="5"/><circle cx="14.5" cy="12" r="5"/></g></svg></span><span><b>Atara<svg class="x" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2.5h5.5V8M9.5 2.5L3 9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></b><small>Conditional payments</small></span></a>
+        </div>
+        <div class="dd-col">
+          <a class="later" aria-disabled="true"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><g class="s"><path d="M5 6.5h14v9H11l-4 3v-3H5z"/><path d="M8.5 10.5h7M8.5 13h4"/></g></svg></span><span><b>LokaChat</b><small>Characters that reply the way real people do</small></span></a>
+        </div>
+        <a class="dd-ft" href="/" data-capital target="_blank" rel="noopener">
+          <span class="k">Loka Capital</span>
+          <b>Senior secured loans to compute centers</b>
+          <p>For verified institutions. Rent from AI companies repays lenders first.</p>
+          <em>Visit Loka Capital<i aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M4 3h5v5M9 3L3 9" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></i></em>
+        </a>
+      </div></li>
+    <li class="l"><a href="/aiusd/" aria-current="page">AIUSD</a></li>
+    <li class="l"><a href="/#uses">Use cases</a></li>
+    <li class="l"><a href="/#team">Team</a></li>
+    <li><a class="pill" href="/#s2">Request access</a></li>
+  </ul>
 </header>
 
 <main>
@@ -766,7 +792,7 @@ a.is-soon{cursor:default}
   <div class="w">
     <div class="row">
       <a class="brand" href="/"><i aria-hidden="true"></i>Loka Labs</a>
-      <nav aria-label="Footer"><a href="/" data-capital>Loka Capital</a><a href="/aiusd/">AIUSD</a><a href="https://www.loka.cash/" target="_blank" rel="noopener">Atara</a><a class="is-soon" aria-disabled="true">Loka World<span class="soon">Coming soon</span></a></nav>
+      <nav aria-label="Footer"><a href="/" data-capital>Loka Capital</a><a href="/aiusd/">AIUSD</a><a href="https://www.loka.cash/" target="_blank" rel="noopener">Atara</a><a class="is-soon" aria-disabled="true">LokaChat<span class="soon">Coming soon</span></a></nav>
     </div>
     <div class="fine">
       <span>© 2026 Loka Labs. Design prototype.</span>
@@ -776,10 +802,33 @@ a.is-soon{cursor:default}
 </footer>
 
 <script>
-  const nav = document.getElementById('nav');
-  const onScroll = () => nav.classList.toggle('scrolled', scrollY > 8);
-  addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  // nav dropdowns: tap toggles (hover already opens them on desktop); Escape or a tap elsewhere closes
+  (() => {
+    const dds = [...document.querySelectorAll('.nav .dd')];
+    const close = (x) => dds.forEach((d) => { if (d !== x) { d.classList.remove('open'); d.querySelector('button').setAttribute('aria-expanded', 'false'); } });
+    dds.forEach((d) => {
+      const b = d.querySelector('button');
+      b.addEventListener('click', (e) => { e.stopPropagation(); const on = !d.classList.contains('open'); close(d); d.classList.toggle('open', on); b.setAttribute('aria-expanded', on); });
+      d.querySelectorAll('.ddm a[href^="#"]').forEach((a) => a.addEventListener('click', () => close()));
+    });
+    document.addEventListener('click', () => close());
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  })();
+
+  // the nav gains a shadow once the page has scrolled under it
+  // it tucks away while you scroll down and comes back as soon as you scroll up (never while a menu is open)
+  (() => {
+    const n = document.getElementById('nav'); let y0 = scrollY, ticking = false;
+    const on = () => {
+      ticking = false; const y = scrollY, d = y - y0;
+      n.classList.toggle('scrolled', y > 24);
+      if (y < 120 || d < -6) n.classList.remove('tuck');
+      else if (d > 6 && !n.matches(':hover') && !n.querySelector('.dd.open')) n.classList.add('tuck');
+      if (Math.abs(d) > 6) y0 = y;
+    };
+    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(on); } }, { passive: true }); on();
+  })();
+
   const io = new IntersectionObserver((es) => es.forEach((e) => {
     if (!e.isIntersecting) return;
     e.target.classList.add('in'); io.unobserve(e.target);
@@ -817,18 +866,6 @@ a.is-soon{cursor:default}
       const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; n.focus(); n.click();
     });
   });
-  // Products menu: opens on click, or on hover with a pointer; Esc or a click outside closes it
-  (() => {
-    const pd = document.getElementById('pd'); if (!pd) return;
-    const b = pd.querySelector('button'), bar = document.getElementById('nav'); let t;
-    const set = (o) => { pd.classList.toggle('open', o); bar.classList.toggle('mega', o); b.setAttribute('aria-expanded', o); };
-    b.addEventListener('click', (e) => { e.stopPropagation(); set(!pd.classList.contains('open')); });
-    const hov = matchMedia('(hover: hover)');
-    pd.addEventListener('mouseenter', () => { if (hov.matches) { clearTimeout(t); set(true); } });
-    pd.addEventListener('mouseleave', () => { if (hov.matches) t = setTimeout(() => set(false), 200); });
-    document.addEventListener('click', (e) => { if (!pd.contains(e.target)) set(false); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && pd.classList.contains('open')) { set(false); b.focus(); } });
-  })();
 </script>
 <script type="module" src="/shared/coin3d.js?v=7"></script>
 <script src="/config.js"></script>
