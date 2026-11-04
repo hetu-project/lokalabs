@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loka Labs · Sample</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@400..700&family=Geist:wght@300..600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Style sample for the new Loka Labs homepage: hero (overhead plaza, predicted paths) and section 2 (three ways to find out). -->
+<style>
+:root{
+  --bg:#f2f2f0;--ink:#121214;--ink-2:rgba(18,18,20,.66);--ink-3:rgba(18,18,20,.42);
+  --line:rgba(18,18,20,.12);--signal:#ff4d1f;
+  --display:"Funnel Display",system-ui,sans-serif;
+  --sans:"Geist",system-ui,-apple-system,sans-serif;
+  --mono:"Geist Mono",ui-monospace,Menlo,monospace;
+  --gutter:clamp(20px,4vw,56px);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:0}
+
+/* ---------- hero frame ---------- */
+.frame{position:relative;margin:10px;height:calc(100svh - 20px);min-height:620px;border-radius:28px;overflow:hidden;isolation:isolate;background:#d9d4e4}
+.frame canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.frame::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(75% 85% at 10% 18%,rgba(244,241,248,.92) 0%,rgba(244,241,248,.6) 38%,rgba(244,241,248,0) 70%)}
+.grain{position:absolute;inset:-50%;z-index:2;pointer-events:none;opacity:.22;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 1.2s steps(4) infinite}
+@keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-1%)}100%{transform:translate(0,0)}}
+.nav{position:absolute;inset:0 0 auto;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:22px var(--gutter)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px;letter-spacing:-.01em}
+.brand i{display:grid;place-items:center;width:24px;height:24px;border:1.5px solid currentColor;border-radius:7px}
+.brand i::before{content:"";width:9px;height:9px;background:currentColor;border-radius:2px}
+.nav ul{display:flex;align-items:center;gap:28px;list-style:none;margin:0;padding:0;font-size:14.5px}
+.nav ul a{color:var(--ink-2);transition:color .2s}
+.nav ul a:hover{color:var(--ink)}
+.pill{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 20px;border-radius:999px;font:500 15px/1 var(--sans);background:var(--ink);color:#fff;border:0;cursor:pointer;transition:transform .3s var(--ease),background-color .2s}
+.pill:hover{background:#2a2a2e}
+.pill svg{width:14px;height:14px;transition:transform .3s var(--ease)}
+.pill:hover svg{transform:translateX(3px)}
+.nav .pill,.nav .pill:hover{height:38px;padding:0 16px;font-size:14px;color:#fff}
+.ghost{display:inline-flex;align-items:center;height:44px;padding:0 20px;border-radius:999px;font:500 15px/1 var(--sans);background:rgba(255,255,255,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--ink);border:1px solid rgba(18,18,20,.08)}
+.ghost:hover{background:rgba(255,255,255,.8)}
+@media (max-width:760px){.nav ul li.l{display:none}}
+
+.copy{position:absolute;z-index:4;left:var(--gutter);top:clamp(110px,17vh,170px);max-width:min(760px,calc(100% - 2 * var(--gutter)))}
+.copy h1{margin:0;font-family:var(--display);font-weight:500;font-size:clamp(44px,6.4vw,100px);line-height:.96;letter-spacing:-.04em}
+.copy h1 .ln{display:block;overflow:hidden;padding-bottom:.14em;margin-bottom:-.14em}
+.copy h1 .ln span{display:block;transform:translateY(120%);animation:rise 1.1s var(--ease) forwards}
+.copy h1 .ln:nth-child(2) span{animation-delay:.08s}
+.copy h1 .ln:nth-child(3) span{animation-delay:.16s}
+@keyframes rise{to{transform:none}}
+.copy p{margin:26px 0 0;max-width:30em;font-size:clamp(16px,1.25vw,19px);line-height:1.5;color:var(--ink-2);opacity:0;animation:fade 1s var(--ease) .45s forwards}
+.copy .acts{display:flex;gap:10px;margin-top:30px;flex-wrap:wrap;opacity:0;animation:fade 1s var(--ease) .55s forwards}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.readout{position:absolute;z-index:4;left:var(--gutter);bottom:24px;display:flex;gap:22px;color:var(--ink-2)}
+.readout b{font-weight:500;color:var(--ink)}
+.readout .dot{display:inline-block;width:7px;height:7px;margin-right:8px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 4px rgba(255,77,31,.18);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 7px rgba(255,77,31,0)}}
+.tag{position:absolute;z-index:4;right:var(--gutter);bottom:24px;color:var(--ink-3)}
+.proof{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:26px calc(var(--gutter) + 10px) 0;color:var(--ink-2);font-size:14.5px}
+.proof .logos{display:flex;align-items:center;gap:34px;flex-wrap:wrap}
+.proof img{height:22px;width:auto;filter:grayscale(1);opacity:.55}
+.proof .lg-stanford{height:30px}.proof .lg-mit{height:19px}
+
+/* ---------- section 2 ---------- */
+.s2{padding:clamp(110px,13vw,180px) var(--gutter) clamp(90px,10vw,140px);max-width:1440px;margin:0 auto}
+.s2 h2{margin:0;max-width:13em;font-family:var(--display);font-weight:500;font-size:clamp(38px,4.8vw,76px);line-height:1;letter-spacing:-.035em}
+.s2 h2 em{font-style:normal;color:var(--ink-3)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:48px}
+.tabs button{height:38px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:transparent;font:500 14px var(--sans);color:var(--ink-2);cursor:pointer;transition:background-color .25s,color .25s,border-color .25s}
+.tabs button:hover{border-color:rgba(18,18,20,.3);color:var(--ink)}
+.tabs button[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.qline{margin:34px 0 0;padding:28px 0;border-top:1px solid var(--ink);font-family:var(--display);font-weight:400;font-size:clamp(22px,2.2vw,32px);line-height:1.2;letter-spacing:-.02em}
+.cols{display:grid;grid-template-columns:1fr 1fr 1.25fr;border-top:1px solid var(--line)}
+.col{padding:28px 28px 34px 0;min-height:330px;display:flex;flex-direction:column}
+.col+.col{padding-left:28px;border-left:1px solid var(--line)}
+.col .hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:26px;color:var(--ink-3)}
+.col .hd b{font:500 15px var(--sans);color:var(--ink)}
+.col.loka{background:#fff;border-radius:18px;padding:28px;border:0;margin:-1px 0 0 18px;box-shadow:0 1px 0 rgba(18,18,20,.04),0 24px 60px -30px rgba(18,18,20,.25)}
+.wait{margin-top:auto}
+.wait .bar{height:4px;border-radius:4px;background:rgba(18,18,20,.08);overflow:hidden}
+.wait .bar i{display:block;height:100%;width:0;background:var(--ink-3);border-radius:inherit;transition:width 9s linear}
+.wait p{margin:12px 0 0;color:var(--ink-3)}
+.big{font-family:var(--display);font-size:clamp(40px,4vw,60px);line-height:1;letter-spacing:-.03em;color:var(--ink-3)}
+.typed{margin:0;font-size:17px;line-height:1.6;color:var(--ink-2);min-height:7.5em}
+.typed .caret{display:inline-block;width:2px;height:1.05em;margin-left:2px;vertical-align:-.18em;background:var(--ink-2);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.col .note{margin-top:auto;color:var(--ink-3)}
+.bars{list-style:none;margin:0;padding:0;display:grid;gap:18px}
+.bars li{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:baseline}
+.bars .lb{font-size:15.5px}
+.bars .pc{font-family:var(--mono);font-size:14px}
+.bars .tr{grid-column:1/-1;height:8px;border-radius:8px;background:rgba(18,18,20,.06);overflow:hidden}
+.bars .tr i{display:block;height:100%;border-radius:inherit;background:#b9b6c2;transform:scaleX(0);transform-origin:left;transition:transform .9s var(--ease)}
+.bars li:first-child .tr i{background:var(--signal)}
+.voices{margin:28px 0 0;padding:0;list-style:none;display:grid;gap:12px}
+.voices li{font-size:15px;line-height:1.45;color:var(--ink-2);opacity:0;transform:translateY(8px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.voices li.on{opacity:1;transform:none}
+.voices li::before{content:"“";margin-right:2px;color:var(--signal)}
+.voices li::after{content:"”"}
+.s2-foot{display:flex;justify-content:space-between;margin-top:22px;color:var(--ink-3)}
+@media (max-width:980px){.cols{grid-template-columns:1fr}.col,.col+.col{padding:24px 0;border-left:0;border-top:1px solid var(--line);min-height:0}.col.loka{margin:16px 0 0;padding:24px}.typed{min-height:0}}
+
+@media (prefers-reduced-motion:reduce){
+  .grain,.readout .dot,.typed .caret{animation:none}
+  .copy h1 .ln span,.copy p,.copy .acts{animation:none;transform:none;opacity:1}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="arr" viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<section class="frame" id="top">
+  <canvas id="plaza" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="nav">
+    <a class="brand" href="#top"><i aria-hidden="true"></i>Loka Labs</a>
+    <ul>
+      <li class="l"><a href="#s2">Models</a></li>
+      <li class="l"><a href="#s2">Research</a></li>
+      <li class="l"><a href="#s2">Team</a></li>
+      <li><a class="pill" href="#s2">Request access</a></li>
+    </ul>
+  </header>
+  <div class="copy">
+    <h1><span class="ln"><span>Know what people</span></span><span class="ln"><span>will decide,</span></span><span class="ln"><span>before they do.</span></span></h1>
+    <p>Loka Labs builds models that think and decide like people, not like assistants. Test a decision on them before it reaches real people.</p>
+    <div class="acts">
+      <a class="pill" href="#s2">Request access<svg><use href="#arr"/></svg></a>
+      <a class="ghost" href="#s2">See how it works</a>
+    </div>
+  </div>
+  <div class="readout mono" aria-live="off"><span><span class="dot"></span><b id="r-people">0</b> people</span><span><b id="r-moves">0</b> moves predicted</span></div>
+  <div class="tag mono">Illustration</div>
+</section>
+
+<div class="proof">
+  <span>Research backed by a Turing Award laureate and researchers from</span>
+  <div class="logos">
+    <img src="/assets/logos/color-harvard.png" alt="Harvard">
+    <img class="lg-mit" src="/assets/logos/color-mit.png" alt="MIT">
+    <img class="lg-stanford" src="/assets/logos/color-stanford.png" alt="Stanford">
+    <img src="/assets/logos/color-princeton.png" alt="Princeton">
+    <img src="/assets/logos/color-uc-berkeley.png" alt="UC Berkeley">
+    <img src="/assets/logos/color-nus.png" alt="NUS">
+  </div>
+</div>
+
+<section class="s2" id="s2">
+  <h2>Today there are two ways to find out. <em>Both fall short.</em></h2>
+  <div class="tabs" role="tablist" aria-label="Scenarios">
+    <button role="tab" aria-selected="true" data-k="0">Rent goes up</button>
+    <button role="tab" aria-selected="false" data-k="1">A job offer</button>
+    <button role="tab" aria-selected="false" data-k="2">New pricing</button>
+    <button role="tab" aria-selected="false" data-k="3">A new policy</button>
+  </div>
+  <p class="qline" id="q"></p>
+  <div class="cols" id="cols">
+    <div class="col">
+      <div class="hd"><b>Ask people</b><span class="mono">Surveys, interviews</span></div>
+      <div class="big" id="days">Day 1</div>
+      <div class="wait"><div class="bar"><i id="wbar"></i></div><p class="mono" id="wtxt">Collecting responses</p></div>
+    </div>
+    <div class="col">
+      <div class="hd"><b>Ask an assistant</b><span class="mono">General chatbot</span></div>
+      <p class="typed" id="typed"><span class="caret"></span></p>
+      <p class="note mono">A careful answer. Not how anyone actually decides.</p>
+    </div>
+    <div class="col loka">
+      <div class="hd"><b>Ask Loka</b><span class="mono" id="lstate">Deciding</span></div>
+      <ul class="bars" id="bars"></ul>
+      <ul class="voices" id="voices"></ul>
+    </div>
+  </div>
+  <div class="s2-foot mono"><span>Illustrative scenarios and numbers</span><span>People say one thing and do another. Loka models what they do.</span></div>
+</section>
+
+<script>
+(() => {
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- Hero: an overhead plaza. Before each person moves, the predicted path appears; then they walk it. ----------
+  (() => {
+    const cv = document.getElementById('plaza'), ctx = cv.getContext('2d');
+    const rPeople = document.getElementById('r-people'), rMoves = document.getElementById('r-moves');
+    const SIG = '255,77,31';
+    const COATS = ['#2b2833', '#3b3644', '#4a4252', '#1f1e24', '#efe9e1', '#d9cfc4', '#6a5f73', '#8b7f8f', '#c9663f'];
+    const HAIR = ['#1a1714', '#2d2219', '#4a3626', '#7a5b3e', '#d8c7a8'];
+    let W, H, S, bg, people = [], spots = [], moves = 0, last = 0, live = true;
+
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    const pick = (a) => a[Math.floor(Math.random() * a.length)];
+
+    // Static scene: dusk ground, paving, fountain, trees, benches, a café terrace
+    const scene = () => {
+      bg = document.createElement('canvas'); bg.width = cv.width; bg.height = cv.height;
+      const g = bg.getContext('2d'), d = cv.width / W; g.scale(d, d);
+      const sky = g.createLinearGradient(0, 0, W, H);
+      sky.addColorStop(0, '#e4e0ec'); sky.addColorStop(.55, '#d6d0e2'); sky.addColorStop(1, '#ecc9b2');
+      g.fillStyle = sky; g.fillRect(0, 0, W, H);
+      const glow = g.createRadialGradient(W * .92, H * .1, 0, W * .92, H * .1, W * .6);
+      glow.addColorStop(0, 'rgba(255,196,150,.55)'); glow.addColorStop(1, 'rgba(255,196,150,0)');
+      g.fillStyle = glow; g.fillRect(0, 0, W, H);
+      // paving
+      const step = 56 * S;
+      g.strokeStyle = 'rgba(60,50,80,.07)'; g.lineWidth = 1;
+      for (let x = (W % step) / 2; x < W; x += step) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, H); g.stroke(); }
+      for (let y = (H % step) / 2; y < H; y += step) { g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); }
+      // walkway band
+      g.fillStyle = 'rgba(255,255,255,.18)'; g.fillRect(0, H * .72, W, 70 * S);
+      // fountain
+      const fx = W * .66, fy = H * .5, fr = 74 * S;
+      g.fillStyle = 'rgba(70,60,95,.12)'; g.beginPath(); g.ellipse(fx - 8 * S, fy + 10 * S, fr, fr, 0, 0, 6.283); g.fill();
+      g.fillStyle = '#ece8f1'; g.beginPath(); g.arc(fx, fy, fr, 0, 6.283); g.fill();
+      g.fillStyle = '#b9c3d6'; g.beginPath(); g.arc(fx, fy, fr * .78, 0, 6.283); g.fill();
+      g.strokeStyle = 'rgba(255,255,255,.55)'; g.lineWidth = 1.2;
+      [.55, .35].forEach((k) => { g.beginPath(); g.arc(fx, fy, fr * k, 0, 6.283); g.stroke(); });
+      g.fillStyle = '#ece8f1'; g.beginPath(); g.arc(fx, fy, fr * .14, 0, 6.283); g.fill();
+      // trees
+      const trees = [[.42, .16], [.86, .26], [.93, .7], [.5, .88], [.78, .9], [.3, .62]];
+      trees.forEach(([tx, ty]) => {
+        const x = tx * W, y = ty * H, r = rnd(30, 46) * S;
+        g.fillStyle = 'rgba(60,50,85,.16)'; g.beginPath(); g.ellipse(x - r * .35, y + r * .45, r * 1.05, r * .9, -.5, 0, 6.283); g.fill();
+        for (let k = 0; k < 7; k++) { g.fillStyle = k % 2 ? '#8e9a86' : '#a3ad98'; g.beginPath(); g.arc(x + rnd(-.4, .4) * r, y + rnd(-.4, .4) * r, r * rnd(.45, .7), 0, 6.283); g.fill(); }
+      });
+      // café terrace: tables
+      for (let i = 0; i < 6; i++) {
+        const x = W * .84 + (i % 3) * 34 * S, y = H * .42 + Math.floor(i / 3) * 40 * S;
+        g.fillStyle = 'rgba(60,50,85,.14)'; g.beginPath(); g.arc(x - 3, y + 4, 9 * S, 0, 6.283); g.fill();
+        g.fillStyle = '#f6f2ee'; g.beginPath(); g.arc(x, y, 9 * S, 0, 6.283); g.fill();
+      }
+      // benches
+      [[.55, .3], [.74, .74]].forEach(([bx, by]) => {
+        g.fillStyle = 'rgba(60,50,85,.14)'; g.fillRect(bx * W - 4, by * H + 5, 62 * S, 12 * S);
+        g.fillStyle = '#c7b9a8'; g.fillRect(bx * W, by * H, 62 * S, 12 * S);
+      });
+      // places people head for
+      spots = [
+        { x: fx - fr - 14 * S, y: fy, n: 'Fountain' }, { x: fx + fr + 14 * S, y: fy + 10 * S, n: 'Fountain' },
+        { x: W * .86, y: H * .48, n: 'Café' }, { x: W * .58, y: H * .34, n: 'Bench' }, { x: W * .77, y: H * .78, n: 'Bench' },
+        { x: W * .5, y: H * .76, n: 'Walkway' }, { x: W * .9, y: H * .76, n: 'Walkway' },
+        { x: W + 30, y: H * .2, n: 'Leaves' }, { x: W + 30, y: H * .6, n: 'Leaves' }, { x: W * .62, y: H + 30, n: 'Metro' },
+        { x: W * .38, y: -30, n: 'Leaves' }, { x: W * .3, y: H + 30, n: 'Metro' }
+      ];
+    };
+
+    const bez = (p, t) => { const u = 1 - t; return [u * u * p.sx + 2 * u * t * p.cx + t * t * p.tx, u * u * p.sy + 2 * u * t * p.cy + t * t * p.ty]; };
+    const dir = (p, t) => [2 * (1 - t) * (p.cx - p.sx) + 2 * t * (p.tx - p.cx), 2 * (1 - t) * (p.cy - p.sy) + 2 * t * (p.ty - p.cy)];
+    const off = (p) => p.x < -20 || p.x > W + 20 || p.y < -20 || p.y > H + 20;
+
+    const plan = (p) => {
+      let s, tries = 0;
+      do { s = pick(spots); tries++; } while (tries < 24 && (Math.hypot(s.x - p.x, s.y - p.y) < 120 * S || Math.hypot(s.x - p.x, s.y - p.y) > 340 * S));
+      p.sx = p.x; p.sy = p.y; p.tx = s.x + rnd(-14, 14) * S; p.ty = s.y + rnd(-14, 14) * S; p.dest = s.n;
+      const mx = (p.sx + p.tx) / 2, my = (p.sy + p.ty) / 2, nx = -(p.ty - p.sy), ny = p.tx - p.sx, l = Math.hypot(nx, ny) || 1, k = rnd(-.28, .28);
+      p.cx = mx + nx * k; p.cy = my + ny * k;
+      p.len = Math.hypot(p.tx - p.sx, p.ty - p.sy) * 1.08; p.t = 0; p.state = 'plan'; p.wait = rnd(.5, 1.3); p.reveal = 0;
+      const busy = people.filter((o) => o !== p && o.show).length;
+      p.show = p.x > W * .42 && p.tx > W * .4 && busy < 5 && Math.random() < .55; p.prob = rnd(.58, .93);
+      if (p.show) { moves++; rMoves.textContent = moves; }
+    };
+    const spawn = (edge) => {
+      const p = { speed: rnd(26, 42) * S, coat: pick(COATS), hair: pick(HAIR), ph: rnd(0, 6.28), size: rnd(.9, 1.12), h: 0 };
+      if (edge) { const e = Math.floor(rnd(0, 4)); p.x = e === 0 ? -15 : e === 1 ? W + 15 : rnd(W * .35, W); p.y = e < 2 ? rnd(H * .1, H * .9) : e === 2 ? -15 : H + 15; }
+      else { p.x = rnd(W * .3, W * .97); p.y = rnd(H * .08, H * .95); }
+      plan(p); p.wait = rnd(0, 2); return p;
+    };
+
+    const fit = () => {
+      const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2);
+      W = r.width; H = r.height; S = Math.max(.85, Math.min(1.45, W / 1100));
+      cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0);
+      scene();
+      const n = Math.round(Math.max(22, Math.min(54, W * H / 30000)));
+      people = Array.from({ length: n }, () => spawn(false));
+      let shown = 0; people.forEach((p) => { if (p.show && ++shown > 4) p.show = false; });
+      rPeople.textContent = n;
+    };
+
+    const drawPath = (p, from, to, a) => {
+      ctx.save(); ctx.setLineDash([2.5 * S, 6 * S]); ctx.lineCap = 'round'; ctx.lineWidth = 2.4 * S; ctx.strokeStyle = `rgba(${SIG},${a})`;
+      ctx.beginPath(); const N = 40;
+      for (let i = 0; i <= N; i++) { const t = from + (to - from) * i / N, [x, y] = bez(p, t); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+      ctx.stroke(); ctx.restore();
+    };
+    const drawEnd = (p, a) => {
+      const x = p.tx, y = p.ty;
+      ctx.strokeStyle = `rgba(${SIG},${a})`; ctx.lineWidth = 1.5 * S; ctx.beginPath(); ctx.arc(x, y, 7 * S, 0, 6.283); ctx.stroke();
+      ctx.fillStyle = `rgba(${SIG},${a})`; ctx.beginPath(); ctx.arc(x, y, 2.4 * S, 0, 6.283); ctx.fill();
+      if (p.label && x > 0 && x < W - 10 && y > 0 && y < H) {
+        const txt = `${p.dest} · ${p.prob.toFixed(2)}`;
+        ctx.font = `500 ${11 * S + 1}px "Geist Mono", monospace`;
+        const w = ctx.measureText(txt).width + 14 * S, h = 20 * S, lx = Math.min(x + 12 * S, W - w - 8), ly = y - h - 8 * S;
+        ctx.globalAlpha = a; ctx.fillStyle = 'rgba(255,255,255,.88)';
+        ctx.beginPath(); ctx.roundRect(lx, ly, w, h, h / 2); ctx.fill();
+        ctx.fillStyle = '#121214'; ctx.fillText(txt, lx + 7 * S, ly + h * .68); ctx.globalAlpha = 1;
+      }
+    };
+    const drawPerson = (p, k) => {
+      const z = S * p.size, b = Math.sin(p.ph) * (p.state === 'walk' ? .07 : 0);
+      ctx.save(); ctx.translate(p.x, p.y);
+      // long dusk shadow, cast away from the low sun in the top right
+      ctx.fillStyle = 'rgba(52,40,78,.2)'; ctx.beginPath(); ctx.ellipse(-9 * z, 9 * z, 11 * z, 4.2 * z, -.78, 0, 6.283); ctx.fill();
+      ctx.rotate(p.h);
+      ctx.fillStyle = p.coat; ctx.beginPath(); ctx.ellipse(0, 0, 5 * z, 8.4 * z * (1 + b), 0, 0, 6.283); ctx.fill();
+      ctx.fillStyle = p.hair; ctx.beginPath(); ctx.arc(.8 * z, 0, 4 * z, 0, 6.283); ctx.fill();
+      ctx.restore();
+    };
+
+    const frame = (now) => {
+      requestAnimationFrame(frame);
+      if (!live) { last = now; return; }
+      const dt = Math.min(.05, (now - last) / 1000 || 0); last = now;
+      ctx.clearRect(0, 0, W, H); ctx.drawImage(bg, 0, 0, W, H);
+      // one featured label at a time
+      if (!people.some((p) => p.label && p.show)) { const c = people.filter((p) => p.show && p.state === 'plan' && p.tx > W * .4); if (c.length) pick(c).label = true; }
+      people.forEach((p) => {
+        if (p.state === 'plan') {
+          p.wait -= dt; p.reveal = Math.min(1, p.reveal + dt / .55);
+          if (p.wait <= 0) p.state = 'walk';
+        } else {
+          p.t = Math.min(1, p.t + dt * p.speed / p.len); p.ph += dt * 9;
+          const [x, y] = bez(p, p.t); p.x = x; p.y = y;
+          const [dx, dy] = dir(p, p.t); p.h = Math.atan2(dy, dx);
+          if (p.t >= 1) { p.label = false; p.show = false; if (off(p)) Object.assign(p, spawn(true)); else plan(p); }
+        }
+      });
+      people.forEach((p) => {
+        if (!p.show) return;
+        if (p.state === 'plan') { const e = 1 - Math.pow(1 - p.reveal, 3); drawPath(p, 0, e, .78 * e); if (p.reveal > .6) drawEnd(p, (p.reveal - .6) / .4); }
+        else { const a = p.t > .85 ? (1 - p.t) / .15 : 1; drawPath(p, p.t, 1, .78 * a); drawEnd(p, a); }
+      });
+      people.forEach((p) => drawPerson(p));
+    };
+
+    fit();
+    let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(fit, 150); });
+    new IntersectionObserver(([e]) => { live = e.isIntersecting; }).observe(cv);
+    if (still) { people.forEach((p) => { p.reveal = 1; }); live = true; frame(performance.now()); live = false; return; }
+    requestAnimationFrame((t) => { last = t; frame(t); });
+  })();
+
+  // ---------- Section 2: three ways to find out ----------
+  (() => {
+    const DATA = [
+      { q: 'Rents go up 8% next year. Do renters stay, move nearby, or leave the city?',
+        a: 'It depends on several factors, including each renter’s budget, how long they have lived there, the cost of moving, and conditions in the local housing market. Some may choose to stay, while others might consider',
+        bars: [['Stay and pay', 64], ['Move nearby', 24], ['Leave the city', 12]],
+        v: ['The kids just settled into school. I’ll swallow it this year.', 'One more increase and I’m out.'] },
+      { q: 'A senior engineer is offered 15% more pay to come back to the office five days a week. What happens?',
+        a: 'This decision depends on the candidate’s priorities. Some people value higher compensation, while others place more weight on flexibility and work-life balance. It may be helpful to weigh',
+        bars: [['Pushes for two remote days', 58], ['Declines', 31], ['Accepts as is', 11]],
+        v: ['Five days is a deal breaker, but I’d listen at three.', 'The commute costs me two hours a day.'] },
+      { q: 'A streaming service raises its price from $12 to $15 a month. What do subscribers do?',
+        a: 'Subscriber reactions to price changes can vary. Factors such as perceived value, available alternatives, and content quality all play a role. Some subscribers may accept the change, while',
+        bars: [['Keep paying', 71], ['Switch to the plan with ads', 18], ['Cancel', 11]],
+        v: ['I complain every time and never cancel.', 'Fine, I’ll watch the ads.'] },
+      { q: 'A city adds a $9 charge to drive downtown at rush hour. How do commuters respond?',
+        a: 'Congestion pricing can lead to a variety of outcomes. Some commuters may switch to public transit, while others may continue driving or adjust their schedules. The overall impact would depend on',
+        bars: [['Pay and keep driving', 46], ['Switch to transit', 33], ['Leave earlier or later', 21]],
+        v: ['Nine dollars is less than my time.', 'If the train ran on time, I’d have switched years ago.'] }
+    ];
+    const tabs = [...document.querySelectorAll('.tabs button')];
+    const q = document.getElementById('q'), typed = document.getElementById('typed'), bars = document.getElementById('bars'), voices = document.getElementById('voices');
+    const days = document.getElementById('days'), wbar = document.getElementById('wbar'), wtxt = document.getElementById('wtxt'), lstate = document.getElementById('lstate');
+    let timers = [], started = false;
+    const later = (fn, ms) => timers.push(setTimeout(fn, still ? 0 : ms));
+    const show = (k) => {
+      timers.forEach(clearTimeout); timers = [];
+      tabs.forEach((b, i) => b.setAttribute('aria-selected', i === k));
+      const d = DATA[k];
+      q.textContent = d.q;
+      // Ask people: slow
+      wbar.style.transition = 'none'; wbar.style.width = '0'; days.textContent = 'Day 1'; wtxt.textContent = 'Collecting responses';
+      requestAnimationFrame(() => { wbar.style.transition = ''; wbar.style.width = still ? '30%' : '30%'; });
+      let day = 1; const tick = () => { if (day < 4) { day++; days.textContent = `Day ${day}`; later(tick, 2200); } else wtxt.textContent = 'Results in about two weeks'; };
+      later(tick, 2200);
+      // Ask an assistant: hedges, word by word
+      typed.innerHTML = '<span class="caret"></span>'; const caret = typed.firstChild;
+      if (still) caret.before(d.a + '…');
+      else { let i = 0; const w = d.a.split(' '); const step = () => { caret.before((i ? ' ' : '') + w[i]); i++; if (i < w.length) later(step, 70); else caret.before('…'); }; later(step, 250); }
+      // Ask Loka: decides
+      lstate.textContent = 'Deciding';
+      bars.innerHTML = d.bars.map(([l, v]) => `<li><span class="lb">${l}</span><span class="pc" data-v="${v}">0%</span><span class="tr"><i></i></span></li>`).join('');
+      voices.innerHTML = d.v.map((t) => `<li>${t}</li>`).join('');
+      later(() => {
+        lstate.textContent = 'Decided';
+        [...bars.children].forEach((li, i) => {
+          const v = +li.querySelector('.pc').dataset.v, pc = li.querySelector('.pc');
+          later(() => {
+            li.querySelector('i').style.transform = `scaleX(${v / 100})`;
+            const t0 = performance.now(); const run = (t) => { const e = Math.min(1, (t - t0) / 900), k = 1 - Math.pow(1 - e, 4); pc.textContent = Math.round(v * k) + '%'; if (e < 1) requestAnimationFrame(run); };
+            requestAnimationFrame(run);
+          }, i * 120);
+        });
+        [...voices.children].forEach((li, i) => later(() => li.classList.add('on'), 700 + i * 260));
+      }, 450);
+    };
+    tabs.forEach((b, i) => b.addEventListener('click', () => show(i)));
+    q.textContent = DATA[0].q;
+    new IntersectionObserver(([e]) => { if (e.isIntersecting && !started) { started = true; show(0); } }, { threshold: .35 }).observe(document.getElementById('cols'));
+  })();
+})();
+</script>
+</body>
+</html>

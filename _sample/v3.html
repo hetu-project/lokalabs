@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loka Labs · Sample v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Style sample for the new Loka Labs homepage: hero (overhead plaza, predicted paths) and section 2 (three ways to find out). -->
+<style>
+:root{
+  --bg:#f4f4f2;--ink:#0e0f0f;--ink-2:rgba(18,18,20,.66);--ink-3:rgba(18,18,20,.42);
+  --line:rgba(18,18,20,.12);--signal:#2f5bff;
+  --display:"Inter Tight",system-ui,sans-serif;
+  --sans:"Inter Tight",system-ui,-apple-system,sans-serif;
+  --mono:"Geist Mono",ui-monospace,Menlo,monospace;
+  --gutter:clamp(20px,4vw,56px);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:0}
+
+/* ---------- hero frame ---------- */
+.frame{position:relative;margin:10px;height:calc(100svh - 20px);min-height:620px;border-radius:28px;overflow:hidden;isolation:isolate;background:#d9d4e4}
+.frame canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.frame::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(75% 85% at 10% 18%,rgba(244,241,248,.92) 0%,rgba(244,241,248,.6) 38%,rgba(244,241,248,0) 70%)}
+.grain{position:absolute;inset:-50%;z-index:2;pointer-events:none;opacity:.22;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 1.2s steps(4) infinite}
+@keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-1%)}100%{transform:translate(0,0)}}
+.nav{position:absolute;inset:0 0 auto;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:22px var(--gutter)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px;letter-spacing:-.01em}
+.brand i{display:grid;place-items:center;width:24px;height:24px;border:1.5px solid currentColor;border-radius:7px}
+.brand i::before{content:"";width:9px;height:9px;background:currentColor;border-radius:2px}
+.nav ul{display:flex;align-items:center;gap:28px;list-style:none;margin:0;padding:0;font-size:14.5px}
+.nav ul a{color:var(--ink-2);transition:color .2s}
+.nav ul a:hover{color:var(--ink)}
+.pill{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 20px;border-radius:999px;font:500 15px/1 var(--sans);background:var(--ink);color:#fff;border:0;cursor:pointer;transition:transform .3s var(--ease),background-color .2s}
+.pill:hover{background:#2a2a2e}
+.pill svg{width:14px;height:14px;transition:transform .3s var(--ease)}
+.pill:hover svg{transform:translateX(3px)}
+.nav .pill,.nav .pill:hover{height:38px;padding:0 16px;font-size:14px;color:#fff}
+.ghost{display:inline-flex;align-items:center;height:44px;padding:0 20px;border-radius:999px;font:500 15px/1 var(--sans);background:rgba(255,255,255,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--ink);border:1px solid rgba(18,18,20,.08)}
+.ghost:hover{background:rgba(255,255,255,.8)}
+@media (max-width:760px){.nav ul li.l{display:none}}
+
+.copy{position:absolute;z-index:4;left:var(--gutter);top:clamp(110px,17vh,170px);max-width:min(760px,calc(100% - 2 * var(--gutter)))}
+.copy h1{margin:0;font-family:var(--display);font-weight:500;font-size:clamp(44px,6.4vw,100px);line-height:.96;letter-spacing:-.04em}
+.copy h1 .ln{display:block;overflow:hidden;padding-bottom:.14em;margin-bottom:-.14em}
+.copy h1 .ln span{display:block;transform:translateY(120%);animation:rise 1.1s var(--ease) forwards}
+.copy h1 .ln:nth-child(2) span{animation-delay:.08s}
+.copy h1 .ln:nth-child(3) span{animation-delay:.16s}
+@keyframes rise{to{transform:none}}
+.copy p{margin:26px 0 0;max-width:30em;font-size:clamp(16px,1.25vw,19px);line-height:1.5;color:var(--ink-2);opacity:0;animation:fade 1s var(--ease) .45s forwards}
+.copy .acts{display:flex;gap:10px;margin-top:30px;flex-wrap:wrap;opacity:0;animation:fade 1s var(--ease) .55s forwards}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.readout{position:absolute;z-index:4;left:var(--gutter);bottom:24px;display:flex;gap:22px;color:var(--ink-2)}
+.readout b{font-weight:500;color:var(--ink)}
+.readout .dot{display:inline-block;width:7px;height:7px;margin-right:8px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 4px rgba(47,91,255,.18);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 7px rgba(47,91,255,0)}}
+.tag{position:absolute;z-index:4;right:var(--gutter);bottom:24px;color:var(--ink-3)}
+.proof{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:26px calc(var(--gutter) + 10px) 0;color:var(--ink-2);font-size:14.5px}
+.proof .logos{display:flex;align-items:center;gap:34px;flex-wrap:wrap}
+.proof img{height:22px;width:auto;filter:grayscale(1);opacity:.55}
+.proof .lg-stanford{height:30px}.proof .lg-mit{height:19px}
+
+
+/* ---------- photo hero ---------- */
+.photo{background:#1a1a1c}
+.photo .scene{position:absolute;inset:0;z-index:0;transform-origin:64% 50%;animation:drift 28s ease-in-out infinite alternate}
+@keyframes drift{from{transform:scale(1.02)}to{transform:scale(1.1) translate(-1.2%,-.6%)}}
+.photo .scene img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.92) contrast(1.05) brightness(.96)}
+.photo .scene canvas{position:absolute;inset:0;width:100%;height:100%}
+.photo::before{background:linear-gradient(90deg,rgba(12,12,14,.82) 0%,rgba(12,12,14,.6) 30%,rgba(12,12,14,.12) 58%,rgba(12,12,14,0) 70%),linear-gradient(180deg,rgba(12,12,14,.45) 0%,rgba(12,12,14,0) 18%)}
+.photo .grain{opacity:.16;mix-blend-mode:overlay}
+.photo .nav,.photo .copy h1,.photo .brand{color:#fff}
+.photo .nav ul a{color:rgba(255,255,255,.72)}
+.photo .nav ul a:hover{color:#fff}
+.photo .nav .pill,.photo .nav .pill:hover{background:#fff;color:var(--ink)}
+.photo .copy p{color:rgba(255,255,255,.78)}
+.photo .copy .pill{background:var(--signal)}
+.photo .copy .pill:hover{background:#5277ff}
+.photo .ghost{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff}
+.photo .ghost:hover{background:rgba(255,255,255,.2)}
+.photo .readout{color:rgba(255,255,255,.7)}
+.photo .readout b{color:#fff}
+.photo .tag{color:rgba(255,255,255,.7);text-shadow:0 1px 6px rgba(0,0,0,.6)}
+@media (prefers-reduced-motion:reduce){.photo .scene{animation:none}}
+
+
+/* ---------- light plaza variant ---------- */
+.light .scene img{inset:auto;object-fit:fill;max-width:none;filter:saturate(.75) contrast(1.02) brightness(1.06)}
+.light::before{background:linear-gradient(90deg,rgba(242,241,238,.94) 0%,rgba(242,241,238,.78) 30%,rgba(242,241,238,.18) 56%,rgba(242,241,238,0) 68%),linear-gradient(180deg,rgba(242,241,238,.6) 0%,rgba(242,241,238,0) 16%)}
+.light .grain{opacity:.12;mix-blend-mode:multiply}
+.light .nav,.light .copy h1,.light .brand{color:var(--ink)}
+.light .nav ul a{color:var(--ink-2)}
+.light .nav ul a:hover{color:var(--ink)}
+.light .nav .pill,.light .nav .pill:hover{background:var(--ink);color:#fff}
+.light .copy p{color:var(--ink-2)}
+.light .ghost{background:rgba(255,255,255,.6);border-color:rgba(18,18,20,.1);color:var(--ink)}
+.light .ghost:hover{background:rgba(255,255,255,.85)}
+.light .readout{color:var(--ink-2)}
+.light .readout b{color:var(--ink)}
+.light .tag{color:var(--ink-2);text-shadow:none}
+
+
+/* ---------- v2: dark hero over a field of people ---------- */
+.field{background:#050506}
+.field canvas#field,.field canvas#ink{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.field canvas#ink{z-index:3;pointer-events:none}
+.field::before{background:radial-gradient(70% 90% at 8% 40%,rgba(5,5,6,.92) 0%,rgba(5,5,6,.55) 45%,rgba(5,5,6,0) 75%)}
+.field .grain{opacity:.08;mix-blend-mode:screen}
+.field .copy h1{font-weight:500;letter-spacing:-.045em}
+.field .copy h1 .ln:nth-child(3) span{color:#8aa2ff}
+.field .copy .pill{background:#2f5bff}
+.field .copy .pill:hover{background:#5277ff}
+.s4{background:#050506}
+body .g6 .c6.feat{background:linear-gradient(135deg,#3a5cff 0%,#2547f4 58%,#1e3fd8 100%)}
+body .g6 .c6.feat small,body .g6 .c6.feat .to .mono,body .g6 .c6.feat .aw span{color:rgba(255,255,255,.66)}
+body .g6 .c6.feat p{color:rgba(255,255,255,.86)}
+body .g6 .c6.feat .to{border-color:rgba(255,255,255,.2)}
+body section.s7{background:#2547f4;color:#fff}
+body section.s7 h2 em{color:#0e0f0f}
+body section.s7 p{color:rgba(255,255,255,.8)}
+body section.s7 .pill{background:#fff;color:#0e0f0f}
+body section.s7 .pill:hover{background:#e9edff}
+
+/* ---------- section 2 ---------- */
+.s2{padding:clamp(110px,13vw,180px) var(--gutter) clamp(90px,10vw,140px);max-width:1440px;margin:0 auto}
+.s2 h2{margin:0;max-width:13em;font-family:var(--display);font-weight:500;font-size:clamp(38px,4.8vw,76px);line-height:1;letter-spacing:-.035em}
+.s2 h2 em{font-style:normal;color:var(--ink-3)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:48px}
+.tabs button{height:38px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:transparent;font:500 14px var(--sans);color:var(--ink-2);cursor:pointer;transition:background-color .25s,color .25s,border-color .25s}
+.tabs button:hover{border-color:rgba(18,18,20,.3);color:var(--ink)}
+.tabs button[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.qline{margin:34px 0 0;padding:28px 0;border-top:1px solid var(--ink);font-family:var(--display);font-weight:400;font-size:clamp(22px,2.2vw,32px);line-height:1.2;letter-spacing:-.02em}
+.cols{display:grid;grid-template-columns:1fr 1fr 1.25fr;border-top:1px solid var(--line)}
+.col{padding:28px 28px 34px 0;min-height:330px;display:flex;flex-direction:column}
+.col+.col{padding-left:28px;border-left:1px solid var(--line)}
+.col .hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:26px;color:var(--ink-3)}
+.col .hd b{font:500 15px var(--sans);color:var(--ink)}
+.col.loka{background:#fff;border-radius:18px;padding:28px;border:0;margin:-1px 0 0 18px;box-shadow:0 1px 0 rgba(18,18,20,.04),0 24px 60px -30px rgba(18,18,20,.25)}
+.wait{margin-top:auto}
+.wait .bar{height:4px;border-radius:4px;background:rgba(18,18,20,.08);overflow:hidden}
+.wait .bar i{display:block;height:100%;width:0;background:var(--ink-3);border-radius:inherit;transition:width 9s linear}
+.wait p{margin:12px 0 0;color:var(--ink-3)}
+.big{font-family:var(--display);font-size:clamp(40px,4vw,60px);line-height:1;letter-spacing:-.03em;color:var(--ink-3)}
+.typed{margin:0;font-size:17px;line-height:1.6;color:var(--ink-2);min-height:7.5em}
+.typed .caret{display:inline-block;width:2px;height:1.05em;margin-left:2px;vertical-align:-.18em;background:var(--ink-2);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.col .note{margin-top:auto;color:var(--ink-3)}
+.bars{list-style:none;margin:0;padding:0;display:grid;gap:18px}
+.bars li{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:baseline}
+.bars .lb{font-size:15.5px}
+.bars .pc{font-family:var(--mono);font-size:14px}
+.bars .tr{grid-column:1/-1;height:8px;border-radius:8px;background:rgba(18,18,20,.06);overflow:hidden}
+.bars .tr i{display:block;height:100%;border-radius:inherit;background:#b9b6c2;transform:scaleX(0);transform-origin:left;transition:transform .9s var(--ease)}
+.bars li:first-child .tr i{background:var(--signal)}
+.voices{margin:28px 0 0;padding:0;list-style:none;display:grid;gap:12px}
+.voices li{font-size:15px;line-height:1.45;color:var(--ink-2);opacity:0;transform:translateY(8px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.voices li.on{opacity:1;transform:none}
+.voices li::before{content:"“";margin-right:2px;color:var(--signal)}
+.voices li::after{content:"”"}
+.s2-foot{display:flex;justify-content:space-between;margin-top:22px;color:var(--ink-3)}
+@media (max-width:980px){.cols{grid-template-columns:1fr}.col,.col+.col{padding:24px 0;border-left:0;border-top:1px solid var(--line);min-height:0}.col.loka{margin:16px 0 0;padding:24px}.typed{min-height:0}}
+
+/* ---------- shared section bits ---------- */
+.sec{padding:clamp(110px,13vw,180px) var(--gutter);max-width:1440px;margin:0 auto}
+.kick{display:block;margin-bottom:22px;color:var(--ink-3)}
+.h2{margin:0;font-family:var(--display);font-weight:500;font-size:clamp(38px,4.8vw,76px);line-height:1;letter-spacing:-.035em;max-width:14em}
+.h2 em{font-style:normal;color:var(--ink-3)}
+.lede{margin:24px 0 0;max-width:34em;font-size:clamp(16px,1.2vw,18px);line-height:1.55;color:var(--ink-2)}
+.rv{opacity:0;transform:translateY(24px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- 3 rehearse ---------- */
+.s3{border-top:1px solid var(--line)}
+.pin3{height:320vh;position:relative}
+.stk3{position:sticky;top:0;height:100svh;display:flex;align-items:center}
+.g3{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,4vw,72px);align-items:center;width:100%;max-width:1440px;margin:0 auto;padding:0 var(--gutter)}
+.steps3{list-style:none;margin:40px 0 0;padding:0;border-top:1px solid var(--line)}
+.steps3 li{border-bottom:1px solid var(--line)}
+.steps3 button{display:grid;grid-template-columns:3.2em 1fr;gap:4px 10px;width:100%;padding:20px 0;background:none;border:0;text-align:left;font:inherit;color:var(--ink-3);cursor:pointer;transition:color .4s}
+.steps3 button .n{font-family:var(--mono);font-size:12px;padding-top:5px}
+.steps3 button b{font-weight:500;font-size:19px;letter-spacing:-.01em}
+.steps3 button span.d{grid-column:2;display:grid;grid-template-rows:0fr;transition:grid-template-rows .6s var(--ease)}
+.steps3 button span.d>span{overflow:hidden;font-size:15px;line-height:1.5;color:var(--ink-2)}
+.steps3 button[aria-current="true"]{color:var(--ink)}
+.steps3 button[aria-current="true"] .n{color:var(--signal)}
+.steps3 button[aria-current="true"] span.d{grid-template-rows:1fr}
+.stage3{position:relative;aspect-ratio:1.18/1;border-radius:24px;background:#fff;box-shadow:0 1px 0 rgba(18,18,20,.04),0 40px 90px -50px rgba(18,18,20,.35);overflow:hidden}
+.stage3 canvas{position:absolute;inset:0;width:100%;height:100%}
+.chip{position:absolute;display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;background:rgba(242,241,238,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font-size:14px;transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.chip .mono{color:var(--ink-3)}
+.chip.pop{left:22px;top:22px}
+.chip.cond{right:22px;top:22px;background:var(--ink);color:#fff;opacity:0;transform:translateX(30px)}
+.chip.cond .mono{color:rgba(255,255,255,.6)}
+.chip.cond b{color:var(--signal);font-weight:500}
+.stage3[data-s="1"] .chip.cond,.stage3[data-s="2"] .chip.cond{opacity:1;transform:none}
+.res3{position:absolute;left:50%;bottom:18px;width:calc(var(--cw,220px) * 3);transform:translateX(-50%);display:grid;grid-template-columns:repeat(3,1fr);opacity:0;transition:opacity .6s var(--ease) .5s}
+.stage3[data-s="2"] .res3{opacity:1}
+.res3 div{text-align:center}
+.res3 b{display:block;font-family:var(--display);font-weight:500;font-size:clamp(24px,2.4vw,36px);letter-spacing:-.02em}
+.res3 div:first-child b{color:var(--signal)}
+.res3 span{font-size:13.5px;color:var(--ink-2)}
+@media (max-width:900px){.pin3{height:auto}.stk3{position:static;height:auto;padding:90px 0}.g3{grid-template-columns:1fr}.stage3{order:-1}}
+
+/* ---------- 4 three models (dark band) ---------- */
+.s4{background:#0e0e10;color:#f2f1ee;border-radius:28px;margin:0 10px}
+.s4 .kick{color:rgba(242,241,238,.45)}
+.s4 .h2 em{color:rgba(242,241,238,.4)}
+.s4 .lede{color:rgba(242,241,238,.66)}
+.s4 .intro{padding-bottom:0}
+.pin4{height:330vh;position:relative}
+.stk4{position:sticky;top:0;height:100svh;display:flex;align-items:center}
+.g4{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,64px);align-items:center;width:100%;max-width:1440px;margin:0 auto;padding:0 var(--gutter)}
+.tabs4{display:flex;gap:8px;margin-bottom:clamp(28px,4vh,44px);flex-wrap:wrap}
+.tabs4 button{height:36px;padding:0 15px;border-radius:999px;border:1px solid rgba(242,241,238,.16);background:none;font:500 14px var(--sans);color:rgba(242,241,238,.6);cursor:pointer;transition:all .3s}
+.tabs4 button[aria-current="true"]{background:#f2f1ee;color:#0e0e10;border-color:#f2f1ee}
+.panes4{display:grid}
+.pane4{grid-area:1/1;opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .6s var(--ease);pointer-events:none}
+.pane4.on{opacity:1;transform:none;pointer-events:auto}
+.pane4 .sc{font-family:var(--mono);font-size:12px;color:var(--signal)}
+.pane4 h3{margin:10px 0 0;font-family:var(--display);font-weight:500;font-size:clamp(40px,4.2vw,64px);line-height:1;letter-spacing:-.03em}
+.pane4>p{margin:18px 0 0;max-width:27em;font-size:17px;line-height:1.55;color:rgba(242,241,238,.7)}
+.io4{margin:26px 0 0;display:grid;grid-template-columns:4.5em 1fr;gap:10px 16px;font-size:15px;max-width:30em}
+.io4 dt{font-family:var(--mono);font-size:12px;color:rgba(242,241,238,.4);padding-top:3px}
+.io4 dd{margin:0}
+.ask4{margin:26px 0 0;padding:16px 18px;border-radius:14px;background:rgba(242,241,238,.06);font-size:15.5px;line-height:1.45;max-width:30em}
+.ask4 .mono{display:block;margin-bottom:6px;color:rgba(242,241,238,.4)}
+.viz4{position:relative;aspect-ratio:1/1;max-height:80vh;width:100%;justify-self:center}
+.viz4 canvas{width:100%;height:100%}
+@media (max-width:900px){.pin4{height:auto}.stk4{position:static;height:auto;padding:40px 0 90px}.g4{grid-template-columns:1fr}.viz4{order:-1;max-width:520px}.panes4{display:block}.pane4{opacity:1;transform:none;pointer-events:auto;padding:28px 0;border-top:1px solid rgba(242,241,238,.12)}.tabs4{display:none}}
+
+/* ---------- 5 why it works ---------- */
+.g5{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,4vw,72px);align-items:start;margin-top:clamp(48px,6vw,80px)}
+.pr5{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.pr5 li{border-bottom:1px solid var(--line)}
+.pr5 button{display:grid;grid-template-columns:3.2em 1fr;gap:6px 10px;width:100%;padding:22px 0;background:none;border:0;text-align:left;font:inherit;color:var(--ink);cursor:pointer}
+.pr5 .n{font-family:var(--mono);font-size:12px;color:var(--ink-3);padding-top:5px;transition:color .3s}
+.pr5 b{font-weight:500;font-size:19px;letter-spacing:-.01em}
+.pr5 p{grid-column:2;margin:0;font-size:15px;line-height:1.5;color:var(--ink-2)}
+.pr5 button[aria-current="true"] .n{color:var(--signal)}
+.dg{position:sticky;top:110px;border-radius:24px;background:#fff;padding:clamp(18px,2vw,28px);box-shadow:0 40px 90px -50px rgba(18,18,20,.3)}
+.dg svg{width:100%;height:auto;display:block}
+.dg .bx{fill:#f4f3f0;stroke:rgba(18,18,20,.16);stroke-width:1;transition:fill .4s,stroke .4s}
+.dg .ln{fill:none;stroke:rgba(18,18,20,.22);stroke-width:1.2;transition:stroke .4s}
+.dg text{font-family:var(--sans);font-size:14px;fill:var(--ink)}
+.dg text.m{font-family:var(--mono);font-size:11px;fill:var(--ink-3)}
+.dg [data-k].hot .bx{fill:#eef2ff;stroke:var(--signal)}
+.dg [data-k].hot .ln{stroke:var(--signal)}
+@media (max-width:900px){.g5{grid-template-columns:1fr}.dg{position:static}}
+
+/* ---------- 6 team ---------- */
+.g6{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:clamp(48px,6vw,80px)}
+.c6{display:flex;flex-direction:column;border-radius:20px;background:#fff;padding:22px;min-height:340px;box-shadow:0 1px 0 rgba(18,18,20,.04)}
+.c6 .av{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:#f2f1ee;font-family:var(--mono);font-size:13px}
+.c6 h3{margin:22px 0 0;font-weight:500;font-size:19px;letter-spacing:-.01em}
+.c6 small{display:block;margin-top:4px;font-size:13.5px;color:var(--ink-3)}
+.c6 p{margin:14px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-2)}
+.c6 .to{margin-top:auto;padding-top:18px;border-top:1px solid var(--line)}
+.c6 .to .mono{display:block;color:var(--ink-3);margin-bottom:5px}
+.c6 .to span:last-child{font-size:14.5px}
+.c6.feat{grid-column:span 2;flex-direction:row;padding:0;overflow:hidden;background:#0e0e10;color:#f2f1ee}
+.c6.feat img.pt{width:42%;object-fit:cover;filter:grayscale(1) contrast(1.05)}
+.c6.feat .tx{flex:1;display:flex;flex-direction:column;padding:26px}
+.c6.feat .aw{display:flex;align-items:center;gap:12px}
+.c6.feat .aw img{height:46px;width:auto}
+.c6.feat .aw span{font-family:var(--mono);font-size:12px;color:rgba(242,241,238,.6)}
+.c6.feat h3{font-family:var(--display);font-size:clamp(26px,2.4vw,34px);margin-top:auto;padding-top:28px}
+.c6.feat small,.c6.feat .to .mono{color:rgba(242,241,238,.5)}
+.c6.feat p{color:rgba(242,241,238,.72)}
+.c6.feat .to{border-color:rgba(242,241,238,.14);margin-top:18px}
+.stat6{display:flex;align-items:baseline;gap:18px;margin-top:40px;padding-top:28px;border-top:1px solid var(--line)}
+.stat6 b{font-family:var(--display);font-weight:500;font-size:clamp(56px,6vw,88px);line-height:.9;letter-spacing:-.04em}
+.stat6 span{color:var(--ink-2)}
+.c6.stat{grid-column:span 3;justify-content:space-between;background:transparent;box-shadow:inset 0 0 0 1px var(--line)}
+.c6.stat>b{font-family:var(--display);font-weight:500;font-size:clamp(64px,6.4vw,96px);line-height:.9;letter-spacing:-.04em}
+.c6.stat>span{display:block;max-width:28em;margin-top:12px;color:var(--ink-2)}
+.lg6{display:flex;flex-wrap:wrap;align-items:center;gap:18px 34px;margin-top:28px}
+.lg6 img{height:22px;width:auto;filter:grayscale(1);opacity:.55}
+@media (max-width:1100px){.c6.stat{grid-column:1/-1}}
+@media (max-width:1100px){.g6{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.g6{grid-template-columns:1fr}.c6.feat{grid-column:auto;flex-direction:column}.c6.feat img.pt{width:100%;height:260px}}
+
+/* ---------- 7 close + footer ---------- */
+.s7{position:relative;margin:0 10px;border-radius:28px;overflow:hidden;background:#e9e7e2;min-height:78vh;display:flex;align-items:center}
+.s7 canvas{position:absolute;inset:0;width:100%;height:100%}
+.s7 .in7{position:relative;padding:clamp(80px,10vw,140px) var(--gutter);max-width:1440px;margin:0 auto;width:100%}
+.s7 h2{margin:0;font-family:var(--display);font-weight:500;font-size:clamp(48px,7vw,112px);line-height:.95;letter-spacing:-.04em;max-width:9em}
+.s7 h2 em{font-style:normal;color:var(--signal)}
+.s7 p{margin:24px 0 0;max-width:30em;font-size:18px;color:var(--ink-2)}
+.s7 .pill{margin-top:32px;background:var(--signal)}
+.s7 .pill:hover{background:#5277ff}
+.foot{display:grid;grid-template-columns:2fr repeat(3,1fr);gap:28px;padding:56px var(--gutter) 40px;max-width:1440px;margin:0 auto;font-size:14.5px}
+.foot h4{margin:0 0 12px;font-weight:500;font-size:13px;color:var(--ink-3)}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.foot ul a{color:var(--ink-2)}
+.foot ul a:hover{color:var(--ink)}
+.foot .fine{grid-column:1/-1;margin-top:28px;color:var(--ink-3);font-size:13px}
+@media (max-width:760px){.foot{grid-template-columns:1fr 1fr}.foot>div:first-child{grid-column:1/-1}}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+@media (prefers-reduced-motion:reduce){
+  .grain,.readout .dot,.typed .caret{animation:none}
+  .copy h1 .ln span,.copy p,.copy .acts{animation:none;transform:none;opacity:1}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="arr" viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<section class="frame photo field" id="top">
+  <canvas id="field" aria-hidden="true"></canvas><canvas id="ink" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="nav">
+    <a class="brand" href="#top"><i aria-hidden="true"></i>Loka Labs</a>
+    <ul>
+      <li class="l"><a href="#models">Models</a></li>
+      <li class="l"><a href="#research">Research</a></li>
+      <li class="l"><a href="#team">Team</a></li>
+      <li><a class="pill" href="#s2">Request access</a></li>
+    </ul>
+  </header>
+  <div class="copy">
+    <h1><span class="ln"><span>Know what people</span></span><span class="ln"><span>will decide,</span></span><span class="ln"><span>before they do.</span></span></h1>
+    <p>Loka Labs builds models that think and decide like people, not like assistants. Test a decision on them before it reaches real people.</p>
+    <div class="acts">
+      <a class="pill" href="#s2">Request access<svg><use href="#arr"/></svg></a>
+      <a class="ghost" href="#how">See how it works</a>
+    </div>
+  </div>
+    </section>
+
+<div class="proof">
+  <span>Research backed by a Turing Award laureate and researchers from</span>
+  <div class="logos">
+    <img src="/assets/logos/color-harvard.png" alt="Harvard">
+    <img class="lg-mit" src="/assets/logos/color-mit.png" alt="MIT">
+    <img class="lg-stanford" src="/assets/logos/color-stanford.png" alt="Stanford">
+    <img src="/assets/logos/color-princeton.png" alt="Princeton">
+    <img src="/assets/logos/color-uc-berkeley.png" alt="UC Berkeley">
+    <img src="/assets/logos/color-nus.png" alt="NUS">
+  </div>
+</div>
+
+<section class="s2" id="s2">
+  <h2>Today there are two ways to find out. <em>Both fall short.</em></h2>
+  <div class="tabs" role="tablist" aria-label="Scenarios">
+    <button role="tab" aria-selected="true" data-k="0">Rent goes up</button>
+    <button role="tab" aria-selected="false" data-k="1">A job offer</button>
+    <button role="tab" aria-selected="false" data-k="2">New pricing</button>
+    <button role="tab" aria-selected="false" data-k="3">A new policy</button>
+  </div>
+  <p class="qline" id="q"></p>
+  <div class="cols" id="cols">
+    <div class="col">
+      <div class="hd"><b>Ask people</b><span class="mono">Surveys, interviews</span></div>
+      <div class="big" id="days">Day 1</div>
+      <div class="wait"><div class="bar"><i id="wbar"></i></div><p class="mono" id="wtxt">Collecting responses</p></div>
+    </div>
+    <div class="col">
+      <div class="hd"><b>Ask an assistant</b><span class="mono">General chatbot</span></div>
+      <p class="typed" id="typed"><span class="caret"></span></p>
+      <p class="note mono">A careful answer. Not how anyone actually decides.</p>
+    </div>
+    <div class="col loka">
+      <div class="hd"><b>Ask Loka</b><span class="mono" id="lstate">Deciding</span></div>
+      <ul class="bars" id="bars"></ul>
+      <ul class="voices" id="voices"></ul>
+    </div>
+  </div>
+  <div class="s2-foot mono"><span>Illustrative scenarios and numbers</span><span>People say one thing and do another. Loka models what they do.</span></div>
+</section>
+
+<!-- 3 · Rehearse it first: a population, one change, and where they go -->
+<section class="s3" id="how">
+  <div class="pin3" id="pin3">
+    <div class="stk3">
+      <div class="g3">
+        <div>
+          <span class="kick mono">How it works</span>
+          <h2 class="h2">Rehearse it first.</h2>
+          <p class="lede">Before a decision reaches real people, run it past people who think like them.</p>
+          <ol class="steps3" id="steps3">
+            <li><button type="button" data-go="0" aria-current="true"><span class="n">01</span><b>Describe the people</b><span class="d"><span>Who they are, where they live, what they earn, what they already do.</span></span></button></li>
+            <li><button type="button" data-go="1"><span class="n">02</span><b>Change one thing</b><span class="d"><span>A price, a policy, an offer. Something that has not happened yet.</span></span></button></li>
+            <li><button type="button" data-go="2"><span class="n">03</span><b>See what they decide</b><span class="d"><span>Not what they say they would do. What people like them actually do.</span></span></button></li>
+          </ol>
+        </div>
+        <div class="stage3" id="stage3" data-s="0">
+          <canvas id="cv3" aria-hidden="true"></canvas>
+          <div class="chip pop"><span class="mono">Population</span><span>Renters in Austin, 25 to 40</span></div>
+          <div class="chip cond"><span class="mono">Change</span><b>Rent +8%</b></div>
+          <div class="res3"><div><b>64%</b><span>Stay and pay</span></div><div><b>24%</b><span>Move nearby</span></div><div><b>12%</b><span>Leave the city</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · Three models: one person, a crowd, an institution -->
+<section class="s4" id="models">
+  <div class="sec intro">
+    <span class="kick mono">The models</span>
+    <h2 class="h2">One person. A crowd. <em>An institution.</em></h2>
+    <p class="lede">Three models on one foundation, each answering the same kind of question at a different scale.</p>
+  </div>
+  <div class="pin4" id="pin4">
+    <div class="stk4">
+      <div class="g4">
+        <div>
+          <div class="tabs4" id="tabs4">
+            <button type="button" data-go="0" aria-current="true">Judgment</button>
+            <button type="button" data-go="1">Prediction</button>
+            <button type="button" data-go="2">Adjudication</button>
+          </div>
+          <div class="panes4">
+            <article class="pane4 on">
+              <span class="sc">01 · One person</span>
+              <h3>Judgment</h3>
+              <p>How a particular person would choose, given who they are and what is in front of them.</p>
+              <dl class="io4"><dt>In</dt><dd>A person and a set of options</dd><dt>Out</dt><dd>Their choice, a score for each option, and why</dd></dl>
+              <div class="ask4"><span class="mono">Ask it</span>Will this candidate accept the offer, or push back?</div>
+            </article>
+            <article class="pane4">
+              <span class="sc">02 · A crowd</span>
+              <h3>Prediction</h3>
+              <p>How a population will respond. The answer is a spread of reactions, the way real groups split.</p>
+              <dl class="io4"><dt>In</dt><dd>A population and a change</dd><dt>Out</dt><dd>How the group divides, and the numbers behind it</dd></dl>
+              <div class="ask4"><span class="mono">Ask it</span>If the price goes up 20%, how many subscribers leave?</div>
+            </article>
+            <article class="pane4">
+              <span class="sc">03 · An institution</span>
+              <h3>Adjudication</h3>
+              <p>How a body of people deliberates and rules. Several voices argue; the ruling follows from the debate.</p>
+              <dl class="io4"><dt>In</dt><dd>A dispute and the arguments on each side</dd><dt>Out</dt><dd>A ruling and the reasoning behind it</dd></dl>
+              <div class="ask4"><span class="mono">Ask it</span>Would an arbitration panel say this delivery met the contract?</div>
+            </article>
+          </div>
+        </div>
+        <div class="viz4"><canvas id="cv4" aria-hidden="true"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · Why it works -->
+<section class="sec" id="research">
+  <span class="kick mono rv">Why it works</span>
+  <h2 class="h2 rv">Built to be human, <em>not helpful.</em></h2>
+  <p class="lede rv">Most models are trained to be agreeable assistants. That training is exactly what makes them poor stand-ins for real people.</p>
+  <div class="g5">
+    <ol class="pr5 rv" id="pr5">
+      <li><button type="button" data-k="0" aria-current="true"><span class="n">01</span><b>Starts before chat tuning</b><p>Trained from a base model, so it keeps how people actually talk and choose instead of how an assistant should.</p></button></li>
+      <li><button type="button" data-k="1"><span class="n">02</span><b>Learns how people really err</b><p>Shortcuts, biases and hesitation, not only the right answer.</p></button></li>
+      <li><button type="button" data-k="2"><span class="n">03</span><b>Decides, not just describes</b><p>Picks from the options it is given, scores them, or returns a number.</p></button></li>
+      <li><button type="button" data-k="3"><span class="n">04</span><b>Acting and judging, kept apart</b><p>Behaving like a person and evaluating one are trained separately, so neither leaks into the other.</p></button></li>
+    </ol>
+    <div class="dg rv" id="dg">
+      <svg viewBox="0 0 640 400" role="img" aria-label="Human behavior data and a base model feed one backbone. Separate parts act as a person or judge as a panel, and the model returns a choice, a score or a ruling.">
+        <g data-k="1"><path class="ln" d="M150 80 C 220 80, 220 190, 250 190"/><rect class="bx" x="20" y="56" width="130" height="48" rx="12"/><text x="36" y="85">Human behavior</text><text class="m" x="36" y="122">surveys, choices, outcomes</text></g>
+        <g data-k="0"><path class="ln" d="M150 300 C 220 300, 220 210, 250 210"/><rect class="bx" x="20" y="276" width="130" height="48" rx="12"/><text x="36" y="305">Base model</text><text class="m" x="36" y="342">not chat-tuned</text>
+          <rect class="bx" x="250" y="150" width="140" height="100" rx="18"/><text x="270" y="196">One backbone</text><text class="m" x="270" y="216">shared behavior</text></g>
+        <g data-k="3"><path class="ln" d="M390 185 C 420 185, 420 110, 450 110"/><path class="ln" d="M390 215 C 420 215, 420 290, 450 290"/><rect class="bx" x="450" y="86" width="150" height="48" rx="12"/><text x="466" y="115">Acts as a person</text><rect class="bx" x="450" y="266" width="150" height="48" rx="12"/><text x="466" y="295">Judges as a panel</text></g>
+        <g data-k="2"><path class="ln" d="M525 134 L 525 176"/><path class="ln" d="M525 266 L 525 224"/><rect class="bx" x="440" y="176" width="170" height="48" rx="24"/><text x="458" y="205">Choice · Score · Ruling</text></g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · Team -->
+<section class="sec" id="team" style="padding-top:0">
+  <span class="kick mono rv">Team</span>
+  <h2 class="h2 rv">The people <em>behind it.</em></h2>
+  <p class="lede rv">A Turing Award laureate and researchers from the world's leading labs stand behind our research, with published, peer-reviewed work.</p>
+  <div class="g6">
+    <article class="c6 feat rv">
+      <img class="pt" src="/assets/img/team-sifakis.jpg" alt="Joseph Sifakis">
+      <div class="tx">
+        <div class="aw"><img src="/assets/img/turing-award.webp" alt=""><span>A.M. Turing Award, 2007</span></div>
+        <h3>Joseph Sifakis</h3>
+        <p>Co-invented model checking, the formal-verification method behind mission-critical systems worldwide.</p>
+        <div class="to"><span class="mono">What it brings</span><span>Rulings that can be checked, not just trusted</span></div>
+      </div>
+    </article>
+    <article class="c6 rv"><span class="av">JL</span><h3>Jialin Li</h3><small>NUS · Distributed systems</small><p>In-network consensus and Byzantine fault tolerance: OSDI, SOSP, SIGCOMM.</p><div class="to"><span class="mono">What it brings</span><span>Many voices, one ruling</span></div></article>
+    <article class="c6 rv"><span class="av">OF</span><h3>Oberholzer-Gee · Frey</h3><small>Harvard · Economics</small><p>Motivation crowding, markets, and behaviour.</p><div class="to"><span class="mono">What it brings</span><span>How people really respond to incentives</span></div></article>
+    <article class="c6 rv"><span class="av">YL</span><h3>Yao Lu</h3><small>AI-native systems · Data and AI systems</small><p>Large-scale analytics and AI-native infrastructure.</p><div class="to"><span class="mono">What it brings</span><span>Simulating whole populations at once</span></div></article>
+    <article class="c6 stat rv">
+      <b>12+</b><span>papers at top-tier venues across formal verification, systems, economics and data</span>
+      <div class="lg6"><img src="/assets/logos/color-harvard.png" alt="Harvard"><img src="/assets/logos/color-mit.png" alt="MIT" style="height:19px"><img src="/assets/logos/color-stanford.png" alt="Stanford" style="height:30px"><img src="/assets/logos/color-princeton.png" alt="Princeton"><img src="/assets/logos/color-uc-berkeley.png" alt="UC Berkeley"><img src="/assets/logos/color-nus.png" alt="NUS"></div>
+    </article>
+  </div>
+</section>
+
+<!-- 7 · Close -->
+<section class="s7" id="access">
+  <canvas id="cv7" aria-hidden="true"></canvas>
+  <div class="in7 rv">
+    <h2>We are building it <em>now.</em></h2>
+    <p>Early access opens to research labs and a small group of partners first.</p>
+    <a class="pill" href="#access">Request early access<svg><use href="#arr"/></svg></a>
+  </div>
+</section>
+
+<footer class="foot">
+  <div><a class="brand" href="#top"><i aria-hidden="true"></i>Loka Labs</a></div>
+  <div><h4>Research</h4><ul><li><a href="#models">Models</a></li><li><a href="#research">Why it works</a></li></ul></div>
+  <div><h4>Products</h4><ul><li><a href="https://www.loka.capital" target="_blank" rel="noopener">Loka Capital</a></li><li><a href="https://www.loka.cash/" target="_blank" rel="noopener">Atara</a></li><li><a href="/aiusd/">AIUSD</a></li></ul></div>
+  <div><h4>Company</h4><ul><li><a href="#team">Team</a></li><li><a href="#access">Contact</a></li></ul></div>
+  <div class="fine">© 2026 Loka Labs</div>
+</footer>
+
+
+<script>
+(() => {
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- Hero: a crowd flowing like water. The model reads one spot in the crowd, weighs where it could go,
+  // commits, and the people there peel off as a blue stream along the predicted path. ----------
+  (() => {
+    const cv = document.getElementById('field'), ink = document.getElementById('ink'), frameEl = document.getElementById('top'), copy = document.querySelector('.copy');
+    const ctx = cv.getContext('2d'), ix = ink.getContext('2d');
+    const DEST = ['Café', 'Metro', 'Museum', 'Ferry', 'Market', 'Hotel', 'Tram stop', 'Riverside', 'Bookshop', 'Gallery'];
+    let W, H, N, X, Y, VX, VY, C, CAP, U, SP, live = true, ev = null, nextEv = 0, mouse = { x: -1e4, y: -1e4 }, textR = 0;
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    const ease = (t) => 1 - Math.pow(1 - Math.max(0, Math.min(1, t)), 3);
+    const gauss = () => (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
+    // currents of people: each lane is a slowly breathing curve; lanes swell, braid and cross like crowd streams
+    let LN = [];
+    const makeLanes = () => {
+      LN = Array.from({ length: 9 }, (_, k) => ({ c: .1 + .8 * (k + rnd(-.3, .3)) / 8, A: rnd(.04, .13) * H, f: rnd(.0018, .0042), p: rnd(0, 6.28), w: rnd(.12, .32) * (Math.random() < .5 ? -1 : 1), A2: rnd(.01, .05) * H, f2: rnd(.005, .009), p2: rnd(0, 6.28), wid: rnd(.018, .05) * H, sp: rnd(.75, 1.25) }));
+    };
+    const laneAt = (L, x, t) => { const l = LN[L]; return l.c * H + l.A * Math.sin(x * l.f + l.p + t * l.w) + l.A2 * Math.sin(x * l.f2 + l.p2 - t * l.w * 1.7); };
+    let LA, OF;
+    const fit = () => {
+      const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2);
+      W = r.width; H = r.height;
+      [cv, ink].forEach((c) => { c.width = W * d; c.height = H * d; c.getContext('2d').setTransform(d, 0, 0, d, 0, 0); });
+      ctx.fillStyle = '#050506'; ctx.fillRect(0, 0, W, H);
+      makeLanes();
+      N = Math.round(Math.max(2500, Math.min(9000, W * H / 150)));
+      X = new Float32Array(N); Y = new Float32Array(N); VX = new Float32Array(N); VY = new Float32Array(N); C = new Float32Array(N); CAP = new Int8Array(N); U = new Float32Array(N); SP = new Float32Array(N); LA = new Uint8Array(N); OF = new Float32Array(N);
+      for (let i = 0; i < N; i++) { LA[i] = Math.floor(Math.random() * LN.length); OF[i] = gauss() * LN[LA[i]].wid; SP[i] = rnd(.7, 1.3); X[i] = rnd(0, W); Y[i] = laneAt(LA[i], X[i], 0) + OF[i]; }
+      const fr = frameEl.getBoundingClientRect(), cr = copy.getBoundingClientRect(); textR = cr.right - fr.left;
+      ev = null;
+    };
+    const bez = (o, t) => { const u = 1 - t; return [u * u * o.p0[0] + 2 * u * t * o.c[0] + t * t * o.p1[0], u * u * o.p0[1] + 2 * u * t * o.c[1] + t * t * o.p1[1]]; };
+    // a change lands in the crowd; the people it touches split three ways, in the shares the model predicts
+    const SCENES = [
+      { cond: 'Price +10%', opts: [['Keep paying', .64], ['Switch plan', .24], ['Cancel', .12]] },
+      { cond: 'Rent +8%', opts: [['Stay', .64], ['Move nearby', .24], ['Leave the city', .12]] },
+      { cond: 'Offer +15%', opts: [['Negotiate', .58], ['Accept', .31], ['Decline', .11]] },
+      { cond: 'New policy', opts: [['Comply', .58], ['Push back', .29], ['Ignore', .13]] },
+      { cond: 'Office 5 days', opts: [['Ask for hybrid', .55], ['Start looking', .33], ['Go along', .12]] }
+    ];
+    let sceneIx = 0;
+    const startEvent = (now) => {
+      // land the change where the crowd is thickest, so there are people to split
+      const t = now / 1000, x0 = Math.max(textR + 90, W * .54);
+      let best = -1, bc = -1;
+      for (let k = 0; k < 60; k++) {
+        const i = Math.floor(Math.random() * N); if (CAP[i] || X[i] < x0 || X[i] > W * .7 || Y[i] < H * .25 || Y[i] > H * .75) continue;
+        let c = 0; for (let m = 0; m < 700; m++) { const j = Math.floor(Math.random() * N), dx = X[j] - X[i], dy = Y[j] - Y[i]; if (dx * dx + dy * dy < 8100) c++; }
+        if (c > bc) { bc = c; best = i; }
+      }
+      if (best < 0) return;
+      const px = X[best], py = Y[best], L = LA[best];
+      const dy = laneAt(L, px + 4, t) - laneAt(L, px, t), a0 = Math.max(-.45, Math.min(.45, Math.atan2(dy, 4))), sc = SCENES[sceneIx % SCENES.length];
+      const dirs = [-.62, 0, .62].sort(() => Math.random() - .5);
+      const opts = sc.opts.map(([l, pr], k) => {
+        const a = a0 + dirs[k] + rnd(-.08, .08), Lg = rnd(250, 330), end = [px + Math.cos(a) * Lg, py + Math.sin(a) * Lg];
+        return { p0: [px, py], c: [px + Math.cos(a0) * Lg * .45, py + Math.sin(a0) * Lg * .45], p1: end, l, pr };
+      });
+      if (!opts.every((o) => o.p1[0] > textR + 40 && o.p1[0] < W - 170 && o.p1[1] > 80 && o.p1[1] < H - 50)) return;
+      sceneIx++;
+      ev = { p: [px, py], cond: sc.cond, opts, t0: now, caught: false };
+    };
+    const capture = () => {
+      const [px, py] = ev.p, R = 120, cut1 = ev.opts[0].pr, cut2 = cut1 + ev.opts[1].pr;
+      for (let i = 0; i < N; i++) {
+        const dx = X[i] - px, dy = Y[i] - py;
+        if (!CAP[i] && dx * dx + dy * dy < R * R) { const r = Math.random(); CAP[i] = r < cut1 ? 1 : r < cut2 ? 2 : 3; U[i] = ev.clock - rnd(0, .6); }
+      }
+    };
+    const step = (now, dt) => {
+      const t = now / 1000;
+      for (let i = 0; i < N; i++) {
+        if (CAP[i] && ev) {
+          const w = ev.opts[CAP[i] - 1];
+          // stream along the chosen path, spread a little across it, then rejoin the nearest current
+          const uu = (t - U[i]) * .3 * SP[i], u = Math.max(0, Math.min(1, uu)), [tx, ty] = bez(w, u), [nx2, ny2] = bez(w, Math.min(1, u + .02));
+          const tl = Math.hypot(nx2 - tx, ny2 - ty) || 1, ox = -(ny2 - ty) / tl * OF[i] * .5, oy = (nx2 - tx) / tl * OF[i] * .5;
+          const k = 1 - Math.exp(-7 * dt); X[i] += (tx + ox - X[i]) * k; Y[i] += (ty + oy - Y[i]) * k;
+          if (CAP[i] === 1) C[i] = Math.min(1, C[i] + dt * 3);
+          if (uu >= 1.12) {
+            CAP[i] = 0; VX[i] = VY[i] = 0;
+            let best = 0, bd = 1e9; for (let L = 0; L < LN.length; L++) { const dd = Math.abs(laneAt(L, X[i], t) - Y[i]); if (dd < bd) { bd = dd; best = L; } }
+            LA[i] = best; OF[i] = Math.max(-2 * LN[best].wid, Math.min(2 * LN[best].wid, Y[i] - laneAt(best, X[i], t)));
+          }
+        } else {
+          CAP[i] = 0; C[i] = Math.max(0, C[i] - dt * .4);
+          // walk along the lane; drift back into it after being pushed
+          const sp = 64 * SP[i] * LN[LA[i]].sp, ty = laneAt(LA[i], X[i], t) + OF[i];
+          X[i] += (sp + VX[i]) * dt; Y[i] += ((ty - Y[i]) * 2.2 + VY[i]) * dt;
+          VX[i] *= .92; VY[i] *= .92;
+        }
+        // the cursor parts the crowd
+        const mx = X[i] - mouse.x, my = Y[i] - mouse.y, md = mx * mx + my * my;
+        if (md < 150 * 150) { const l = Math.sqrt(md) || 1, f = (1 - l / 150) * 1400 * dt; VX[i] += mx / l * f; VY[i] += my / l * f; }
+        if (X[i] > W + 10) { X[i] = -10; LA[i] = Math.floor(Math.random() * LN.length); OF[i] = gauss() * LN[LA[i]].wid; Y[i] = laneAt(LA[i], -10, t) + OF[i]; C[i] = 0; }
+      }
+    };
+    const paint = () => {
+      ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = 'rgba(5,5,6,.09)'; ctx.fillRect(0, 0, W, H);
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.fillStyle = 'rgba(200,206,222,.24)';
+      for (let i = 0; i < N; i++) if (C[i] < .35) ctx.fillRect(X[i], Y[i], 1.3, 1.3);
+      ctx.fillStyle = 'rgba(80,115,255,.85)';
+      for (let i = 0; i < N; i++) if (C[i] >= .35) ctx.fillRect(X[i] - .8, Y[i] - .8, 2.6, 2.6);
+      ctx.globalCompositeOperation = 'source-over';
+    };
+    const label = (x, y, txt, a, strong) => {
+      ix.font = `500 ${strong ? 12.5 : 11.5}px "Geist Mono", monospace`;
+      const w = ix.measureText(txt).width;
+      if (strong) { const h = 24, pw = w + 18; let lx = x + 14; if (lx + pw > W - 10) lx = x - 14 - pw; ix.globalAlpha = a; ix.fillStyle = '#2f5bff'; ix.beginPath(); ix.roundRect(lx, y - h / 2, pw, h, h / 2); ix.fill(); ix.fillStyle = '#fff'; ix.fillText(txt, lx + 9, y + 4.5); ix.globalAlpha = 1; }
+      else { ix.fillStyle = `rgba(230,234,245,${a * .78})`; ix.fillText(txt, x + 10 + w > W - 8 ? x - 10 - w : x + 10, y + 4); }
+    };
+    const arc = (o, g, rgb, a, w) => {
+      ix.save(); ix.setLineDash([2, 6]); ix.lineCap = 'round'; ix.lineWidth = w; ix.strokeStyle = `rgba(${rgb},${a})`; ix.beginPath();
+      for (let i = 0; i <= 40; i++) { const [x, y] = bez(o, g * i / 40); i ? ix.lineTo(x, y) : ix.moveTo(x, y); } ix.stroke(); ix.restore();
+    };
+    const chip = (x, y, cond, a) => {
+      ix.globalAlpha = a; ix.font = '500 11px "Geist Mono", monospace'; const k = 'Change', kw = ix.measureText(k).width;
+      ix.font = '600 14px "Inter Tight", sans-serif'; const cw = ix.measureText(cond).width, w = kw + cw + 34, h = 32, lx = x - w / 2, ly = y - 58;
+      ix.fillStyle = '#fff'; ix.beginPath(); ix.roundRect(lx, ly, w, h, h / 2); ix.fill();
+      ix.beginPath(); ix.moveTo(x - 6, ly + h); ix.lineTo(x, ly + h + 7); ix.lineTo(x + 6, ly + h); ix.fill();
+      ix.fillStyle = 'rgba(14,15,15,.5)'; ix.font = '500 11px "Geist Mono", monospace'; ix.fillText(k, lx + 14, ly + 20);
+      ix.fillStyle = '#0e0f0f'; ix.font = '600 14px "Inter Tight", sans-serif'; ix.fillText(cond, lx + 22 + kw, ly + 21);
+      ix.globalAlpha = 1;
+    };
+    const overlay = (now) => {
+      ix.clearRect(0, 0, W, H);
+      if (!ev) return;
+      const t = (now - ev.t0) / 1000, fade = t > 6.4 ? 1 - ease((t - 6.4) / .7) : 1, [px, py] = ev.p;
+      // the change lands: a chip drops in and a ring ripples out
+      const m = ease(t / .5);
+      chip(px, py + (1 - m) * -14, ev.cond, m * fade);
+      ix.strokeStyle = `rgba(230,234,245,${.7 * m * fade})`; ix.lineWidth = 1.2; ix.beginPath(); ix.arc(px, py, 26 + 90 * ease(t / 1.2), 0, 6.283); ix.stroke();
+      ix.fillStyle = `rgba(255,255,255,${m * fade})`; ix.beginPath(); ix.arc(px, py, 3.5, 0, 6.283); ix.fill();
+      // the model's answer: three branches with their shares; the biggest one is the prediction
+      const g = ease((t - .6) / .8), win = ease((t - 1.5) / .5);
+      ev.opts.forEach((o, i) => {
+        if (g <= 0) return;
+        const dim = i ? 1 - .35 * win : 1;
+        arc(o, g, '230,234,245', .55 * dim * fade, 1.2);
+        if (g >= 1 && i) { ix.strokeStyle = `rgba(230,234,245,${.6 * dim * fade})`; ix.beginPath(); ix.arc(o.p1[0], o.p1[1], 4, 0, 6.283); ix.stroke(); label(o.p1[0], o.p1[1], `${o.l} ${Math.round(o.pr * 100)}%`, dim * fade, false); }
+      });
+      const o = ev.opts[0];
+      if (win > 0) {
+        arc(o, win, '120,150,255', .95 * fade, 2);
+        // the current keeps arriving and keeps splitting while the prediction holds
+        if (t > 1.9 && t < 4.6) { ev.clock = now / 1000; capture(); }
+        const e = ease((t - 2) / .3) * fade;
+        ix.strokeStyle = `rgba(120,150,255,${e})`; ix.lineWidth = 1.6; ix.beginPath(); ix.arc(o.p1[0], o.p1[1], 9, 0, 6.283); ix.stroke();
+        if (e > 0) label(o.p1[0], o.p1[1], `${o.l} · ${Math.round(o.pr * 100)}%`, e, true);
+      }
+      if (t > 7.4) { ev = null; nextEv = now + 300; }
+    };
+    let last = 0;
+    const loop = (now) => {
+      requestAnimationFrame(loop);
+      const dt = Math.min(.04, (now - last) / 1000 || 0); last = now;
+      if (!live) return;
+      if (!ev && now > nextEv) startEvent(now);
+      step(now, dt); paint(); overlay(now);
+    };
+    frameEl.addEventListener('pointermove', (e) => { const r = cv.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
+    frameEl.addEventListener('pointerleave', () => { mouse.x = mouse.y = -1e4; });
+    fit(); setTimeout(() => { const fr = frameEl.getBoundingClientRect(), cr = copy.getBoundingClientRect(); textR = cr.right - fr.left; }, 1300);
+    let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(fit, 150); });
+    new IntersectionObserver(([e]) => { live = e.isIntersecting; }).observe(cv);
+    if (still) { for (let k = 0; k < 40; k++) { step(k * 50, .05); paint(); } return; }
+    nextEv = performance.now() + 1500; requestAnimationFrame(loop);
+  })();
+
+  // ---------- Section 2: three ways to find out ----------
+  (() => {
+    const DATA = [
+      { q: 'Rents go up 8% next year. Do renters stay, move nearby, or leave the city?',
+        a: 'It depends on several factors, including each renter’s budget, how long they have lived there, the cost of moving, and conditions in the local housing market. Some may choose to stay, while others might consider',
+        bars: [['Stay and pay', 64], ['Move nearby', 24], ['Leave the city', 12]],
+        v: ['The kids just settled into school. I’ll swallow it this year.', 'One more increase and I’m out.'] },
+      { q: 'A senior engineer is offered 15% more pay to come back to the office five days a week. What happens?',
+        a: 'This decision depends on the candidate’s priorities. Some people value higher compensation, while others place more weight on flexibility and work-life balance. It may be helpful to weigh',
+        bars: [['Pushes for two remote days', 58], ['Declines', 31], ['Accepts as is', 11]],
+        v: ['Five days is a deal breaker, but I’d listen at three.', 'The commute costs me two hours a day.'] },
+      { q: 'A streaming service raises its price from $12 to $15 a month. What do subscribers do?',
+        a: 'Subscriber reactions to price changes can vary. Factors such as perceived value, available alternatives, and content quality all play a role. Some subscribers may accept the change, while',
+        bars: [['Keep paying', 71], ['Switch to the plan with ads', 18], ['Cancel', 11]],
+        v: ['I complain every time and never cancel.', 'Fine, I’ll watch the ads.'] },
+      { q: 'A city adds a $9 charge to drive downtown at rush hour. How do commuters respond?',
+        a: 'Congestion pricing can lead to a variety of outcomes. Some commuters may switch to public transit, while others may continue driving or adjust their schedules. The overall impact would depend on',
+        bars: [['Pay and keep driving', 46], ['Switch to transit', 33], ['Leave earlier or later', 21]],
+        v: ['Nine dollars is less than my time.', 'If the train ran on time, I’d have switched years ago.'] }
+    ];
+    const tabs = [...document.querySelectorAll('.tabs button')];
+    const q = document.getElementById('q'), typed = document.getElementById('typed'), bars = document.getElementById('bars'), voices = document.getElementById('voices');
+    const days = document.getElementById('days'), wbar = document.getElementById('wbar'), wtxt = document.getElementById('wtxt'), lstate = document.getElementById('lstate');
+    let timers = [], started = false;
+    const later = (fn, ms) => timers.push(setTimeout(fn, still ? 0 : ms));
+    const show = (k) => {
+      timers.forEach(clearTimeout); timers = [];
+      tabs.forEach((b, i) => b.setAttribute('aria-selected', i === k));
+      const d = DATA[k];
+      q.textContent = d.q;
+      // Ask people: slow
+      wbar.style.transition = 'none'; wbar.style.width = '0'; days.textContent = 'Day 1'; wtxt.textContent = 'Collecting responses';
+      requestAnimationFrame(() => { wbar.style.transition = ''; wbar.style.width = still ? '30%' : '30%'; });
+      let day = 1; const tick = () => { if (day < 4) { day++; days.textContent = `Day ${day}`; later(tick, 2200); } else wtxt.textContent = 'Results in about two weeks'; };
+      later(tick, 2200);
+      // Ask an assistant: hedges, word by word
+      typed.innerHTML = '<span class="caret"></span>'; const caret = typed.firstChild;
+      if (still) caret.before(d.a + '…');
+      else { let i = 0; const w = d.a.split(' '); const step = () => { caret.before((i ? ' ' : '') + w[i]); i++; if (i < w.length) later(step, 70); else caret.before('…'); }; later(step, 250); }
+      // Ask Loka: decides
+      lstate.textContent = 'Deciding';
+      bars.innerHTML = d.bars.map(([l, v]) => `<li><span class="lb">${l}</span><span class="pc" data-v="${v}">0%</span><span class="tr"><i></i></span></li>`).join('');
+      voices.innerHTML = d.v.map((t) => `<li>${t}</li>`).join('');
+      later(() => {
+        lstate.textContent = 'Decided';
+        [...bars.children].forEach((li, i) => {
+          const v = +li.querySelector('.pc').dataset.v, pc = li.querySelector('.pc');
+          later(() => {
+            li.querySelector('i').style.transform = `scaleX(${v / 100})`;
+            const t0 = performance.now(); const run = (t) => { const e = Math.min(1, (t - t0) / 900), k = 1 - Math.pow(1 - e, 4); pc.textContent = Math.round(v * k) + '%'; if (e < 1) requestAnimationFrame(run); };
+            requestAnimationFrame(run);
+          }, i * 120);
+        });
+        [...voices.children].forEach((li, i) => later(() => li.classList.add('on'), 700 + i * 260));
+      }, 450);
+    };
+    tabs.forEach((b, i) => b.addEventListener('click', () => show(i)));
+    q.textContent = DATA[0].q;
+    new IntersectionObserver(([e]) => { if (e.isIntersecting && !started) { started = true; show(0); } }, { threshold: .35 }).observe(document.getElementById('cols'));
+  })();
+
+  // ---------- reveal on scroll ----------
+  (() => {
+    const ro = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } }), { threshold: .12 });
+    document.querySelectorAll('.rv').forEach((el) => ro.observe(el));
+  })();
+
+  // shared helpers for the particle scenes
+  const fitCv = (cv) => { const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2); cv.width = r.width * d; cv.height = r.height * d; const c = cv.getContext('2d'); c.setTransform(d, 0, 0, d, 0, 0); return { c, W: r.width, H: r.height }; };
+  const easeX = (t) => 1 - Math.pow(1 - Math.max(0, Math.min(1, t)), 4);
+  const pinStep = (pin, n) => { const r = pin.getBoundingClientRect(), span = r.height - innerHeight, p = Math.max(0, Math.min(1, -r.top / span)); return Math.min(n - 1, Math.floor(p * n)); };
+  const jumpTo = (pin, s, n) => { const r = pin.getBoundingClientRect(), span = r.height - innerHeight; scrollTo({ top: scrollY + r.top + span * (s + .5) / n, behavior: still ? 'auto' : 'smooth' }); };
+  const scene = (cv, M, targets, colors, palette, onStep) => {
+    let g, step = 0, from = 0, t0 = -1e9, live = true;
+    const P = Array.from({ length: M }, (_, i) => ({ x: targets[0][i][0], y: targets[0][i][1], fx: targets[0][i][0], fy: targets[0][i][1], j: Math.random() * 6.28 }));
+    const size = () => { g = fitCv(cv); };
+    const go = (s) => { if (s === step) return; P.forEach((p) => { p.fx = p.x; p.fy = p.y; }); from = step; step = s; t0 = performance.now(); onStep && onStep(s); };
+    const draw = (now) => {
+      const { c, W, H } = g; c.clearRect(0, 0, W, H);
+      const e = still ? 1 : easeX((now - t0) / 1200), S = Math.min(W, H) * .44, cx = W / 2, cy = H / 2, dot = Math.max(1.3, S * .013);
+      for (let i = 0; i < M; i++) {
+        const p = P[i], to = targets[step][i];
+        p.x = p.fx + (to[0] - p.fx) * e; p.y = p.fy + (to[1] - p.fy) * e;
+        const k = colors[e > .5 ? step : from][i], jx = step === 1 && palette.jitter ? Math.sin(now * .004 + p.j) * .006 : 0;
+        c.fillStyle = palette.c[k]; c.beginPath(); c.arc(cx + (p.x + jx) * S, cy + p.y * S, dot, 0, 6.283); c.fill();
+      }
+      palette.extra && palette.extra(c, step, e, S, cx, cy, now);
+    };
+    size(); addEventListener('resize', size);
+    new IntersectionObserver(([en]) => { live = en.isIntersecting; }).observe(cv);
+    const loop = (now) => { requestAnimationFrame(loop); if (live) draw(now); };
+    requestAnimationFrame(loop);
+    return { go, get step() { return step; } };
+  };
+  const shuffle = (T, C) => { for (let i = T.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [T[i], T[j]] = [T[j], T[i]]; [C[i], C[j]] = [C[j], C[i]]; } };
+  const disc = (n, cx, cy, r) => Array.from({ length: n }, (_, i) => { const a = i * 2.39996, rr = r * Math.sqrt((i + .5) / n); return [cx + Math.cos(a) * rr, cy + Math.sin(a) * rr]; });
+  const gauss = () => { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(6.283 * v); };
+
+  // ---------- 3 · rehearse: a population (cloud) -> a change (some stir) -> three stacks ----------
+  (() => {
+    const cv = document.getElementById('cv3'), pin = document.getElementById('pin3'), stage = document.getElementById('stage3'), btns = [...document.querySelectorAll('#steps3 button')];
+    const M = 560, T = [[], [], []], C = [[], [], []];
+    for (let i = 0; i < M; i++) { const p = [gauss() * .36, gauss() * .26 - .02]; T[0].push(p); C[0].push(0); }
+    // step 1: same cloud, but the people the change touches turn orange and the cloud leans
+    T[0].forEach((p, i) => { const hit = i % 3 !== 0; T[1].push([p[0] + (hit ? .06 : 0), p[1]]); C[1].push(hit ? 1 : 0); });
+    // step 2: stacks for stay / move nearby / leave (64 / 24 / 12)
+    const share = [.64, .24, .12], cols = [-.62, 0, .62], d = .034, per = 16;
+    let idx = 0; const slots = [];
+    share.forEach((sh, k) => { const n = Math.round(M * sh); for (let j = 0; j < n; j++) slots.push([cols[k] + ((j % per) - (per - 1) / 2) * d, .5 - Math.floor(j / per) * d, k]); });
+    while (slots.length < M) slots.push([cols[0], .5, 0]);
+    slots.slice(0, M).forEach((sl) => { T[2].push([sl[0], sl[1] - .08]); C[2].push(sl[2] === 0 ? 2 : sl[2] === 1 ? 3 : 4); });
+    shuffle(T[2], C[2]);
+    const pal = { c: ['rgba(18,18,20,.78)', 'rgba(47,91,255,.85)', 'rgba(47,91,255,.95)', 'rgba(18,18,20,.7)', 'rgba(18,18,20,.32)'], jitter: true };
+    const sc = scene(cv, M, T, C, pal, (s) => { stage.dataset.s = s; btns.forEach((b, i) => b.setAttribute('aria-current', i === s)); });
+    // line the result labels up under the three stacks (the scene scales by 0.44 of the shorter side)
+    const align = () => { const r = stage.getBoundingClientRect(); stage.style.setProperty('--cw', (.62 * Math.min(r.width, r.height) * .44) + 'px'); };
+    align(); addEventListener('resize', align);
+    btns.forEach((b) => b.addEventListener('click', () => { const s = +b.dataset.go; if (innerWidth <= 900) sc.go(s); else jumpTo(pin, s, 3); }));
+    addEventListener('scroll', () => { if (innerWidth > 900) sc.go(pinStep(pin, 3)); }, { passive: true });
+    if (!still) setInterval(() => { if (innerWidth <= 900) sc.go((sc.step + 1) % 3); }, 3600);
+  })();
+
+  // ---------- 4 · three models on a dark band ----------
+  (() => {
+    const cv = document.getElementById('cv4'), pin = document.getElementById('pin4');
+    const panes = [...document.querySelectorAll('.pane4')], tabs = [...document.querySelectorAll('#tabs4 button')];
+    const M = 620, T = [[], [], []], C = [[], [], []];
+    const OPTS = [[.52, -.56], [.68, -.19], [.68, .19], [.52, .56]];
+    disc(M - 160, -.38, 0, .3).forEach((p) => { T[0].push(p); C[0].push(0); });
+    OPTS.forEach((o, k) => disc(40, o[0], o[1], .085).forEach((p) => { T[0].push(p); C[0].push(k === 1 ? 2 : 1); }));
+    (() => {
+      const cols = 50, d = 1.76 / cols, mu = 22, sd = 9.5;
+      const w = Array.from({ length: cols }, (_, i) => Math.exp(-.5 * ((i - mu) / sd) ** 2) * (1 + .35 * Math.tanh((i - mu) / 6)));
+      const sum = w.reduce((a, b) => a + b, 0), h = w.map((v) => Math.round(v / sum * M)); h[mu] += M - h.reduce((a, b) => a + b, 0);
+      h.forEach((n, i) => { for (let r = 0; r < n; r++) { T[1].push([-.88 + d * (i + .5), .62 - d * (r + .5)]); C[1].push(i >= 30 ? 2 : 0); } });
+    })();
+    (() => {
+      const bench = 46, seats = M - bench, rows = 8, r0 = .42, r1 = .96, rs = Array.from({ length: rows }, (_, i) => r0 + (r1 - r0) * i / (rows - 1)), tot = rs.reduce((a, b) => a + b, 0);
+      let left = seats;
+      rs.forEach((r, i) => { const n = i === rows - 1 ? left : Math.round(seats * r / tot); left -= n; for (let j = 0; j < n; j++) { const a = Math.PI - Math.PI * (j + .5) / n; T[2].push([Math.cos(a) * r, .38 - Math.sin(a) * r]); C[2].push(a > Math.PI * .5 ? 0 : 1); } });
+      disc(bench, 0, .3, .09).forEach((p) => { T[2].push(p); C[2].push(2); });
+    })();
+    [1, 2].forEach((s) => shuffle(T[s], C[s]));
+    const pal = { c: ['rgba(242,241,238,.85)', 'rgba(242,241,238,.3)', 'rgba(47,91,255,.95)'],
+      extra: (c, step, e, S, cx, cy) => {
+        if (step === 0 && e > .6) { const a = (e - .6) / .4, sc = [.3, 1, .45, .15]; OPTS.forEach((o, k) => { c.strokeStyle = k === 1 ? `rgba(47,91,255,${a * .7})` : `rgba(242,241,238,${a * sc[k] * .4})`; c.lineWidth = k === 1 ? 1.6 : 1; c.beginPath(); c.moveTo(cx - .08 * S, cy); c.lineTo(cx + (o[0] - .1) * S, cy + o[1] * S); c.stroke(); }); }
+        if (step === 1 && e > .6) { c.strokeStyle = `rgba(242,241,238,${(e - .6) / .4 * .35})`; c.lineWidth = 1; c.beginPath(); c.moveTo(cx - .9 * S, cy + .64 * S); c.lineTo(cx + .9 * S, cy + .64 * S); c.stroke(); }
+      } };
+    const sc = scene(cv, M, T, C, pal, (s) => { panes.forEach((el, i) => el.classList.toggle('on', i === s)); tabs.forEach((b, i) => b.setAttribute('aria-current', i === s)); });
+    tabs.forEach((b) => b.addEventListener('click', () => jumpTo(pin, +b.dataset.go, 3)));
+    addEventListener('scroll', () => { if (innerWidth > 900) sc.go(pinStep(pin, 3)); }, { passive: true });
+    if (!still) setInterval(() => { if (innerWidth <= 900) sc.go((sc.step + 1) % 3); }, 3800);
+  })();
+
+  // ---------- 5 · principles light up the matching part of the diagram ----------
+  (() => {
+    const btns = [...document.querySelectorAll('#pr5 button')], groups = [...document.querySelectorAll('#dg [data-k]')];
+    const set = (k) => { btns.forEach((b) => b.setAttribute('aria-current', b.dataset.k === k)); groups.forEach((g) => g.classList.toggle('hot', g.dataset.k === k)); };
+    btns.forEach((b) => { b.addEventListener('mouseenter', () => set(b.dataset.k)); b.addEventListener('focus', () => set(b.dataset.k)); b.addEventListener('click', () => set(b.dataset.k)); });
+    set('0');
+  })();
+
+  // ---------- 7 · scattered people drift together into one point ----------
+  (() => {
+    const cv = document.getElementById('cv7'); let g, t0 = 0, live = false;
+    const N = 260, P = Array.from({ length: N }, () => ({ x: Math.random(), y: Math.random(), s: Math.random() }));
+    const size = () => { g = fitCv(cv); };
+    const draw = (now) => {
+      const { c, W, H } = g; c.clearRect(0, 0, W, H);
+      const e = still ? 1 : easeX((now - t0) / 4200), tx = W * .8, ty = H * .5;
+      P.forEach((p) => {
+        const k = e * (.35 + .6 * p.s), x = p.x * W + (tx - p.x * W) * k, y = p.y * H + (ty - p.y * H) * k;
+        c.fillStyle = `rgba(255,255,255,${.25 + .4 * p.s})`; c.beginPath(); c.arc(x, y, 1.6 + p.s, 0, 6.283); c.fill();
+      });
+      c.fillStyle = `rgba(255,255,255,${e})`; c.beginPath(); c.arc(tx, ty, 6 + 3 * e, 0, 6.283); c.fill();
+      c.strokeStyle = `rgba(255,255,255,${e * .45})`; c.lineWidth = 1.2; c.beginPath(); c.arc(tx, ty, 18 + 12 * e, 0, 6.283); c.stroke();
+    };
+    size(); addEventListener('resize', size);
+    new IntersectionObserver(([en]) => { if (en.isIntersecting && !live) t0 = performance.now(); live = en.isIntersecting; }, { threshold: .3 }).observe(cv);
+    const loop = (now) => { requestAnimationFrame(loop); if (live) draw(now); };
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
+</body>
+</html>
